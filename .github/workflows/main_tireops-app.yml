@@ -41,6 +41,7 @@ jobs:
           cp -r public .next/standalone/
           cp -r .next/static .next/standalone/.next/static
           cp .deployment .next/standalone/.deployment
+          cp -r node_modules/.prisma .next/standalone/node_modules/.prisma
 
       - name: Zip standalone (preserve hidden dirs like .next)
         run: |
