@@ -42,11 +42,17 @@ jobs:
           cp -r .next/static .next/standalone/.next/static
           cp .deployment .next/standalone/.deployment
 
+      - name: Zip standalone (preserve hidden dirs like .next)
+        run: |
+          cd .next/standalone
+          zip -r ../../node-app.zip . --include="*" --include=".*" --include=".*/*"
+          cd ../..
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: .next/standalone
+          path: node-app.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -64,5 +70,5 @@ jobs:
         with:
           app-name: 'tireops-app'
           slot-name: 'Production'
-          package: .
+          package: node-app.zip
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DDBA1D672D314572A613623CE004D716 }}
