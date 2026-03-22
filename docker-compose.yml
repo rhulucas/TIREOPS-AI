@@ -1,0 +1,15 @@
+# PostgreSQL for local development
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: tireops
+      POSTGRES_PASSWORD: tireops_dev
+      POSTGRES_DB: tireops
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

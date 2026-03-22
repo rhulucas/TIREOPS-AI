@@ -1,0 +1,172 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  passwordHash  String?        @map("password_hash")
+  name          String?
+  role          String         @default("USER")
+  emailVerified DateTime?      @map("email_verified")
+  image         String?
+  accounts      Account[]
+  compoundSpecs CompoundSpec[]
+  emailDrafts   EmailDraft[]
+  orders        Order[]
+  quotes        Quote[]
+  sessions      Session[]
+  treadDesigns  TreadDesign[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Customer {
+  id        String    @id @default(cuid())
+  name      String
+  email     String?
+  phone     String?
+  address   String?
+  company   String?
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  invoices  Invoice[]
+  orders    Order[]
+  quotes    Quote[]
+}
+
+model Order {
+  id           String    @id @default(cuid())
+  orderNumber  String    @map("order_number")
+  status       String
+  customerName String?   @map("customer_name")
+  tireSpec     String?   @map("tire_spec")
+  quantity     Int       @default(0)
+  userId       String?   @map("user_id")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  customerId   String?   @map("customer_id")
+  dueDate      DateTime? @map("due_date")
+  value        Float?
+  customer     Customer? @relation(fields: [customerId], references: [id])
+  user         User?     @relation(fields: [userId], references: [id])
+}
+
+model Quote {
+  id           String    @id @default(cuid())
+  size         String
+  loadIndex    String?   @map("load_index")
+  speedRating  String?   @map("speed_rating")
+  userId       String?   @map("user_id")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  category     String?
+  compound     String?
+  customerId   String?   @map("customer_id")
+  customerName String?   @map("customer_name")
+  notes        String?
+  quantity     Int?
+  result       String?
+  customer     Customer? @relation(fields: [customerId], references: [id])
+  user         User?     @relation(fields: [userId], references: [id])
+}
+
+model Invoice {
+  id              String    @id @default(cuid())
+  invoiceNumber   String    @map("invoice_number")
+  customerId      String?   @map("customer_id")
+  customerName    String    @map("customer_name")
+  customerAddress String    @map("customer_address")
+  orderRef        String?   @map("order_ref")
+  items           String
+  paymentTerms    String    @default("Net 30") @map("payment_terms")
+  taxRate         Float     @default(0) @map("tax_rate")
+  preview         String?
+  userId          String?   @map("user_id")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  customer        Customer? @relation(fields: [customerId], references: [id])
+}
+
+model EmailDraft {
+  id          String   @id @default(cuid())
+  inquiryType String   @map("inquiry_type")
+  emailText   String   @map("email_text")
+  tone        String?
+  result      String?
+  userId      String?  @map("user_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  user        User?    @relation(fields: [userId], references: [id])
+}
+
+model CompoundSpec {
+  id              String   @id @default(cuid())
+  applicationType String   @map("application_type")
+  primaryPolymer  String   @map("primary_polymer")
+  fillerSystem    String   @map("filler_system")
+  shoreA          String?  @map("shore_a")
+  tensileStrength String?  @map("tensile_strength")
+  curingSystem    String   @map("curing_system")
+  cureTemp        String?  @map("cure_temp")
+  notes           String?
+  result          String?
+  userId          String?  @map("user_id")
+  createdAt       DateTime @default(now()) @map("created_at")
+  user            User?    @relation(fields: [userId], references: [id])
+}
+
+model TreadDesign {
+  id          String   @id @default(cuid())
+  name        String?
+  application String?
+  widthMm     Int?     @map("width_mm")
+  heightMm    Int?     @map("height_mm")
+  moldSpec    String?  @map("mold_spec")
+  userId      String?  @map("user_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  user        User?    @relation(fields: [userId], references: [id])
+}
+
+model ProductionLine {
+  id         String @id @default(cuid())
+  name       String
+  status     String
+  efficiency Float  @default(0)
+  qcFails    Int    @default(0) @map("qc_fails")
+}

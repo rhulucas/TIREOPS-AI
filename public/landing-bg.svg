@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="base" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e0e7ff"/>
+      <stop offset="40%" style="stop-color:#f0f4ff"/>
+      <stop offset="100%" style="stop-color:#ffffff"/>
+    </linearGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#c7d2fe" stroke-width="0.4" opacity="0.6"/>
+    </pattern>
+    <pattern id="tread" width="120" height="80" patternUnits="userSpaceOnUse">
+      <path d="M0 20 Q30 10 60 20 T120 20 M0 40 Q30 50 60 40 T120 40 M0 60 Q30 70 60 60 T120 60" fill="none" stroke="#a5b4fc" stroke-width="1" opacity="0.12"/>
+    </pattern>
+    <radialGradient id="glow" cx="50%" cy="10%" r="70%">
+      <stop offset="0%" style="stop-color:#ddd6fe;stop-opacity:0.4"/>
+      <stop offset="100%" style="stop-color:transparent"/>
+    </radialGradient>
+    <linearGradient id="accent" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1d6fdb;stop-opacity:0.03"/>
+      <stop offset="100%" style="stop-color:#1d6fdb;stop-opacity:0.08"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#base)"/>
+  <rect width="1920" height="1080" fill="url(#grid)"/>
+  <rect width="1920" height="1080" fill="url(#tread)"/>
+  <rect width="1920" height="1080" fill="url(#glow)"/>
+  <rect width="1920" height="1080" fill="url(#accent)"/>
+  <circle cx="200" cy="200" r="200" fill="#1d6fdb" opacity="0.04"/>
+  <circle cx="1720" cy="880" r="280" fill="#1d6fdb" opacity="0.04"/>
+</svg>
