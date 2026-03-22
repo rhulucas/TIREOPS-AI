@@ -329,8 +329,8 @@ export type ChangeRequestCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   design: Prisma.TreadDesignCreateNestedOneWithoutChangeRequestsInput
-  requester: Prisma.UserCreateNestedOneWithoutChangeRequestsMadeInput
-  reviewer?: Prisma.UserCreateNestedOneWithoutChangeRequestsReviewedInput
+  requester: Prisma.UserCreateNestedOneWithoutRequestedChangesInput
+  reviewer?: Prisma.UserCreateNestedOneWithoutReviewedChangesInput
 }
 
 export type ChangeRequestUncheckedCreateInput = {
@@ -359,8 +359,8 @@ export type ChangeRequestUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   design?: Prisma.TreadDesignUpdateOneRequiredWithoutChangeRequestsNestedInput
-  requester?: Prisma.UserUpdateOneRequiredWithoutChangeRequestsMadeNestedInput
-  reviewer?: Prisma.UserUpdateOneWithoutChangeRequestsReviewedNestedInput
+  requester?: Prisma.UserUpdateOneRequiredWithoutRequestedChangesNestedInput
+  reviewer?: Prisma.UserUpdateOneWithoutReviewedChangesNestedInput
 }
 
 export type ChangeRequestUncheckedUpdateInput = {
@@ -612,7 +612,7 @@ export type ChangeRequestCreateWithoutRequesterInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   design: Prisma.TreadDesignCreateNestedOneWithoutChangeRequestsInput
-  reviewer?: Prisma.UserCreateNestedOneWithoutChangeRequestsReviewedInput
+  reviewer?: Prisma.UserCreateNestedOneWithoutReviewedChangesInput
 }
 
 export type ChangeRequestUncheckedCreateWithoutRequesterInput = {
@@ -650,7 +650,7 @@ export type ChangeRequestCreateWithoutReviewerInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   design: Prisma.TreadDesignCreateNestedOneWithoutChangeRequestsInput
-  requester: Prisma.UserCreateNestedOneWithoutChangeRequestsMadeInput
+  requester: Prisma.UserCreateNestedOneWithoutRequestedChangesInput
 }
 
 export type ChangeRequestUncheckedCreateWithoutReviewerInput = {
@@ -737,8 +737,8 @@ export type ChangeRequestCreateWithoutDesignInput = {
   aiAssessment?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  requester: Prisma.UserCreateNestedOneWithoutChangeRequestsMadeInput
-  reviewer?: Prisma.UserCreateNestedOneWithoutChangeRequestsReviewedInput
+  requester: Prisma.UserCreateNestedOneWithoutRequestedChangesInput
+  reviewer?: Prisma.UserCreateNestedOneWithoutReviewedChangesInput
 }
 
 export type ChangeRequestUncheckedCreateWithoutDesignInput = {
@@ -820,7 +820,7 @@ export type ChangeRequestUpdateWithoutRequesterInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   design?: Prisma.TreadDesignUpdateOneRequiredWithoutChangeRequestsNestedInput
-  reviewer?: Prisma.UserUpdateOneWithoutChangeRequestsReviewedNestedInput
+  reviewer?: Prisma.UserUpdateOneWithoutReviewedChangesNestedInput
 }
 
 export type ChangeRequestUncheckedUpdateWithoutRequesterInput = {
@@ -862,7 +862,7 @@ export type ChangeRequestUpdateWithoutReviewerInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   design?: Prisma.TreadDesignUpdateOneRequiredWithoutChangeRequestsNestedInput
-  requester?: Prisma.UserUpdateOneRequiredWithoutChangeRequestsMadeNestedInput
+  requester?: Prisma.UserUpdateOneRequiredWithoutRequestedChangesNestedInput
 }
 
 export type ChangeRequestUncheckedUpdateWithoutReviewerInput = {
@@ -917,8 +917,8 @@ export type ChangeRequestUpdateWithoutDesignInput = {
   aiAssessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requester?: Prisma.UserUpdateOneRequiredWithoutChangeRequestsMadeNestedInput
-  reviewer?: Prisma.UserUpdateOneWithoutChangeRequestsReviewedNestedInput
+  requester?: Prisma.UserUpdateOneRequiredWithoutRequestedChangesNestedInput
+  reviewer?: Prisma.UserUpdateOneWithoutReviewedChangesNestedInput
 }
 
 export type ChangeRequestUncheckedUpdateWithoutDesignInput = {

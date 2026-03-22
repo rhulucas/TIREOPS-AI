@@ -27,158 +27,158 @@ export type AggregateTreadDesign = {
 }
 
 export type TreadDesignAvgAggregateOutputType = {
-  version: number | null
   widthMm: number | null
   heightMm: number | null
+  version: number | null
   grooveDepthMm: number | null
 }
 
 export type TreadDesignSumAggregateOutputType = {
-  version: number | null
   widthMm: number | null
   heightMm: number | null
+  version: number | null
   grooveDepthMm: number | null
 }
 
 export type TreadDesignMinAggregateOutputType = {
   id: string | null
   name: string | null
+  application: string | null
+  widthMm: number | null
+  heightMm: number | null
+  moldSpec: string | null
+  userId: string | null
+  createdAt: Date | null
   category: string | null
   season: string | null
   status: string | null
   version: number | null
-  application: string | null
-  widthMm: number | null
-  heightMm: number | null
   grooveDepthMm: number | null
   noiseRating: string | null
   wetGripRating: string | null
   rollingResistance: string | null
   notes: string | null
-  moldSpec: string | null
-  userId: string | null
-  createdAt: Date | null
   updatedAt: Date | null
 }
 
 export type TreadDesignMaxAggregateOutputType = {
   id: string | null
   name: string | null
+  application: string | null
+  widthMm: number | null
+  heightMm: number | null
+  moldSpec: string | null
+  userId: string | null
+  createdAt: Date | null
   category: string | null
   season: string | null
   status: string | null
   version: number | null
-  application: string | null
-  widthMm: number | null
-  heightMm: number | null
   grooveDepthMm: number | null
   noiseRating: string | null
   wetGripRating: string | null
   rollingResistance: string | null
   notes: string | null
-  moldSpec: string | null
-  userId: string | null
-  createdAt: Date | null
   updatedAt: Date | null
 }
 
 export type TreadDesignCountAggregateOutputType = {
   id: number
   name: number
+  application: number
+  widthMm: number
+  heightMm: number
+  moldSpec: number
+  userId: number
+  createdAt: number
   category: number
   season: number
   status: number
   version: number
-  application: number
-  widthMm: number
-  heightMm: number
   grooveDepthMm: number
   noiseRating: number
   wetGripRating: number
   rollingResistance: number
   notes: number
-  moldSpec: number
-  userId: number
-  createdAt: number
   updatedAt: number
   _all: number
 }
 
 
 export type TreadDesignAvgAggregateInputType = {
-  version?: true
   widthMm?: true
   heightMm?: true
+  version?: true
   grooveDepthMm?: true
 }
 
 export type TreadDesignSumAggregateInputType = {
-  version?: true
   widthMm?: true
   heightMm?: true
+  version?: true
   grooveDepthMm?: true
 }
 
 export type TreadDesignMinAggregateInputType = {
   id?: true
   name?: true
+  application?: true
+  widthMm?: true
+  heightMm?: true
+  moldSpec?: true
+  userId?: true
+  createdAt?: true
   category?: true
   season?: true
   status?: true
   version?: true
-  application?: true
-  widthMm?: true
-  heightMm?: true
   grooveDepthMm?: true
   noiseRating?: true
   wetGripRating?: true
   rollingResistance?: true
   notes?: true
-  moldSpec?: true
-  userId?: true
-  createdAt?: true
   updatedAt?: true
 }
 
 export type TreadDesignMaxAggregateInputType = {
   id?: true
   name?: true
+  application?: true
+  widthMm?: true
+  heightMm?: true
+  moldSpec?: true
+  userId?: true
+  createdAt?: true
   category?: true
   season?: true
   status?: true
   version?: true
-  application?: true
-  widthMm?: true
-  heightMm?: true
   grooveDepthMm?: true
   noiseRating?: true
   wetGripRating?: true
   rollingResistance?: true
   notes?: true
-  moldSpec?: true
-  userId?: true
-  createdAt?: true
   updatedAt?: true
 }
 
 export type TreadDesignCountAggregateInputType = {
   id?: true
   name?: true
+  application?: true
+  widthMm?: true
+  heightMm?: true
+  moldSpec?: true
+  userId?: true
+  createdAt?: true
   category?: true
   season?: true
   status?: true
   version?: true
-  application?: true
-  widthMm?: true
-  heightMm?: true
   grooveDepthMm?: true
   noiseRating?: true
   wetGripRating?: true
   rollingResistance?: true
   notes?: true
-  moldSpec?: true
-  userId?: true
-  createdAt?: true
   updatedAt?: true
   _all?: true
 }
@@ -272,21 +272,21 @@ export type TreadDesignGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 export type TreadDesignGroupByOutputType = {
   id: string
   name: string | null
+  application: string | null
+  widthMm: number | null
+  heightMm: number | null
+  moldSpec: string | null
+  userId: string | null
+  createdAt: Date
   category: string
   season: string
   status: string
   version: number
-  application: string | null
-  widthMm: number | null
-  heightMm: number | null
   grooveDepthMm: number | null
   noiseRating: string | null
   wetGripRating: string | null
   rollingResistance: string | null
   notes: string | null
-  moldSpec: string | null
-  userId: string | null
-  createdAt: Date
   updatedAt: Date
   _count: TreadDesignCountAggregateOutputType | null
   _avg: TreadDesignAvgAggregateOutputType | null
@@ -316,21 +316,21 @@ export type TreadDesignWhereInput = {
   NOT?: Prisma.TreadDesignWhereInput | Prisma.TreadDesignWhereInput[]
   id?: Prisma.StringFilter<"TreadDesign"> | string
   name?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
+  application?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
+  widthMm?: Prisma.IntNullableFilter<"TreadDesign"> | number | null
+  heightMm?: Prisma.IntNullableFilter<"TreadDesign"> | number | null
+  moldSpec?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
+  userId?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"TreadDesign"> | Date | string
   category?: Prisma.StringFilter<"TreadDesign"> | string
   season?: Prisma.StringFilter<"TreadDesign"> | string
   status?: Prisma.StringFilter<"TreadDesign"> | string
   version?: Prisma.IntFilter<"TreadDesign"> | number
-  application?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
-  widthMm?: Prisma.IntNullableFilter<"TreadDesign"> | number | null
-  heightMm?: Prisma.IntNullableFilter<"TreadDesign"> | number | null
   grooveDepthMm?: Prisma.FloatNullableFilter<"TreadDesign"> | number | null
   noiseRating?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
   wetGripRating?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
   rollingResistance?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
   notes?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
-  moldSpec?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
-  userId?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"TreadDesign"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TreadDesign"> | Date | string
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   changeRequests?: Prisma.ChangeRequestListRelationFilter
@@ -339,21 +339,21 @@ export type TreadDesignWhereInput = {
 export type TreadDesignOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
+  application?: Prisma.SortOrderInput | Prisma.SortOrder
+  widthMm?: Prisma.SortOrderInput | Prisma.SortOrder
+  heightMm?: Prisma.SortOrderInput | Prisma.SortOrder
+  moldSpec?: Prisma.SortOrderInput | Prisma.SortOrder
+  userId?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   category?: Prisma.SortOrder
   season?: Prisma.SortOrder
   status?: Prisma.SortOrder
   version?: Prisma.SortOrder
-  application?: Prisma.SortOrderInput | Prisma.SortOrder
-  widthMm?: Prisma.SortOrderInput | Prisma.SortOrder
-  heightMm?: Prisma.SortOrderInput | Prisma.SortOrder
   grooveDepthMm?: Prisma.SortOrderInput | Prisma.SortOrder
   noiseRating?: Prisma.SortOrderInput | Prisma.SortOrder
   wetGripRating?: Prisma.SortOrderInput | Prisma.SortOrder
   rollingResistance?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
-  moldSpec?: Prisma.SortOrderInput | Prisma.SortOrder
-  userId?: Prisma.SortOrderInput | Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   changeRequests?: Prisma.ChangeRequestOrderByRelationAggregateInput
@@ -365,21 +365,21 @@ export type TreadDesignWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.TreadDesignWhereInput[]
   NOT?: Prisma.TreadDesignWhereInput | Prisma.TreadDesignWhereInput[]
   name?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
+  application?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
+  widthMm?: Prisma.IntNullableFilter<"TreadDesign"> | number | null
+  heightMm?: Prisma.IntNullableFilter<"TreadDesign"> | number | null
+  moldSpec?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
+  userId?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"TreadDesign"> | Date | string
   category?: Prisma.StringFilter<"TreadDesign"> | string
   season?: Prisma.StringFilter<"TreadDesign"> | string
   status?: Prisma.StringFilter<"TreadDesign"> | string
   version?: Prisma.IntFilter<"TreadDesign"> | number
-  application?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
-  widthMm?: Prisma.IntNullableFilter<"TreadDesign"> | number | null
-  heightMm?: Prisma.IntNullableFilter<"TreadDesign"> | number | null
   grooveDepthMm?: Prisma.FloatNullableFilter<"TreadDesign"> | number | null
   noiseRating?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
   wetGripRating?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
   rollingResistance?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
   notes?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
-  moldSpec?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
-  userId?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"TreadDesign"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TreadDesign"> | Date | string
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   changeRequests?: Prisma.ChangeRequestListRelationFilter
@@ -388,21 +388,21 @@ export type TreadDesignWhereUniqueInput = Prisma.AtLeast<{
 export type TreadDesignOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
+  application?: Prisma.SortOrderInput | Prisma.SortOrder
+  widthMm?: Prisma.SortOrderInput | Prisma.SortOrder
+  heightMm?: Prisma.SortOrderInput | Prisma.SortOrder
+  moldSpec?: Prisma.SortOrderInput | Prisma.SortOrder
+  userId?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   category?: Prisma.SortOrder
   season?: Prisma.SortOrder
   status?: Prisma.SortOrder
   version?: Prisma.SortOrder
-  application?: Prisma.SortOrderInput | Prisma.SortOrder
-  widthMm?: Prisma.SortOrderInput | Prisma.SortOrder
-  heightMm?: Prisma.SortOrderInput | Prisma.SortOrder
   grooveDepthMm?: Prisma.SortOrderInput | Prisma.SortOrder
   noiseRating?: Prisma.SortOrderInput | Prisma.SortOrder
   wetGripRating?: Prisma.SortOrderInput | Prisma.SortOrder
   rollingResistance?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
-  moldSpec?: Prisma.SortOrderInput | Prisma.SortOrder
-  userId?: Prisma.SortOrderInput | Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.TreadDesignCountOrderByAggregateInput
   _avg?: Prisma.TreadDesignAvgOrderByAggregateInput
@@ -417,41 +417,41 @@ export type TreadDesignScalarWhereWithAggregatesInput = {
   NOT?: Prisma.TreadDesignScalarWhereWithAggregatesInput | Prisma.TreadDesignScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"TreadDesign"> | string
   name?: Prisma.StringNullableWithAggregatesFilter<"TreadDesign"> | string | null
+  application?: Prisma.StringNullableWithAggregatesFilter<"TreadDesign"> | string | null
+  widthMm?: Prisma.IntNullableWithAggregatesFilter<"TreadDesign"> | number | null
+  heightMm?: Prisma.IntNullableWithAggregatesFilter<"TreadDesign"> | number | null
+  moldSpec?: Prisma.StringNullableWithAggregatesFilter<"TreadDesign"> | string | null
+  userId?: Prisma.StringNullableWithAggregatesFilter<"TreadDesign"> | string | null
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"TreadDesign"> | Date | string
   category?: Prisma.StringWithAggregatesFilter<"TreadDesign"> | string
   season?: Prisma.StringWithAggregatesFilter<"TreadDesign"> | string
   status?: Prisma.StringWithAggregatesFilter<"TreadDesign"> | string
   version?: Prisma.IntWithAggregatesFilter<"TreadDesign"> | number
-  application?: Prisma.StringNullableWithAggregatesFilter<"TreadDesign"> | string | null
-  widthMm?: Prisma.IntNullableWithAggregatesFilter<"TreadDesign"> | number | null
-  heightMm?: Prisma.IntNullableWithAggregatesFilter<"TreadDesign"> | number | null
   grooveDepthMm?: Prisma.FloatNullableWithAggregatesFilter<"TreadDesign"> | number | null
   noiseRating?: Prisma.StringNullableWithAggregatesFilter<"TreadDesign"> | string | null
   wetGripRating?: Prisma.StringNullableWithAggregatesFilter<"TreadDesign"> | string | null
   rollingResistance?: Prisma.StringNullableWithAggregatesFilter<"TreadDesign"> | string | null
   notes?: Prisma.StringNullableWithAggregatesFilter<"TreadDesign"> | string | null
-  moldSpec?: Prisma.StringNullableWithAggregatesFilter<"TreadDesign"> | string | null
-  userId?: Prisma.StringNullableWithAggregatesFilter<"TreadDesign"> | string | null
-  createdAt?: Prisma.DateTimeWithAggregatesFilter<"TreadDesign"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"TreadDesign"> | Date | string
 }
 
 export type TreadDesignCreateInput = {
   id?: string
   name?: string | null
+  application?: string | null
+  widthMm?: number | null
+  heightMm?: number | null
+  moldSpec?: string | null
+  createdAt?: Date | string
   category?: string
   season?: string
   status?: string
   version?: number
-  application?: string | null
-  widthMm?: number | null
-  heightMm?: number | null
   grooveDepthMm?: number | null
   noiseRating?: string | null
   wetGripRating?: string | null
   rollingResistance?: string | null
   notes?: string | null
-  moldSpec?: string | null
-  createdAt?: Date | string
   updatedAt?: Date | string
   user?: Prisma.UserCreateNestedOneWithoutTreadDesignsInput
   changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutDesignInput
@@ -460,21 +460,21 @@ export type TreadDesignCreateInput = {
 export type TreadDesignUncheckedCreateInput = {
   id?: string
   name?: string | null
+  application?: string | null
+  widthMm?: number | null
+  heightMm?: number | null
+  moldSpec?: string | null
+  userId?: string | null
+  createdAt?: Date | string
   category?: string
   season?: string
   status?: string
   version?: number
-  application?: string | null
-  widthMm?: number | null
-  heightMm?: number | null
   grooveDepthMm?: number | null
   noiseRating?: string | null
   wetGripRating?: string | null
   rollingResistance?: string | null
   notes?: string | null
-  moldSpec?: string | null
-  userId?: string | null
-  createdAt?: Date | string
   updatedAt?: Date | string
   changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutDesignInput
 }
@@ -482,20 +482,20 @@ export type TreadDesignUncheckedCreateInput = {
 export type TreadDesignUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  application?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  moldSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   season?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   version?: Prisma.IntFieldUpdateOperationsInput | number
-  application?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   grooveDepthMm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   noiseRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   wetGripRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rollingResistance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  moldSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneWithoutTreadDesignsNestedInput
   changeRequests?: Prisma.ChangeRequestUpdateManyWithoutDesignNestedInput
@@ -504,21 +504,21 @@ export type TreadDesignUpdateInput = {
 export type TreadDesignUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  application?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  moldSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   season?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   version?: Prisma.IntFieldUpdateOperationsInput | number
-  application?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   grooveDepthMm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   noiseRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   wetGripRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rollingResistance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  moldSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutDesignNestedInput
 }
@@ -526,62 +526,62 @@ export type TreadDesignUncheckedUpdateInput = {
 export type TreadDesignCreateManyInput = {
   id?: string
   name?: string | null
+  application?: string | null
+  widthMm?: number | null
+  heightMm?: number | null
+  moldSpec?: string | null
+  userId?: string | null
+  createdAt?: Date | string
   category?: string
   season?: string
   status?: string
   version?: number
-  application?: string | null
-  widthMm?: number | null
-  heightMm?: number | null
   grooveDepthMm?: number | null
   noiseRating?: string | null
   wetGripRating?: string | null
   rollingResistance?: string | null
   notes?: string | null
-  moldSpec?: string | null
-  userId?: string | null
-  createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type TreadDesignUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  application?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  moldSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   season?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   version?: Prisma.IntFieldUpdateOperationsInput | number
-  application?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   grooveDepthMm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   noiseRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   wetGripRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rollingResistance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  moldSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type TreadDesignUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  application?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  moldSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   season?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   version?: Prisma.IntFieldUpdateOperationsInput | number
-  application?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   grooveDepthMm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   noiseRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   wetGripRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rollingResistance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  moldSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -598,77 +598,77 @@ export type TreadDesignOrderByRelationAggregateInput = {
 export type TreadDesignCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  application?: Prisma.SortOrder
+  widthMm?: Prisma.SortOrder
+  heightMm?: Prisma.SortOrder
+  moldSpec?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   category?: Prisma.SortOrder
   season?: Prisma.SortOrder
   status?: Prisma.SortOrder
   version?: Prisma.SortOrder
-  application?: Prisma.SortOrder
-  widthMm?: Prisma.SortOrder
-  heightMm?: Prisma.SortOrder
   grooveDepthMm?: Prisma.SortOrder
   noiseRating?: Prisma.SortOrder
   wetGripRating?: Prisma.SortOrder
   rollingResistance?: Prisma.SortOrder
   notes?: Prisma.SortOrder
-  moldSpec?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type TreadDesignAvgOrderByAggregateInput = {
-  version?: Prisma.SortOrder
   widthMm?: Prisma.SortOrder
   heightMm?: Prisma.SortOrder
+  version?: Prisma.SortOrder
   grooveDepthMm?: Prisma.SortOrder
 }
 
 export type TreadDesignMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  application?: Prisma.SortOrder
+  widthMm?: Prisma.SortOrder
+  heightMm?: Prisma.SortOrder
+  moldSpec?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   category?: Prisma.SortOrder
   season?: Prisma.SortOrder
   status?: Prisma.SortOrder
   version?: Prisma.SortOrder
-  application?: Prisma.SortOrder
-  widthMm?: Prisma.SortOrder
-  heightMm?: Prisma.SortOrder
   grooveDepthMm?: Prisma.SortOrder
   noiseRating?: Prisma.SortOrder
   wetGripRating?: Prisma.SortOrder
   rollingResistance?: Prisma.SortOrder
   notes?: Prisma.SortOrder
-  moldSpec?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type TreadDesignMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  application?: Prisma.SortOrder
+  widthMm?: Prisma.SortOrder
+  heightMm?: Prisma.SortOrder
+  moldSpec?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   category?: Prisma.SortOrder
   season?: Prisma.SortOrder
   status?: Prisma.SortOrder
   version?: Prisma.SortOrder
-  application?: Prisma.SortOrder
-  widthMm?: Prisma.SortOrder
-  heightMm?: Prisma.SortOrder
   grooveDepthMm?: Prisma.SortOrder
   noiseRating?: Prisma.SortOrder
   wetGripRating?: Prisma.SortOrder
   rollingResistance?: Prisma.SortOrder
   notes?: Prisma.SortOrder
-  moldSpec?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type TreadDesignSumOrderByAggregateInput = {
-  version?: Prisma.SortOrder
   widthMm?: Prisma.SortOrder
   heightMm?: Prisma.SortOrder
+  version?: Prisma.SortOrder
   grooveDepthMm?: Prisma.SortOrder
 }
 
@@ -736,20 +736,20 @@ export type TreadDesignUpdateOneRequiredWithoutChangeRequestsNestedInput = {
 export type TreadDesignCreateWithoutUserInput = {
   id?: string
   name?: string | null
+  application?: string | null
+  widthMm?: number | null
+  heightMm?: number | null
+  moldSpec?: string | null
+  createdAt?: Date | string
   category?: string
   season?: string
   status?: string
   version?: number
-  application?: string | null
-  widthMm?: number | null
-  heightMm?: number | null
   grooveDepthMm?: number | null
   noiseRating?: string | null
   wetGripRating?: string | null
   rollingResistance?: string | null
   notes?: string | null
-  moldSpec?: string | null
-  createdAt?: Date | string
   updatedAt?: Date | string
   changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutDesignInput
 }
@@ -757,20 +757,20 @@ export type TreadDesignCreateWithoutUserInput = {
 export type TreadDesignUncheckedCreateWithoutUserInput = {
   id?: string
   name?: string | null
+  application?: string | null
+  widthMm?: number | null
+  heightMm?: number | null
+  moldSpec?: string | null
+  createdAt?: Date | string
   category?: string
   season?: string
   status?: string
   version?: number
-  application?: string | null
-  widthMm?: number | null
-  heightMm?: number | null
   grooveDepthMm?: number | null
   noiseRating?: string | null
   wetGripRating?: string | null
   rollingResistance?: string | null
   notes?: string | null
-  moldSpec?: string | null
-  createdAt?: Date | string
   updatedAt?: Date | string
   changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutDesignInput
 }
@@ -807,41 +807,41 @@ export type TreadDesignScalarWhereInput = {
   NOT?: Prisma.TreadDesignScalarWhereInput | Prisma.TreadDesignScalarWhereInput[]
   id?: Prisma.StringFilter<"TreadDesign"> | string
   name?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
+  application?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
+  widthMm?: Prisma.IntNullableFilter<"TreadDesign"> | number | null
+  heightMm?: Prisma.IntNullableFilter<"TreadDesign"> | number | null
+  moldSpec?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
+  userId?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"TreadDesign"> | Date | string
   category?: Prisma.StringFilter<"TreadDesign"> | string
   season?: Prisma.StringFilter<"TreadDesign"> | string
   status?: Prisma.StringFilter<"TreadDesign"> | string
   version?: Prisma.IntFilter<"TreadDesign"> | number
-  application?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
-  widthMm?: Prisma.IntNullableFilter<"TreadDesign"> | number | null
-  heightMm?: Prisma.IntNullableFilter<"TreadDesign"> | number | null
   grooveDepthMm?: Prisma.FloatNullableFilter<"TreadDesign"> | number | null
   noiseRating?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
   wetGripRating?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
   rollingResistance?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
   notes?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
-  moldSpec?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
-  userId?: Prisma.StringNullableFilter<"TreadDesign"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"TreadDesign"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TreadDesign"> | Date | string
 }
 
 export type TreadDesignCreateWithoutChangeRequestsInput = {
   id?: string
   name?: string | null
+  application?: string | null
+  widthMm?: number | null
+  heightMm?: number | null
+  moldSpec?: string | null
+  createdAt?: Date | string
   category?: string
   season?: string
   status?: string
   version?: number
-  application?: string | null
-  widthMm?: number | null
-  heightMm?: number | null
   grooveDepthMm?: number | null
   noiseRating?: string | null
   wetGripRating?: string | null
   rollingResistance?: string | null
   notes?: string | null
-  moldSpec?: string | null
-  createdAt?: Date | string
   updatedAt?: Date | string
   user?: Prisma.UserCreateNestedOneWithoutTreadDesignsInput
 }
@@ -849,21 +849,21 @@ export type TreadDesignCreateWithoutChangeRequestsInput = {
 export type TreadDesignUncheckedCreateWithoutChangeRequestsInput = {
   id?: string
   name?: string | null
+  application?: string | null
+  widthMm?: number | null
+  heightMm?: number | null
+  moldSpec?: string | null
+  userId?: string | null
+  createdAt?: Date | string
   category?: string
   season?: string
   status?: string
   version?: number
-  application?: string | null
-  widthMm?: number | null
-  heightMm?: number | null
   grooveDepthMm?: number | null
   noiseRating?: string | null
   wetGripRating?: string | null
   rollingResistance?: string | null
   notes?: string | null
-  moldSpec?: string | null
-  userId?: string | null
-  createdAt?: Date | string
   updatedAt?: Date | string
 }
 
@@ -886,20 +886,20 @@ export type TreadDesignUpdateToOneWithWhereWithoutChangeRequestsInput = {
 export type TreadDesignUpdateWithoutChangeRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  application?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  moldSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   season?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   version?: Prisma.IntFieldUpdateOperationsInput | number
-  application?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   grooveDepthMm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   noiseRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   wetGripRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rollingResistance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  moldSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneWithoutTreadDesignsNestedInput
 }
@@ -907,61 +907,61 @@ export type TreadDesignUpdateWithoutChangeRequestsInput = {
 export type TreadDesignUncheckedUpdateWithoutChangeRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  application?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  moldSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   season?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   version?: Prisma.IntFieldUpdateOperationsInput | number
-  application?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   grooveDepthMm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   noiseRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   wetGripRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rollingResistance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  moldSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type TreadDesignCreateManyUserInput = {
   id?: string
   name?: string | null
+  application?: string | null
+  widthMm?: number | null
+  heightMm?: number | null
+  moldSpec?: string | null
+  createdAt?: Date | string
   category?: string
   season?: string
   status?: string
   version?: number
-  application?: string | null
-  widthMm?: number | null
-  heightMm?: number | null
   grooveDepthMm?: number | null
   noiseRating?: string | null
   wetGripRating?: string | null
   rollingResistance?: string | null
   notes?: string | null
-  moldSpec?: string | null
-  createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type TreadDesignUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  application?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  moldSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   season?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   version?: Prisma.IntFieldUpdateOperationsInput | number
-  application?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   grooveDepthMm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   noiseRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   wetGripRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rollingResistance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  moldSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   changeRequests?: Prisma.ChangeRequestUpdateManyWithoutDesignNestedInput
 }
@@ -969,20 +969,20 @@ export type TreadDesignUpdateWithoutUserInput = {
 export type TreadDesignUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  application?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  moldSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   season?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   version?: Prisma.IntFieldUpdateOperationsInput | number
-  application?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   grooveDepthMm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   noiseRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   wetGripRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rollingResistance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  moldSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutDesignNestedInput
 }
@@ -990,20 +990,20 @@ export type TreadDesignUncheckedUpdateWithoutUserInput = {
 export type TreadDesignUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  application?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  moldSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   season?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   version?: Prisma.IntFieldUpdateOperationsInput | number
-  application?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightMm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   grooveDepthMm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   noiseRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   wetGripRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rollingResistance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  moldSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1041,21 +1041,21 @@ export type TreadDesignCountOutputTypeCountChangeRequestsArgs<ExtArgs extends ru
 export type TreadDesignSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  application?: boolean
+  widthMm?: boolean
+  heightMm?: boolean
+  moldSpec?: boolean
+  userId?: boolean
+  createdAt?: boolean
   category?: boolean
   season?: boolean
   status?: boolean
   version?: boolean
-  application?: boolean
-  widthMm?: boolean
-  heightMm?: boolean
   grooveDepthMm?: boolean
   noiseRating?: boolean
   wetGripRating?: boolean
   rollingResistance?: boolean
   notes?: boolean
-  moldSpec?: boolean
-  userId?: boolean
-  createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.TreadDesign$userArgs<ExtArgs>
   changeRequests?: boolean | Prisma.TreadDesign$changeRequestsArgs<ExtArgs>
@@ -1065,21 +1065,21 @@ export type TreadDesignSelect<ExtArgs extends runtime.Types.Extensions.InternalA
 export type TreadDesignSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  application?: boolean
+  widthMm?: boolean
+  heightMm?: boolean
+  moldSpec?: boolean
+  userId?: boolean
+  createdAt?: boolean
   category?: boolean
   season?: boolean
   status?: boolean
   version?: boolean
-  application?: boolean
-  widthMm?: boolean
-  heightMm?: boolean
   grooveDepthMm?: boolean
   noiseRating?: boolean
   wetGripRating?: boolean
   rollingResistance?: boolean
   notes?: boolean
-  moldSpec?: boolean
-  userId?: boolean
-  createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.TreadDesign$userArgs<ExtArgs>
 }, ExtArgs["result"]["treadDesign"]>
@@ -1087,21 +1087,21 @@ export type TreadDesignSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
 export type TreadDesignSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  application?: boolean
+  widthMm?: boolean
+  heightMm?: boolean
+  moldSpec?: boolean
+  userId?: boolean
+  createdAt?: boolean
   category?: boolean
   season?: boolean
   status?: boolean
   version?: boolean
-  application?: boolean
-  widthMm?: boolean
-  heightMm?: boolean
   grooveDepthMm?: boolean
   noiseRating?: boolean
   wetGripRating?: boolean
   rollingResistance?: boolean
   notes?: boolean
-  moldSpec?: boolean
-  userId?: boolean
-  createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.TreadDesign$userArgs<ExtArgs>
 }, ExtArgs["result"]["treadDesign"]>
@@ -1109,25 +1109,25 @@ export type TreadDesignSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
 export type TreadDesignSelectScalar = {
   id?: boolean
   name?: boolean
+  application?: boolean
+  widthMm?: boolean
+  heightMm?: boolean
+  moldSpec?: boolean
+  userId?: boolean
+  createdAt?: boolean
   category?: boolean
   season?: boolean
   status?: boolean
   version?: boolean
-  application?: boolean
-  widthMm?: boolean
-  heightMm?: boolean
   grooveDepthMm?: boolean
   noiseRating?: boolean
   wetGripRating?: boolean
   rollingResistance?: boolean
   notes?: boolean
-  moldSpec?: boolean
-  userId?: boolean
-  createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type TreadDesignOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "category" | "season" | "status" | "version" | "application" | "widthMm" | "heightMm" | "grooveDepthMm" | "noiseRating" | "wetGripRating" | "rollingResistance" | "notes" | "moldSpec" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["treadDesign"]>
+export type TreadDesignOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "application" | "widthMm" | "heightMm" | "moldSpec" | "userId" | "createdAt" | "category" | "season" | "status" | "version" | "grooveDepthMm" | "noiseRating" | "wetGripRating" | "rollingResistance" | "notes" | "updatedAt", ExtArgs["result"]["treadDesign"]>
 export type TreadDesignInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.TreadDesign$userArgs<ExtArgs>
   changeRequests?: boolean | Prisma.TreadDesign$changeRequestsArgs<ExtArgs>
@@ -1149,21 +1149,21 @@ export type $TreadDesignPayload<ExtArgs extends runtime.Types.Extensions.Interna
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string | null
+    application: string | null
+    widthMm: number | null
+    heightMm: number | null
+    moldSpec: string | null
+    userId: string | null
+    createdAt: Date
     category: string
     season: string
     status: string
     version: number
-    application: string | null
-    widthMm: number | null
-    heightMm: number | null
     grooveDepthMm: number | null
     noiseRating: string | null
     wetGripRating: string | null
     rollingResistance: string | null
     notes: string | null
-    moldSpec: string | null
-    userId: string | null
-    createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["treadDesign"]>
   composites: {}
@@ -1592,21 +1592,21 @@ export interface Prisma__TreadDesignClient<T, Null = never, ExtArgs extends runt
 export interface TreadDesignFieldRefs {
   readonly id: Prisma.FieldRef<"TreadDesign", 'String'>
   readonly name: Prisma.FieldRef<"TreadDesign", 'String'>
+  readonly application: Prisma.FieldRef<"TreadDesign", 'String'>
+  readonly widthMm: Prisma.FieldRef<"TreadDesign", 'Int'>
+  readonly heightMm: Prisma.FieldRef<"TreadDesign", 'Int'>
+  readonly moldSpec: Prisma.FieldRef<"TreadDesign", 'String'>
+  readonly userId: Prisma.FieldRef<"TreadDesign", 'String'>
+  readonly createdAt: Prisma.FieldRef<"TreadDesign", 'DateTime'>
   readonly category: Prisma.FieldRef<"TreadDesign", 'String'>
   readonly season: Prisma.FieldRef<"TreadDesign", 'String'>
   readonly status: Prisma.FieldRef<"TreadDesign", 'String'>
   readonly version: Prisma.FieldRef<"TreadDesign", 'Int'>
-  readonly application: Prisma.FieldRef<"TreadDesign", 'String'>
-  readonly widthMm: Prisma.FieldRef<"TreadDesign", 'Int'>
-  readonly heightMm: Prisma.FieldRef<"TreadDesign", 'Int'>
   readonly grooveDepthMm: Prisma.FieldRef<"TreadDesign", 'Float'>
   readonly noiseRating: Prisma.FieldRef<"TreadDesign", 'String'>
   readonly wetGripRating: Prisma.FieldRef<"TreadDesign", 'String'>
   readonly rollingResistance: Prisma.FieldRef<"TreadDesign", 'String'>
   readonly notes: Prisma.FieldRef<"TreadDesign", 'String'>
-  readonly moldSpec: Prisma.FieldRef<"TreadDesign", 'String'>
-  readonly userId: Prisma.FieldRef<"TreadDesign", 'String'>
-  readonly createdAt: Prisma.FieldRef<"TreadDesign", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"TreadDesign", 'DateTime'>
 }
     
@@ -1826,7 +1826,7 @@ export type TreadDesignCreateArgs<ExtArgs extends runtime.Types.Extensions.Inter
   /**
    * The data needed to create a TreadDesign.
    */
-  data: Prisma.XOR<Prisma.TreadDesignCreateInput, Prisma.TreadDesignUncheckedCreateInput>
+  data?: Prisma.XOR<Prisma.TreadDesignCreateInput, Prisma.TreadDesignUncheckedCreateInput>
 }
 
 /**

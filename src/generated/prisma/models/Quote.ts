@@ -36,50 +36,50 @@ export type QuoteSumAggregateOutputType = {
 
 export type QuoteMinAggregateOutputType = {
   id: string | null
-  customerName: string | null
-  category: string | null
   size: string | null
   loadIndex: string | null
   speedRating: string | null
-  quantity: number | null
-  compound: string | null
-  notes: string | null
-  result: string | null
-  customerId: string | null
   userId: string | null
   createdAt: Date | null
+  category: string | null
+  compound: string | null
+  customerId: string | null
+  customerName: string | null
+  notes: string | null
+  quantity: number | null
+  result: string | null
 }
 
 export type QuoteMaxAggregateOutputType = {
   id: string | null
-  customerName: string | null
-  category: string | null
   size: string | null
   loadIndex: string | null
   speedRating: string | null
-  quantity: number | null
-  compound: string | null
-  notes: string | null
-  result: string | null
-  customerId: string | null
   userId: string | null
   createdAt: Date | null
+  category: string | null
+  compound: string | null
+  customerId: string | null
+  customerName: string | null
+  notes: string | null
+  quantity: number | null
+  result: string | null
 }
 
 export type QuoteCountAggregateOutputType = {
   id: number
-  customerName: number
-  category: number
   size: number
   loadIndex: number
   speedRating: number
-  quantity: number
-  compound: number
-  notes: number
-  result: number
-  customerId: number
   userId: number
   createdAt: number
+  category: number
+  compound: number
+  customerId: number
+  customerName: number
+  notes: number
+  quantity: number
+  result: number
   _all: number
 }
 
@@ -94,50 +94,50 @@ export type QuoteSumAggregateInputType = {
 
 export type QuoteMinAggregateInputType = {
   id?: true
-  customerName?: true
-  category?: true
   size?: true
   loadIndex?: true
   speedRating?: true
-  quantity?: true
-  compound?: true
-  notes?: true
-  result?: true
-  customerId?: true
   userId?: true
   createdAt?: true
+  category?: true
+  compound?: true
+  customerId?: true
+  customerName?: true
+  notes?: true
+  quantity?: true
+  result?: true
 }
 
 export type QuoteMaxAggregateInputType = {
   id?: true
-  customerName?: true
-  category?: true
   size?: true
   loadIndex?: true
   speedRating?: true
-  quantity?: true
-  compound?: true
-  notes?: true
-  result?: true
-  customerId?: true
   userId?: true
   createdAt?: true
+  category?: true
+  compound?: true
+  customerId?: true
+  customerName?: true
+  notes?: true
+  quantity?: true
+  result?: true
 }
 
 export type QuoteCountAggregateInputType = {
   id?: true
-  customerName?: true
-  category?: true
   size?: true
   loadIndex?: true
   speedRating?: true
-  quantity?: true
-  compound?: true
-  notes?: true
-  result?: true
-  customerId?: true
   userId?: true
   createdAt?: true
+  category?: true
+  compound?: true
+  customerId?: true
+  customerName?: true
+  notes?: true
+  quantity?: true
+  result?: true
   _all?: true
 }
 
@@ -229,18 +229,18 @@ export type QuoteGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 
 export type QuoteGroupByOutputType = {
   id: string
-  customerName: string | null
-  category: string | null
   size: string
   loadIndex: string | null
   speedRating: string | null
-  quantity: number | null
-  compound: string | null
-  notes: string | null
-  result: string | null
-  customerId: string | null
   userId: string | null
   createdAt: Date
+  category: string | null
+  compound: string | null
+  customerId: string | null
+  customerName: string | null
+  notes: string | null
+  quantity: number | null
+  result: string | null
   _count: QuoteCountAggregateOutputType | null
   _avg: QuoteAvgAggregateOutputType | null
   _sum: QuoteSumAggregateOutputType | null
@@ -268,36 +268,36 @@ export type QuoteWhereInput = {
   OR?: Prisma.QuoteWhereInput[]
   NOT?: Prisma.QuoteWhereInput | Prisma.QuoteWhereInput[]
   id?: Prisma.StringFilter<"Quote"> | string
-  customerName?: Prisma.StringNullableFilter<"Quote"> | string | null
-  category?: Prisma.StringNullableFilter<"Quote"> | string | null
   size?: Prisma.StringFilter<"Quote"> | string
   loadIndex?: Prisma.StringNullableFilter<"Quote"> | string | null
   speedRating?: Prisma.StringNullableFilter<"Quote"> | string | null
-  quantity?: Prisma.IntNullableFilter<"Quote"> | number | null
-  compound?: Prisma.StringNullableFilter<"Quote"> | string | null
-  notes?: Prisma.StringNullableFilter<"Quote"> | string | null
-  result?: Prisma.StringNullableFilter<"Quote"> | string | null
-  customerId?: Prisma.StringNullableFilter<"Quote"> | string | null
   userId?: Prisma.StringNullableFilter<"Quote"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Quote"> | Date | string
+  category?: Prisma.StringNullableFilter<"Quote"> | string | null
+  compound?: Prisma.StringNullableFilter<"Quote"> | string | null
+  customerId?: Prisma.StringNullableFilter<"Quote"> | string | null
+  customerName?: Prisma.StringNullableFilter<"Quote"> | string | null
+  notes?: Prisma.StringNullableFilter<"Quote"> | string | null
+  quantity?: Prisma.IntNullableFilter<"Quote"> | number | null
+  result?: Prisma.StringNullableFilter<"Quote"> | string | null
   customer?: Prisma.XOR<Prisma.CustomerNullableScalarRelationFilter, Prisma.CustomerWhereInput> | null
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
 
 export type QuoteOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  customerName?: Prisma.SortOrderInput | Prisma.SortOrder
-  category?: Prisma.SortOrderInput | Prisma.SortOrder
   size?: Prisma.SortOrder
   loadIndex?: Prisma.SortOrderInput | Prisma.SortOrder
   speedRating?: Prisma.SortOrderInput | Prisma.SortOrder
-  quantity?: Prisma.SortOrderInput | Prisma.SortOrder
-  compound?: Prisma.SortOrderInput | Prisma.SortOrder
-  notes?: Prisma.SortOrderInput | Prisma.SortOrder
-  result?: Prisma.SortOrderInput | Prisma.SortOrder
-  customerId?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  category?: Prisma.SortOrderInput | Prisma.SortOrder
+  compound?: Prisma.SortOrderInput | Prisma.SortOrder
+  customerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  customerName?: Prisma.SortOrderInput | Prisma.SortOrder
+  notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  quantity?: Prisma.SortOrderInput | Prisma.SortOrder
+  result?: Prisma.SortOrderInput | Prisma.SortOrder
   customer?: Prisma.CustomerOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
 }
@@ -307,36 +307,36 @@ export type QuoteWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.QuoteWhereInput | Prisma.QuoteWhereInput[]
   OR?: Prisma.QuoteWhereInput[]
   NOT?: Prisma.QuoteWhereInput | Prisma.QuoteWhereInput[]
-  customerName?: Prisma.StringNullableFilter<"Quote"> | string | null
-  category?: Prisma.StringNullableFilter<"Quote"> | string | null
   size?: Prisma.StringFilter<"Quote"> | string
   loadIndex?: Prisma.StringNullableFilter<"Quote"> | string | null
   speedRating?: Prisma.StringNullableFilter<"Quote"> | string | null
-  quantity?: Prisma.IntNullableFilter<"Quote"> | number | null
-  compound?: Prisma.StringNullableFilter<"Quote"> | string | null
-  notes?: Prisma.StringNullableFilter<"Quote"> | string | null
-  result?: Prisma.StringNullableFilter<"Quote"> | string | null
-  customerId?: Prisma.StringNullableFilter<"Quote"> | string | null
   userId?: Prisma.StringNullableFilter<"Quote"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Quote"> | Date | string
+  category?: Prisma.StringNullableFilter<"Quote"> | string | null
+  compound?: Prisma.StringNullableFilter<"Quote"> | string | null
+  customerId?: Prisma.StringNullableFilter<"Quote"> | string | null
+  customerName?: Prisma.StringNullableFilter<"Quote"> | string | null
+  notes?: Prisma.StringNullableFilter<"Quote"> | string | null
+  quantity?: Prisma.IntNullableFilter<"Quote"> | number | null
+  result?: Prisma.StringNullableFilter<"Quote"> | string | null
   customer?: Prisma.XOR<Prisma.CustomerNullableScalarRelationFilter, Prisma.CustomerWhereInput> | null
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id">
 
 export type QuoteOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  customerName?: Prisma.SortOrderInput | Prisma.SortOrder
-  category?: Prisma.SortOrderInput | Prisma.SortOrder
   size?: Prisma.SortOrder
   loadIndex?: Prisma.SortOrderInput | Prisma.SortOrder
   speedRating?: Prisma.SortOrderInput | Prisma.SortOrder
-  quantity?: Prisma.SortOrderInput | Prisma.SortOrder
-  compound?: Prisma.SortOrderInput | Prisma.SortOrder
-  notes?: Prisma.SortOrderInput | Prisma.SortOrder
-  result?: Prisma.SortOrderInput | Prisma.SortOrder
-  customerId?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  category?: Prisma.SortOrderInput | Prisma.SortOrder
+  compound?: Prisma.SortOrderInput | Prisma.SortOrder
+  customerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  customerName?: Prisma.SortOrderInput | Prisma.SortOrder
+  notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  quantity?: Prisma.SortOrderInput | Prisma.SortOrder
+  result?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.QuoteCountOrderByAggregateInput
   _avg?: Prisma.QuoteAvgOrderByAggregateInput
   _max?: Prisma.QuoteMaxOrderByAggregateInput
@@ -349,128 +349,128 @@ export type QuoteScalarWhereWithAggregatesInput = {
   OR?: Prisma.QuoteScalarWhereWithAggregatesInput[]
   NOT?: Prisma.QuoteScalarWhereWithAggregatesInput | Prisma.QuoteScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Quote"> | string
-  customerName?: Prisma.StringNullableWithAggregatesFilter<"Quote"> | string | null
-  category?: Prisma.StringNullableWithAggregatesFilter<"Quote"> | string | null
   size?: Prisma.StringWithAggregatesFilter<"Quote"> | string
   loadIndex?: Prisma.StringNullableWithAggregatesFilter<"Quote"> | string | null
   speedRating?: Prisma.StringNullableWithAggregatesFilter<"Quote"> | string | null
-  quantity?: Prisma.IntNullableWithAggregatesFilter<"Quote"> | number | null
-  compound?: Prisma.StringNullableWithAggregatesFilter<"Quote"> | string | null
-  notes?: Prisma.StringNullableWithAggregatesFilter<"Quote"> | string | null
-  result?: Prisma.StringNullableWithAggregatesFilter<"Quote"> | string | null
-  customerId?: Prisma.StringNullableWithAggregatesFilter<"Quote"> | string | null
   userId?: Prisma.StringNullableWithAggregatesFilter<"Quote"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Quote"> | Date | string
+  category?: Prisma.StringNullableWithAggregatesFilter<"Quote"> | string | null
+  compound?: Prisma.StringNullableWithAggregatesFilter<"Quote"> | string | null
+  customerId?: Prisma.StringNullableWithAggregatesFilter<"Quote"> | string | null
+  customerName?: Prisma.StringNullableWithAggregatesFilter<"Quote"> | string | null
+  notes?: Prisma.StringNullableWithAggregatesFilter<"Quote"> | string | null
+  quantity?: Prisma.IntNullableWithAggregatesFilter<"Quote"> | number | null
+  result?: Prisma.StringNullableWithAggregatesFilter<"Quote"> | string | null
 }
 
 export type QuoteCreateInput = {
   id?: string
-  customerName?: string | null
-  category?: string | null
   size: string
   loadIndex?: string | null
   speedRating?: string | null
-  quantity?: number | null
-  compound?: string | null
-  notes?: string | null
-  result?: string | null
   createdAt?: Date | string
+  category?: string | null
+  compound?: string | null
+  customerName?: string | null
+  notes?: string | null
+  quantity?: number | null
+  result?: string | null
   customer?: Prisma.CustomerCreateNestedOneWithoutQuotesInput
   user?: Prisma.UserCreateNestedOneWithoutQuotesInput
 }
 
 export type QuoteUncheckedCreateInput = {
   id?: string
-  customerName?: string | null
-  category?: string | null
   size: string
   loadIndex?: string | null
   speedRating?: string | null
-  quantity?: number | null
-  compound?: string | null
-  notes?: string | null
-  result?: string | null
-  customerId?: string | null
   userId?: string | null
   createdAt?: Date | string
+  category?: string | null
+  compound?: string | null
+  customerId?: string | null
+  customerName?: string | null
+  notes?: string | null
+  quantity?: number | null
+  result?: string | null
 }
 
 export type QuoteUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.StringFieldUpdateOperationsInput | string
   loadIndex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   speedRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  compound?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  compound?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customer?: Prisma.CustomerUpdateOneWithoutQuotesNestedInput
   user?: Prisma.UserUpdateOneWithoutQuotesNestedInput
 }
 
 export type QuoteUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.StringFieldUpdateOperationsInput | string
   loadIndex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   speedRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  compound?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  compound?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type QuoteCreateManyInput = {
   id?: string
-  customerName?: string | null
-  category?: string | null
   size: string
   loadIndex?: string | null
   speedRating?: string | null
-  quantity?: number | null
-  compound?: string | null
-  notes?: string | null
-  result?: string | null
-  customerId?: string | null
   userId?: string | null
   createdAt?: Date | string
+  category?: string | null
+  compound?: string | null
+  customerId?: string | null
+  customerName?: string | null
+  notes?: string | null
+  quantity?: number | null
+  result?: string | null
 }
 
 export type QuoteUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.StringFieldUpdateOperationsInput | string
   loadIndex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   speedRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  compound?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  compound?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type QuoteUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.StringFieldUpdateOperationsInput | string
   loadIndex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   speedRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  compound?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  compound?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type QuoteListRelationFilter = {
@@ -485,18 +485,18 @@ export type QuoteOrderByRelationAggregateInput = {
 
 export type QuoteCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  customerName?: Prisma.SortOrder
-  category?: Prisma.SortOrder
   size?: Prisma.SortOrder
   loadIndex?: Prisma.SortOrder
   speedRating?: Prisma.SortOrder
-  quantity?: Prisma.SortOrder
-  compound?: Prisma.SortOrder
-  notes?: Prisma.SortOrder
-  result?: Prisma.SortOrder
-  customerId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  category?: Prisma.SortOrder
+  compound?: Prisma.SortOrder
+  customerId?: Prisma.SortOrder
+  customerName?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
+  quantity?: Prisma.SortOrder
+  result?: Prisma.SortOrder
 }
 
 export type QuoteAvgOrderByAggregateInput = {
@@ -505,34 +505,34 @@ export type QuoteAvgOrderByAggregateInput = {
 
 export type QuoteMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  customerName?: Prisma.SortOrder
-  category?: Prisma.SortOrder
   size?: Prisma.SortOrder
   loadIndex?: Prisma.SortOrder
   speedRating?: Prisma.SortOrder
-  quantity?: Prisma.SortOrder
-  compound?: Prisma.SortOrder
-  notes?: Prisma.SortOrder
-  result?: Prisma.SortOrder
-  customerId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  category?: Prisma.SortOrder
+  compound?: Prisma.SortOrder
+  customerId?: Prisma.SortOrder
+  customerName?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
+  quantity?: Prisma.SortOrder
+  result?: Prisma.SortOrder
 }
 
 export type QuoteMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  customerName?: Prisma.SortOrder
-  category?: Prisma.SortOrder
   size?: Prisma.SortOrder
   loadIndex?: Prisma.SortOrder
   speedRating?: Prisma.SortOrder
-  quantity?: Prisma.SortOrder
-  compound?: Prisma.SortOrder
-  notes?: Prisma.SortOrder
-  result?: Prisma.SortOrder
-  customerId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  category?: Prisma.SortOrder
+  compound?: Prisma.SortOrder
+  customerId?: Prisma.SortOrder
+  customerName?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
+  quantity?: Prisma.SortOrder
+  result?: Prisma.SortOrder
 }
 
 export type QuoteSumOrderByAggregateInput = {
@@ -625,32 +625,32 @@ export type QuoteUncheckedUpdateManyWithoutCustomerNestedInput = {
 
 export type QuoteCreateWithoutUserInput = {
   id?: string
-  customerName?: string | null
-  category?: string | null
   size: string
   loadIndex?: string | null
   speedRating?: string | null
-  quantity?: number | null
-  compound?: string | null
-  notes?: string | null
-  result?: string | null
   createdAt?: Date | string
+  category?: string | null
+  compound?: string | null
+  customerName?: string | null
+  notes?: string | null
+  quantity?: number | null
+  result?: string | null
   customer?: Prisma.CustomerCreateNestedOneWithoutQuotesInput
 }
 
 export type QuoteUncheckedCreateWithoutUserInput = {
   id?: string
-  customerName?: string | null
-  category?: string | null
   size: string
   loadIndex?: string | null
   speedRating?: string | null
-  quantity?: number | null
-  compound?: string | null
-  notes?: string | null
-  result?: string | null
-  customerId?: string | null
   createdAt?: Date | string
+  category?: string | null
+  compound?: string | null
+  customerId?: string | null
+  customerName?: string | null
+  notes?: string | null
+  quantity?: number | null
+  result?: string | null
 }
 
 export type QuoteCreateOrConnectWithoutUserInput = {
@@ -684,48 +684,48 @@ export type QuoteScalarWhereInput = {
   OR?: Prisma.QuoteScalarWhereInput[]
   NOT?: Prisma.QuoteScalarWhereInput | Prisma.QuoteScalarWhereInput[]
   id?: Prisma.StringFilter<"Quote"> | string
-  customerName?: Prisma.StringNullableFilter<"Quote"> | string | null
-  category?: Prisma.StringNullableFilter<"Quote"> | string | null
   size?: Prisma.StringFilter<"Quote"> | string
   loadIndex?: Prisma.StringNullableFilter<"Quote"> | string | null
   speedRating?: Prisma.StringNullableFilter<"Quote"> | string | null
-  quantity?: Prisma.IntNullableFilter<"Quote"> | number | null
-  compound?: Prisma.StringNullableFilter<"Quote"> | string | null
-  notes?: Prisma.StringNullableFilter<"Quote"> | string | null
-  result?: Prisma.StringNullableFilter<"Quote"> | string | null
-  customerId?: Prisma.StringNullableFilter<"Quote"> | string | null
   userId?: Prisma.StringNullableFilter<"Quote"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Quote"> | Date | string
+  category?: Prisma.StringNullableFilter<"Quote"> | string | null
+  compound?: Prisma.StringNullableFilter<"Quote"> | string | null
+  customerId?: Prisma.StringNullableFilter<"Quote"> | string | null
+  customerName?: Prisma.StringNullableFilter<"Quote"> | string | null
+  notes?: Prisma.StringNullableFilter<"Quote"> | string | null
+  quantity?: Prisma.IntNullableFilter<"Quote"> | number | null
+  result?: Prisma.StringNullableFilter<"Quote"> | string | null
 }
 
 export type QuoteCreateWithoutCustomerInput = {
   id?: string
-  customerName?: string | null
-  category?: string | null
   size: string
   loadIndex?: string | null
   speedRating?: string | null
-  quantity?: number | null
-  compound?: string | null
-  notes?: string | null
-  result?: string | null
   createdAt?: Date | string
+  category?: string | null
+  compound?: string | null
+  customerName?: string | null
+  notes?: string | null
+  quantity?: number | null
+  result?: string | null
   user?: Prisma.UserCreateNestedOneWithoutQuotesInput
 }
 
 export type QuoteUncheckedCreateWithoutCustomerInput = {
   id?: string
-  customerName?: string | null
-  category?: string | null
   size: string
   loadIndex?: string | null
   speedRating?: string | null
-  quantity?: number | null
-  compound?: string | null
-  notes?: string | null
-  result?: string | null
   userId?: string | null
   createdAt?: Date | string
+  category?: string | null
+  compound?: string | null
+  customerName?: string | null
+  notes?: string | null
+  quantity?: number | null
+  result?: string | null
 }
 
 export type QuoteCreateOrConnectWithoutCustomerInput = {
@@ -756,197 +756,197 @@ export type QuoteUpdateManyWithWhereWithoutCustomerInput = {
 
 export type QuoteCreateManyUserInput = {
   id?: string
-  customerName?: string | null
-  category?: string | null
   size: string
   loadIndex?: string | null
   speedRating?: string | null
-  quantity?: number | null
-  compound?: string | null
-  notes?: string | null
-  result?: string | null
-  customerId?: string | null
   createdAt?: Date | string
+  category?: string | null
+  compound?: string | null
+  customerId?: string | null
+  customerName?: string | null
+  notes?: string | null
+  quantity?: number | null
+  result?: string | null
 }
 
 export type QuoteUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.StringFieldUpdateOperationsInput | string
   loadIndex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   speedRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  compound?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  compound?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customer?: Prisma.CustomerUpdateOneWithoutQuotesNestedInput
 }
 
 export type QuoteUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.StringFieldUpdateOperationsInput | string
   loadIndex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   speedRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  compound?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  compound?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type QuoteUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.StringFieldUpdateOperationsInput | string
   loadIndex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   speedRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  compound?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  compound?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type QuoteCreateManyCustomerInput = {
   id?: string
-  customerName?: string | null
-  category?: string | null
   size: string
   loadIndex?: string | null
   speedRating?: string | null
-  quantity?: number | null
-  compound?: string | null
-  notes?: string | null
-  result?: string | null
   userId?: string | null
   createdAt?: Date | string
+  category?: string | null
+  compound?: string | null
+  customerName?: string | null
+  notes?: string | null
+  quantity?: number | null
+  result?: string | null
 }
 
 export type QuoteUpdateWithoutCustomerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.StringFieldUpdateOperationsInput | string
   loadIndex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   speedRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  compound?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  compound?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneWithoutQuotesNestedInput
 }
 
 export type QuoteUncheckedUpdateWithoutCustomerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.StringFieldUpdateOperationsInput | string
   loadIndex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   speedRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  compound?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  compound?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type QuoteUncheckedUpdateManyWithoutCustomerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.StringFieldUpdateOperationsInput | string
   loadIndex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   speedRating?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  compound?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  compound?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
 
 export type QuoteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  customerName?: boolean
-  category?: boolean
   size?: boolean
   loadIndex?: boolean
   speedRating?: boolean
-  quantity?: boolean
-  compound?: boolean
-  notes?: boolean
-  result?: boolean
-  customerId?: boolean
   userId?: boolean
   createdAt?: boolean
+  category?: boolean
+  compound?: boolean
+  customerId?: boolean
+  customerName?: boolean
+  notes?: boolean
+  quantity?: boolean
+  result?: boolean
   customer?: boolean | Prisma.Quote$customerArgs<ExtArgs>
   user?: boolean | Prisma.Quote$userArgs<ExtArgs>
 }, ExtArgs["result"]["quote"]>
 
 export type QuoteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  customerName?: boolean
-  category?: boolean
   size?: boolean
   loadIndex?: boolean
   speedRating?: boolean
-  quantity?: boolean
-  compound?: boolean
-  notes?: boolean
-  result?: boolean
-  customerId?: boolean
   userId?: boolean
   createdAt?: boolean
+  category?: boolean
+  compound?: boolean
+  customerId?: boolean
+  customerName?: boolean
+  notes?: boolean
+  quantity?: boolean
+  result?: boolean
   customer?: boolean | Prisma.Quote$customerArgs<ExtArgs>
   user?: boolean | Prisma.Quote$userArgs<ExtArgs>
 }, ExtArgs["result"]["quote"]>
 
 export type QuoteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  customerName?: boolean
-  category?: boolean
   size?: boolean
   loadIndex?: boolean
   speedRating?: boolean
-  quantity?: boolean
-  compound?: boolean
-  notes?: boolean
-  result?: boolean
-  customerId?: boolean
   userId?: boolean
   createdAt?: boolean
+  category?: boolean
+  compound?: boolean
+  customerId?: boolean
+  customerName?: boolean
+  notes?: boolean
+  quantity?: boolean
+  result?: boolean
   customer?: boolean | Prisma.Quote$customerArgs<ExtArgs>
   user?: boolean | Prisma.Quote$userArgs<ExtArgs>
 }, ExtArgs["result"]["quote"]>
 
 export type QuoteSelectScalar = {
   id?: boolean
-  customerName?: boolean
-  category?: boolean
   size?: boolean
   loadIndex?: boolean
   speedRating?: boolean
-  quantity?: boolean
-  compound?: boolean
-  notes?: boolean
-  result?: boolean
-  customerId?: boolean
   userId?: boolean
   createdAt?: boolean
+  category?: boolean
+  compound?: boolean
+  customerId?: boolean
+  customerName?: boolean
+  notes?: boolean
+  quantity?: boolean
+  result?: boolean
 }
 
-export type QuoteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "customerName" | "category" | "size" | "loadIndex" | "speedRating" | "quantity" | "compound" | "notes" | "result" | "customerId" | "userId" | "createdAt", ExtArgs["result"]["quote"]>
+export type QuoteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "size" | "loadIndex" | "speedRating" | "userId" | "createdAt" | "category" | "compound" | "customerId" | "customerName" | "notes" | "quantity" | "result", ExtArgs["result"]["quote"]>
 export type QuoteInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   customer?: boolean | Prisma.Quote$customerArgs<ExtArgs>
   user?: boolean | Prisma.Quote$userArgs<ExtArgs>
@@ -968,18 +968,18 @@ export type $QuotePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    customerName: string | null
-    category: string | null
     size: string
     loadIndex: string | null
     speedRating: string | null
-    quantity: number | null
-    compound: string | null
-    notes: string | null
-    result: string | null
-    customerId: string | null
     userId: string | null
     createdAt: Date
+    category: string | null
+    compound: string | null
+    customerId: string | null
+    customerName: string | null
+    notes: string | null
+    quantity: number | null
+    result: string | null
   }, ExtArgs["result"]["quote"]>
   composites: {}
 }
@@ -1406,18 +1406,18 @@ export interface Prisma__QuoteClient<T, Null = never, ExtArgs extends runtime.Ty
  */
 export interface QuoteFieldRefs {
   readonly id: Prisma.FieldRef<"Quote", 'String'>
-  readonly customerName: Prisma.FieldRef<"Quote", 'String'>
-  readonly category: Prisma.FieldRef<"Quote", 'String'>
   readonly size: Prisma.FieldRef<"Quote", 'String'>
   readonly loadIndex: Prisma.FieldRef<"Quote", 'String'>
   readonly speedRating: Prisma.FieldRef<"Quote", 'String'>
-  readonly quantity: Prisma.FieldRef<"Quote", 'Int'>
-  readonly compound: Prisma.FieldRef<"Quote", 'String'>
-  readonly notes: Prisma.FieldRef<"Quote", 'String'>
-  readonly result: Prisma.FieldRef<"Quote", 'String'>
-  readonly customerId: Prisma.FieldRef<"Quote", 'String'>
   readonly userId: Prisma.FieldRef<"Quote", 'String'>
   readonly createdAt: Prisma.FieldRef<"Quote", 'DateTime'>
+  readonly category: Prisma.FieldRef<"Quote", 'String'>
+  readonly compound: Prisma.FieldRef<"Quote", 'String'>
+  readonly customerId: Prisma.FieldRef<"Quote", 'String'>
+  readonly customerName: Prisma.FieldRef<"Quote", 'String'>
+  readonly notes: Prisma.FieldRef<"Quote", 'String'>
+  readonly quantity: Prisma.FieldRef<"Quote", 'Int'>
+  readonly result: Prisma.FieldRef<"Quote", 'String'>
 }
     
 

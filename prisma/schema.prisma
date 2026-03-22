@@ -16,13 +16,15 @@ model User {
   role          String         @default("USER")
   emailVerified DateTime?      @map("email_verified")
   image         String?
-  accounts      Account[]
-  compoundSpecs CompoundSpec[]
-  emailDrafts   EmailDraft[]
-  orders        Order[]
-  quotes        Quote[]
-  sessions      Session[]
-  treadDesigns  TreadDesign[]
+  accounts         Account[]
+  compoundSpecs    CompoundSpec[]
+  emailDrafts      EmailDraft[]
+  orders           Order[]
+  quotes           Quote[]
+  sessions         Session[]
+  treadDesigns     TreadDesign[]
+  requestedChanges ChangeRequest[] @relation("RequestedChanges")
+  reviewedChanges  ChangeRequest[] @relation("ReviewedChanges")
 }
 
 model Account {
@@ -152,15 +154,44 @@ model CompoundSpec {
 }
 
 model TreadDesign {
-  id          String   @id @default(cuid())
-  name        String?
-  application String?
-  widthMm     Int?     @map("width_mm")
-  heightMm    Int?     @map("height_mm")
-  moldSpec    String?  @map("mold_spec")
-  userId      String?  @map("user_id")
-  createdAt   DateTime @default(now()) @map("created_at")
-  user        User?    @relation(fields: [userId], references: [id])
+  id               String          @id @default(cuid())
+  name             String?
+  application      String?
+  widthMm          Int?            @map("width_mm")
+  heightMm         Int?            @map("height_mm")
+  moldSpec         String?         @map("mold_spec")
+  userId           String?         @map("user_id")
+  createdAt        DateTime        @default(now()) @map("created_at")
+  category         String          @default("PCR")
+  season           String          @default("ALL_SEASON")
+  status           String          @default("ACTIVE")
+  version          Int             @default(1)
+  grooveDepthMm    Float?          @map("groove_depth_mm")
+  noiseRating      String?         @map("noise_rating")
+  wetGripRating    String?         @map("wet_grip_rating")
+  rollingResistance String?        @map("rolling_resistance")
+  notes            String?
+  updatedAt        DateTime        @default(now()) @updatedAt @map("updated_at")
+  user             User?           @relation(fields: [userId], references: [id])
+  changeRequests   ChangeRequest[] @relation("DesignChangeRequests")
+}
+
+model ChangeRequest {
+  id              String      @id @default(cuid())
+  designId        String      @map("design_id")
+  requesterId     String      @map("requester_id")
+  type            String
+  description     String
+  proposedChanges String      @map("proposed_changes")
+  status          String      @default("PENDING")
+  reviewNote      String?     @map("review_note")
+  reviewerId      String?     @map("reviewer_id")
+  aiAssessment    String?     @map("ai_assessment")
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @updatedAt @map("updated_at")
+  design          TreadDesign @relation("DesignChangeRequests", fields: [designId], references: [id], onDelete: Cascade)
+  requester       User        @relation("RequestedChanges", fields: [requesterId], references: [id], onDelete: Cascade)
+  reviewer        User?       @relation("ReviewedChanges", fields: [reviewerId], references: [id], onDelete: SetNull)
 }
 
 model ProductionLine {

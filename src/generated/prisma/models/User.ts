@@ -199,14 +199,14 @@ export type UserWhereInput = {
   emailVerified?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   image?: Prisma.StringNullableFilter<"User"> | string | null
   accounts?: Prisma.AccountListRelationFilter
-  sessions?: Prisma.SessionListRelationFilter
+  compoundSpecs?: Prisma.CompoundSpecListRelationFilter
+  emailDrafts?: Prisma.EmailDraftListRelationFilter
   orders?: Prisma.OrderListRelationFilter
   quotes?: Prisma.QuoteListRelationFilter
-  emailDrafts?: Prisma.EmailDraftListRelationFilter
-  compoundSpecs?: Prisma.CompoundSpecListRelationFilter
+  sessions?: Prisma.SessionListRelationFilter
   treadDesigns?: Prisma.TreadDesignListRelationFilter
-  changeRequestsMade?: Prisma.ChangeRequestListRelationFilter
-  changeRequestsReviewed?: Prisma.ChangeRequestListRelationFilter
+  requestedChanges?: Prisma.ChangeRequestListRelationFilter
+  reviewedChanges?: Prisma.ChangeRequestListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -218,14 +218,14 @@ export type UserOrderByWithRelationInput = {
   emailVerified?: Prisma.SortOrderInput | Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   accounts?: Prisma.AccountOrderByRelationAggregateInput
-  sessions?: Prisma.SessionOrderByRelationAggregateInput
+  compoundSpecs?: Prisma.CompoundSpecOrderByRelationAggregateInput
+  emailDrafts?: Prisma.EmailDraftOrderByRelationAggregateInput
   orders?: Prisma.OrderOrderByRelationAggregateInput
   quotes?: Prisma.QuoteOrderByRelationAggregateInput
-  emailDrafts?: Prisma.EmailDraftOrderByRelationAggregateInput
-  compoundSpecs?: Prisma.CompoundSpecOrderByRelationAggregateInput
+  sessions?: Prisma.SessionOrderByRelationAggregateInput
   treadDesigns?: Prisma.TreadDesignOrderByRelationAggregateInput
-  changeRequestsMade?: Prisma.ChangeRequestOrderByRelationAggregateInput
-  changeRequestsReviewed?: Prisma.ChangeRequestOrderByRelationAggregateInput
+  requestedChanges?: Prisma.ChangeRequestOrderByRelationAggregateInput
+  reviewedChanges?: Prisma.ChangeRequestOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -240,14 +240,14 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   emailVerified?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   image?: Prisma.StringNullableFilter<"User"> | string | null
   accounts?: Prisma.AccountListRelationFilter
-  sessions?: Prisma.SessionListRelationFilter
+  compoundSpecs?: Prisma.CompoundSpecListRelationFilter
+  emailDrafts?: Prisma.EmailDraftListRelationFilter
   orders?: Prisma.OrderListRelationFilter
   quotes?: Prisma.QuoteListRelationFilter
-  emailDrafts?: Prisma.EmailDraftListRelationFilter
-  compoundSpecs?: Prisma.CompoundSpecListRelationFilter
+  sessions?: Prisma.SessionListRelationFilter
   treadDesigns?: Prisma.TreadDesignListRelationFilter
-  changeRequestsMade?: Prisma.ChangeRequestListRelationFilter
-  changeRequestsReviewed?: Prisma.ChangeRequestListRelationFilter
+  requestedChanges?: Prisma.ChangeRequestListRelationFilter
+  reviewedChanges?: Prisma.ChangeRequestListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -285,14 +285,14 @@ export type UserCreateInput = {
   emailVerified?: Date | string | null
   image?: string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  compoundSpecs?: Prisma.CompoundSpecCreateNestedManyWithoutUserInput
+  emailDrafts?: Prisma.EmailDraftCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   quotes?: Prisma.QuoteCreateNestedManyWithoutUserInput
-  emailDrafts?: Prisma.EmailDraftCreateNestedManyWithoutUserInput
-  compoundSpecs?: Prisma.CompoundSpecCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   treadDesigns?: Prisma.TreadDesignCreateNestedManyWithoutUserInput
-  changeRequestsMade?: Prisma.ChangeRequestCreateNestedManyWithoutRequesterInput
-  changeRequestsReviewed?: Prisma.ChangeRequestCreateNestedManyWithoutReviewerInput
+  requestedChanges?: Prisma.ChangeRequestCreateNestedManyWithoutRequesterInput
+  reviewedChanges?: Prisma.ChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -304,14 +304,14 @@ export type UserUncheckedCreateInput = {
   emailVerified?: Date | string | null
   image?: string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  compoundSpecs?: Prisma.CompoundSpecUncheckedCreateNestedManyWithoutUserInput
+  emailDrafts?: Prisma.EmailDraftUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutUserInput
-  emailDrafts?: Prisma.EmailDraftUncheckedCreateNestedManyWithoutUserInput
-  compoundSpecs?: Prisma.CompoundSpecUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   treadDesigns?: Prisma.TreadDesignUncheckedCreateNestedManyWithoutUserInput
-  changeRequestsMade?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutRequesterInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
+  requestedChanges?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutRequesterInput
+  reviewedChanges?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUpdateInput = {
@@ -323,14 +323,14 @@ export type UserUpdateInput = {
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  compoundSpecs?: Prisma.CompoundSpecUpdateManyWithoutUserNestedInput
+  emailDrafts?: Prisma.EmailDraftUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   quotes?: Prisma.QuoteUpdateManyWithoutUserNestedInput
-  emailDrafts?: Prisma.EmailDraftUpdateManyWithoutUserNestedInput
-  compoundSpecs?: Prisma.CompoundSpecUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   treadDesigns?: Prisma.TreadDesignUpdateManyWithoutUserNestedInput
-  changeRequestsMade?: Prisma.ChangeRequestUpdateManyWithoutRequesterNestedInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUpdateManyWithoutReviewerNestedInput
+  requestedChanges?: Prisma.ChangeRequestUpdateManyWithoutRequesterNestedInput
+  reviewedChanges?: Prisma.ChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -342,14 +342,14 @@ export type UserUncheckedUpdateInput = {
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  compoundSpecs?: Prisma.CompoundSpecUncheckedUpdateManyWithoutUserNestedInput
+  emailDrafts?: Prisma.EmailDraftUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   quotes?: Prisma.QuoteUncheckedUpdateManyWithoutUserNestedInput
-  emailDrafts?: Prisma.EmailDraftUncheckedUpdateManyWithoutUserNestedInput
-  compoundSpecs?: Prisma.CompoundSpecUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   treadDesigns?: Prisma.TreadDesignUncheckedUpdateManyWithoutUserNestedInput
-  changeRequestsMade?: Prisma.ChangeRequestUncheckedUpdateManyWithoutRequesterNestedInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  requestedChanges?: Prisma.ChangeRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  reviewedChanges?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -542,34 +542,34 @@ export type UserUpdateOneWithoutTreadDesignsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTreadDesignsInput, Prisma.UserUpdateWithoutTreadDesignsInput>, Prisma.UserUncheckedUpdateWithoutTreadDesignsInput>
 }
 
-export type UserCreateNestedOneWithoutChangeRequestsMadeInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutChangeRequestsMadeInput, Prisma.UserUncheckedCreateWithoutChangeRequestsMadeInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutChangeRequestsMadeInput
+export type UserCreateNestedOneWithoutRequestedChangesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRequestedChangesInput, Prisma.UserUncheckedCreateWithoutRequestedChangesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRequestedChangesInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserCreateNestedOneWithoutChangeRequestsReviewedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutChangeRequestsReviewedInput, Prisma.UserUncheckedCreateWithoutChangeRequestsReviewedInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutChangeRequestsReviewedInput
+export type UserCreateNestedOneWithoutReviewedChangesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReviewedChangesInput, Prisma.UserUncheckedCreateWithoutReviewedChangesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewedChangesInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutChangeRequestsMadeNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutChangeRequestsMadeInput, Prisma.UserUncheckedCreateWithoutChangeRequestsMadeInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutChangeRequestsMadeInput
-  upsert?: Prisma.UserUpsertWithoutChangeRequestsMadeInput
+export type UserUpdateOneRequiredWithoutRequestedChangesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRequestedChangesInput, Prisma.UserUncheckedCreateWithoutRequestedChangesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRequestedChangesInput
+  upsert?: Prisma.UserUpsertWithoutRequestedChangesInput
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutChangeRequestsMadeInput, Prisma.UserUpdateWithoutChangeRequestsMadeInput>, Prisma.UserUncheckedUpdateWithoutChangeRequestsMadeInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRequestedChangesInput, Prisma.UserUpdateWithoutRequestedChangesInput>, Prisma.UserUncheckedUpdateWithoutRequestedChangesInput>
 }
 
-export type UserUpdateOneWithoutChangeRequestsReviewedNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutChangeRequestsReviewedInput, Prisma.UserUncheckedCreateWithoutChangeRequestsReviewedInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutChangeRequestsReviewedInput
-  upsert?: Prisma.UserUpsertWithoutChangeRequestsReviewedInput
+export type UserUpdateOneWithoutReviewedChangesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReviewedChangesInput, Prisma.UserUncheckedCreateWithoutReviewedChangesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewedChangesInput
+  upsert?: Prisma.UserUpsertWithoutReviewedChangesInput
   disconnect?: Prisma.UserWhereInput | boolean
   delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutChangeRequestsReviewedInput, Prisma.UserUpdateWithoutChangeRequestsReviewedInput>, Prisma.UserUncheckedUpdateWithoutChangeRequestsReviewedInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReviewedChangesInput, Prisma.UserUpdateWithoutReviewedChangesInput>, Prisma.UserUncheckedUpdateWithoutReviewedChangesInput>
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -580,14 +580,14 @@ export type UserCreateWithoutAccountsInput = {
   role?: string
   emailVerified?: Date | string | null
   image?: string | null
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  compoundSpecs?: Prisma.CompoundSpecCreateNestedManyWithoutUserInput
+  emailDrafts?: Prisma.EmailDraftCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   quotes?: Prisma.QuoteCreateNestedManyWithoutUserInput
-  emailDrafts?: Prisma.EmailDraftCreateNestedManyWithoutUserInput
-  compoundSpecs?: Prisma.CompoundSpecCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   treadDesigns?: Prisma.TreadDesignCreateNestedManyWithoutUserInput
-  changeRequestsMade?: Prisma.ChangeRequestCreateNestedManyWithoutRequesterInput
-  changeRequestsReviewed?: Prisma.ChangeRequestCreateNestedManyWithoutReviewerInput
+  requestedChanges?: Prisma.ChangeRequestCreateNestedManyWithoutRequesterInput
+  reviewedChanges?: Prisma.ChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -598,14 +598,14 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   role?: string
   emailVerified?: Date | string | null
   image?: string | null
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  compoundSpecs?: Prisma.CompoundSpecUncheckedCreateNestedManyWithoutUserInput
+  emailDrafts?: Prisma.EmailDraftUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutUserInput
-  emailDrafts?: Prisma.EmailDraftUncheckedCreateNestedManyWithoutUserInput
-  compoundSpecs?: Prisma.CompoundSpecUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   treadDesigns?: Prisma.TreadDesignUncheckedCreateNestedManyWithoutUserInput
-  changeRequestsMade?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutRequesterInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
+  requestedChanges?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutRequesterInput
+  reviewedChanges?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -632,14 +632,14 @@ export type UserUpdateWithoutAccountsInput = {
   role?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  compoundSpecs?: Prisma.CompoundSpecUpdateManyWithoutUserNestedInput
+  emailDrafts?: Prisma.EmailDraftUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   quotes?: Prisma.QuoteUpdateManyWithoutUserNestedInput
-  emailDrafts?: Prisma.EmailDraftUpdateManyWithoutUserNestedInput
-  compoundSpecs?: Prisma.CompoundSpecUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   treadDesigns?: Prisma.TreadDesignUpdateManyWithoutUserNestedInput
-  changeRequestsMade?: Prisma.ChangeRequestUpdateManyWithoutRequesterNestedInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUpdateManyWithoutReviewerNestedInput
+  requestedChanges?: Prisma.ChangeRequestUpdateManyWithoutRequesterNestedInput
+  reviewedChanges?: Prisma.ChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -650,14 +650,14 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   role?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  compoundSpecs?: Prisma.CompoundSpecUncheckedUpdateManyWithoutUserNestedInput
+  emailDrafts?: Prisma.EmailDraftUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   quotes?: Prisma.QuoteUncheckedUpdateManyWithoutUserNestedInput
-  emailDrafts?: Prisma.EmailDraftUncheckedUpdateManyWithoutUserNestedInput
-  compoundSpecs?: Prisma.CompoundSpecUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   treadDesigns?: Prisma.TreadDesignUncheckedUpdateManyWithoutUserNestedInput
-  changeRequestsMade?: Prisma.ChangeRequestUncheckedUpdateManyWithoutRequesterNestedInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  requestedChanges?: Prisma.ChangeRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  reviewedChanges?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -669,13 +669,13 @@ export type UserCreateWithoutSessionsInput = {
   emailVerified?: Date | string | null
   image?: string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  compoundSpecs?: Prisma.CompoundSpecCreateNestedManyWithoutUserInput
+  emailDrafts?: Prisma.EmailDraftCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   quotes?: Prisma.QuoteCreateNestedManyWithoutUserInput
-  emailDrafts?: Prisma.EmailDraftCreateNestedManyWithoutUserInput
-  compoundSpecs?: Prisma.CompoundSpecCreateNestedManyWithoutUserInput
   treadDesigns?: Prisma.TreadDesignCreateNestedManyWithoutUserInput
-  changeRequestsMade?: Prisma.ChangeRequestCreateNestedManyWithoutRequesterInput
-  changeRequestsReviewed?: Prisma.ChangeRequestCreateNestedManyWithoutReviewerInput
+  requestedChanges?: Prisma.ChangeRequestCreateNestedManyWithoutRequesterInput
+  reviewedChanges?: Prisma.ChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -687,13 +687,13 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   emailVerified?: Date | string | null
   image?: string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  compoundSpecs?: Prisma.CompoundSpecUncheckedCreateNestedManyWithoutUserInput
+  emailDrafts?: Prisma.EmailDraftUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutUserInput
-  emailDrafts?: Prisma.EmailDraftUncheckedCreateNestedManyWithoutUserInput
-  compoundSpecs?: Prisma.CompoundSpecUncheckedCreateNestedManyWithoutUserInput
   treadDesigns?: Prisma.TreadDesignUncheckedCreateNestedManyWithoutUserInput
-  changeRequestsMade?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutRequesterInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
+  requestedChanges?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutRequesterInput
+  reviewedChanges?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -721,13 +721,13 @@ export type UserUpdateWithoutSessionsInput = {
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  compoundSpecs?: Prisma.CompoundSpecUpdateManyWithoutUserNestedInput
+  emailDrafts?: Prisma.EmailDraftUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   quotes?: Prisma.QuoteUpdateManyWithoutUserNestedInput
-  emailDrafts?: Prisma.EmailDraftUpdateManyWithoutUserNestedInput
-  compoundSpecs?: Prisma.CompoundSpecUpdateManyWithoutUserNestedInput
   treadDesigns?: Prisma.TreadDesignUpdateManyWithoutUserNestedInput
-  changeRequestsMade?: Prisma.ChangeRequestUpdateManyWithoutRequesterNestedInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUpdateManyWithoutReviewerNestedInput
+  requestedChanges?: Prisma.ChangeRequestUpdateManyWithoutRequesterNestedInput
+  reviewedChanges?: Prisma.ChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -739,13 +739,13 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  compoundSpecs?: Prisma.CompoundSpecUncheckedUpdateManyWithoutUserNestedInput
+  emailDrafts?: Prisma.EmailDraftUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   quotes?: Prisma.QuoteUncheckedUpdateManyWithoutUserNestedInput
-  emailDrafts?: Prisma.EmailDraftUncheckedUpdateManyWithoutUserNestedInput
-  compoundSpecs?: Prisma.CompoundSpecUncheckedUpdateManyWithoutUserNestedInput
   treadDesigns?: Prisma.TreadDesignUncheckedUpdateManyWithoutUserNestedInput
-  changeRequestsMade?: Prisma.ChangeRequestUncheckedUpdateManyWithoutRequesterNestedInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  requestedChanges?: Prisma.ChangeRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  reviewedChanges?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserCreateWithoutOrdersInput = {
@@ -757,13 +757,13 @@ export type UserCreateWithoutOrdersInput = {
   emailVerified?: Date | string | null
   image?: string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  quotes?: Prisma.QuoteCreateNestedManyWithoutUserInput
-  emailDrafts?: Prisma.EmailDraftCreateNestedManyWithoutUserInput
   compoundSpecs?: Prisma.CompoundSpecCreateNestedManyWithoutUserInput
+  emailDrafts?: Prisma.EmailDraftCreateNestedManyWithoutUserInput
+  quotes?: Prisma.QuoteCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   treadDesigns?: Prisma.TreadDesignCreateNestedManyWithoutUserInput
-  changeRequestsMade?: Prisma.ChangeRequestCreateNestedManyWithoutRequesterInput
-  changeRequestsReviewed?: Prisma.ChangeRequestCreateNestedManyWithoutReviewerInput
+  requestedChanges?: Prisma.ChangeRequestCreateNestedManyWithoutRequesterInput
+  reviewedChanges?: Prisma.ChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateWithoutOrdersInput = {
@@ -775,13 +775,13 @@ export type UserUncheckedCreateWithoutOrdersInput = {
   emailVerified?: Date | string | null
   image?: string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutUserInput
-  emailDrafts?: Prisma.EmailDraftUncheckedCreateNestedManyWithoutUserInput
   compoundSpecs?: Prisma.CompoundSpecUncheckedCreateNestedManyWithoutUserInput
+  emailDrafts?: Prisma.EmailDraftUncheckedCreateNestedManyWithoutUserInput
+  quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   treadDesigns?: Prisma.TreadDesignUncheckedCreateNestedManyWithoutUserInput
-  changeRequestsMade?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutRequesterInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
+  requestedChanges?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutRequesterInput
+  reviewedChanges?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserCreateOrConnectWithoutOrdersInput = {
@@ -809,13 +809,13 @@ export type UserUpdateWithoutOrdersInput = {
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  quotes?: Prisma.QuoteUpdateManyWithoutUserNestedInput
-  emailDrafts?: Prisma.EmailDraftUpdateManyWithoutUserNestedInput
   compoundSpecs?: Prisma.CompoundSpecUpdateManyWithoutUserNestedInput
+  emailDrafts?: Prisma.EmailDraftUpdateManyWithoutUserNestedInput
+  quotes?: Prisma.QuoteUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   treadDesigns?: Prisma.TreadDesignUpdateManyWithoutUserNestedInput
-  changeRequestsMade?: Prisma.ChangeRequestUpdateManyWithoutRequesterNestedInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUpdateManyWithoutReviewerNestedInput
+  requestedChanges?: Prisma.ChangeRequestUpdateManyWithoutRequesterNestedInput
+  reviewedChanges?: Prisma.ChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrdersInput = {
@@ -827,13 +827,13 @@ export type UserUncheckedUpdateWithoutOrdersInput = {
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  quotes?: Prisma.QuoteUncheckedUpdateManyWithoutUserNestedInput
-  emailDrafts?: Prisma.EmailDraftUncheckedUpdateManyWithoutUserNestedInput
   compoundSpecs?: Prisma.CompoundSpecUncheckedUpdateManyWithoutUserNestedInput
+  emailDrafts?: Prisma.EmailDraftUncheckedUpdateManyWithoutUserNestedInput
+  quotes?: Prisma.QuoteUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   treadDesigns?: Prisma.TreadDesignUncheckedUpdateManyWithoutUserNestedInput
-  changeRequestsMade?: Prisma.ChangeRequestUncheckedUpdateManyWithoutRequesterNestedInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  requestedChanges?: Prisma.ChangeRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  reviewedChanges?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserCreateWithoutQuotesInput = {
@@ -845,13 +845,13 @@ export type UserCreateWithoutQuotesInput = {
   emailVerified?: Date | string | null
   image?: string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
-  emailDrafts?: Prisma.EmailDraftCreateNestedManyWithoutUserInput
   compoundSpecs?: Prisma.CompoundSpecCreateNestedManyWithoutUserInput
+  emailDrafts?: Prisma.EmailDraftCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   treadDesigns?: Prisma.TreadDesignCreateNestedManyWithoutUserInput
-  changeRequestsMade?: Prisma.ChangeRequestCreateNestedManyWithoutRequesterInput
-  changeRequestsReviewed?: Prisma.ChangeRequestCreateNestedManyWithoutReviewerInput
+  requestedChanges?: Prisma.ChangeRequestCreateNestedManyWithoutRequesterInput
+  reviewedChanges?: Prisma.ChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateWithoutQuotesInput = {
@@ -863,13 +863,13 @@ export type UserUncheckedCreateWithoutQuotesInput = {
   emailVerified?: Date | string | null
   image?: string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
-  emailDrafts?: Prisma.EmailDraftUncheckedCreateNestedManyWithoutUserInput
   compoundSpecs?: Prisma.CompoundSpecUncheckedCreateNestedManyWithoutUserInput
+  emailDrafts?: Prisma.EmailDraftUncheckedCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   treadDesigns?: Prisma.TreadDesignUncheckedCreateNestedManyWithoutUserInput
-  changeRequestsMade?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutRequesterInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
+  requestedChanges?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutRequesterInput
+  reviewedChanges?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserCreateOrConnectWithoutQuotesInput = {
@@ -897,13 +897,13 @@ export type UserUpdateWithoutQuotesInput = {
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
-  emailDrafts?: Prisma.EmailDraftUpdateManyWithoutUserNestedInput
   compoundSpecs?: Prisma.CompoundSpecUpdateManyWithoutUserNestedInput
+  emailDrafts?: Prisma.EmailDraftUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   treadDesigns?: Prisma.TreadDesignUpdateManyWithoutUserNestedInput
-  changeRequestsMade?: Prisma.ChangeRequestUpdateManyWithoutRequesterNestedInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUpdateManyWithoutReviewerNestedInput
+  requestedChanges?: Prisma.ChangeRequestUpdateManyWithoutRequesterNestedInput
+  reviewedChanges?: Prisma.ChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutQuotesInput = {
@@ -915,13 +915,13 @@ export type UserUncheckedUpdateWithoutQuotesInput = {
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
-  emailDrafts?: Prisma.EmailDraftUncheckedUpdateManyWithoutUserNestedInput
   compoundSpecs?: Prisma.CompoundSpecUncheckedUpdateManyWithoutUserNestedInput
+  emailDrafts?: Prisma.EmailDraftUncheckedUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   treadDesigns?: Prisma.TreadDesignUncheckedUpdateManyWithoutUserNestedInput
-  changeRequestsMade?: Prisma.ChangeRequestUncheckedUpdateManyWithoutRequesterNestedInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  requestedChanges?: Prisma.ChangeRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  reviewedChanges?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserCreateWithoutEmailDraftsInput = {
@@ -933,13 +933,13 @@ export type UserCreateWithoutEmailDraftsInput = {
   emailVerified?: Date | string | null
   image?: string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  compoundSpecs?: Prisma.CompoundSpecCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   quotes?: Prisma.QuoteCreateNestedManyWithoutUserInput
-  compoundSpecs?: Prisma.CompoundSpecCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   treadDesigns?: Prisma.TreadDesignCreateNestedManyWithoutUserInput
-  changeRequestsMade?: Prisma.ChangeRequestCreateNestedManyWithoutRequesterInput
-  changeRequestsReviewed?: Prisma.ChangeRequestCreateNestedManyWithoutReviewerInput
+  requestedChanges?: Prisma.ChangeRequestCreateNestedManyWithoutRequesterInput
+  reviewedChanges?: Prisma.ChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateWithoutEmailDraftsInput = {
@@ -951,13 +951,13 @@ export type UserUncheckedCreateWithoutEmailDraftsInput = {
   emailVerified?: Date | string | null
   image?: string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  compoundSpecs?: Prisma.CompoundSpecUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutUserInput
-  compoundSpecs?: Prisma.CompoundSpecUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   treadDesigns?: Prisma.TreadDesignUncheckedCreateNestedManyWithoutUserInput
-  changeRequestsMade?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutRequesterInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
+  requestedChanges?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutRequesterInput
+  reviewedChanges?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserCreateOrConnectWithoutEmailDraftsInput = {
@@ -985,13 +985,13 @@ export type UserUpdateWithoutEmailDraftsInput = {
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  compoundSpecs?: Prisma.CompoundSpecUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   quotes?: Prisma.QuoteUpdateManyWithoutUserNestedInput
-  compoundSpecs?: Prisma.CompoundSpecUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   treadDesigns?: Prisma.TreadDesignUpdateManyWithoutUserNestedInput
-  changeRequestsMade?: Prisma.ChangeRequestUpdateManyWithoutRequesterNestedInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUpdateManyWithoutReviewerNestedInput
+  requestedChanges?: Prisma.ChangeRequestUpdateManyWithoutRequesterNestedInput
+  reviewedChanges?: Prisma.ChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutEmailDraftsInput = {
@@ -1003,13 +1003,13 @@ export type UserUncheckedUpdateWithoutEmailDraftsInput = {
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  compoundSpecs?: Prisma.CompoundSpecUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   quotes?: Prisma.QuoteUncheckedUpdateManyWithoutUserNestedInput
-  compoundSpecs?: Prisma.CompoundSpecUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   treadDesigns?: Prisma.TreadDesignUncheckedUpdateManyWithoutUserNestedInput
-  changeRequestsMade?: Prisma.ChangeRequestUncheckedUpdateManyWithoutRequesterNestedInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  requestedChanges?: Prisma.ChangeRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  reviewedChanges?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserCreateWithoutCompoundSpecsInput = {
@@ -1021,13 +1021,13 @@ export type UserCreateWithoutCompoundSpecsInput = {
   emailVerified?: Date | string | null
   image?: string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  emailDrafts?: Prisma.EmailDraftCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   quotes?: Prisma.QuoteCreateNestedManyWithoutUserInput
-  emailDrafts?: Prisma.EmailDraftCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   treadDesigns?: Prisma.TreadDesignCreateNestedManyWithoutUserInput
-  changeRequestsMade?: Prisma.ChangeRequestCreateNestedManyWithoutRequesterInput
-  changeRequestsReviewed?: Prisma.ChangeRequestCreateNestedManyWithoutReviewerInput
+  requestedChanges?: Prisma.ChangeRequestCreateNestedManyWithoutRequesterInput
+  reviewedChanges?: Prisma.ChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateWithoutCompoundSpecsInput = {
@@ -1039,13 +1039,13 @@ export type UserUncheckedCreateWithoutCompoundSpecsInput = {
   emailVerified?: Date | string | null
   image?: string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  emailDrafts?: Prisma.EmailDraftUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutUserInput
-  emailDrafts?: Prisma.EmailDraftUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   treadDesigns?: Prisma.TreadDesignUncheckedCreateNestedManyWithoutUserInput
-  changeRequestsMade?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutRequesterInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
+  requestedChanges?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutRequesterInput
+  reviewedChanges?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserCreateOrConnectWithoutCompoundSpecsInput = {
@@ -1073,13 +1073,13 @@ export type UserUpdateWithoutCompoundSpecsInput = {
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  emailDrafts?: Prisma.EmailDraftUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   quotes?: Prisma.QuoteUpdateManyWithoutUserNestedInput
-  emailDrafts?: Prisma.EmailDraftUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   treadDesigns?: Prisma.TreadDesignUpdateManyWithoutUserNestedInput
-  changeRequestsMade?: Prisma.ChangeRequestUpdateManyWithoutRequesterNestedInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUpdateManyWithoutReviewerNestedInput
+  requestedChanges?: Prisma.ChangeRequestUpdateManyWithoutRequesterNestedInput
+  reviewedChanges?: Prisma.ChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCompoundSpecsInput = {
@@ -1091,13 +1091,13 @@ export type UserUncheckedUpdateWithoutCompoundSpecsInput = {
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  emailDrafts?: Prisma.EmailDraftUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   quotes?: Prisma.QuoteUncheckedUpdateManyWithoutUserNestedInput
-  emailDrafts?: Prisma.EmailDraftUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   treadDesigns?: Prisma.TreadDesignUncheckedUpdateManyWithoutUserNestedInput
-  changeRequestsMade?: Prisma.ChangeRequestUncheckedUpdateManyWithoutRequesterNestedInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  requestedChanges?: Prisma.ChangeRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  reviewedChanges?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserCreateWithoutTreadDesignsInput = {
@@ -1109,13 +1109,13 @@ export type UserCreateWithoutTreadDesignsInput = {
   emailVerified?: Date | string | null
   image?: string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  compoundSpecs?: Prisma.CompoundSpecCreateNestedManyWithoutUserInput
+  emailDrafts?: Prisma.EmailDraftCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   quotes?: Prisma.QuoteCreateNestedManyWithoutUserInput
-  emailDrafts?: Prisma.EmailDraftCreateNestedManyWithoutUserInput
-  compoundSpecs?: Prisma.CompoundSpecCreateNestedManyWithoutUserInput
-  changeRequestsMade?: Prisma.ChangeRequestCreateNestedManyWithoutRequesterInput
-  changeRequestsReviewed?: Prisma.ChangeRequestCreateNestedManyWithoutReviewerInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  requestedChanges?: Prisma.ChangeRequestCreateNestedManyWithoutRequesterInput
+  reviewedChanges?: Prisma.ChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateWithoutTreadDesignsInput = {
@@ -1127,13 +1127,13 @@ export type UserUncheckedCreateWithoutTreadDesignsInput = {
   emailVerified?: Date | string | null
   image?: string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  compoundSpecs?: Prisma.CompoundSpecUncheckedCreateNestedManyWithoutUserInput
+  emailDrafts?: Prisma.EmailDraftUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutUserInput
-  emailDrafts?: Prisma.EmailDraftUncheckedCreateNestedManyWithoutUserInput
-  compoundSpecs?: Prisma.CompoundSpecUncheckedCreateNestedManyWithoutUserInput
-  changeRequestsMade?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutRequesterInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  requestedChanges?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutRequesterInput
+  reviewedChanges?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserCreateOrConnectWithoutTreadDesignsInput = {
@@ -1161,13 +1161,13 @@ export type UserUpdateWithoutTreadDesignsInput = {
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  compoundSpecs?: Prisma.CompoundSpecUpdateManyWithoutUserNestedInput
+  emailDrafts?: Prisma.EmailDraftUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   quotes?: Prisma.QuoteUpdateManyWithoutUserNestedInput
-  emailDrafts?: Prisma.EmailDraftUpdateManyWithoutUserNestedInput
-  compoundSpecs?: Prisma.CompoundSpecUpdateManyWithoutUserNestedInput
-  changeRequestsMade?: Prisma.ChangeRequestUpdateManyWithoutRequesterNestedInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUpdateManyWithoutReviewerNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  requestedChanges?: Prisma.ChangeRequestUpdateManyWithoutRequesterNestedInput
+  reviewedChanges?: Prisma.ChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTreadDesignsInput = {
@@ -1179,16 +1179,16 @@ export type UserUncheckedUpdateWithoutTreadDesignsInput = {
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  compoundSpecs?: Prisma.CompoundSpecUncheckedUpdateManyWithoutUserNestedInput
+  emailDrafts?: Prisma.EmailDraftUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   quotes?: Prisma.QuoteUncheckedUpdateManyWithoutUserNestedInput
-  emailDrafts?: Prisma.EmailDraftUncheckedUpdateManyWithoutUserNestedInput
-  compoundSpecs?: Prisma.CompoundSpecUncheckedUpdateManyWithoutUserNestedInput
-  changeRequestsMade?: Prisma.ChangeRequestUncheckedUpdateManyWithoutRequesterNestedInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  requestedChanges?: Prisma.ChangeRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  reviewedChanges?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
-export type UserCreateWithoutChangeRequestsMadeInput = {
+export type UserCreateWithoutRequestedChangesInput = {
   id?: string
   email: string
   passwordHash?: string | null
@@ -1197,16 +1197,16 @@ export type UserCreateWithoutChangeRequestsMadeInput = {
   emailVerified?: Date | string | null
   image?: string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  compoundSpecs?: Prisma.CompoundSpecCreateNestedManyWithoutUserInput
+  emailDrafts?: Prisma.EmailDraftCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   quotes?: Prisma.QuoteCreateNestedManyWithoutUserInput
-  emailDrafts?: Prisma.EmailDraftCreateNestedManyWithoutUserInput
-  compoundSpecs?: Prisma.CompoundSpecCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   treadDesigns?: Prisma.TreadDesignCreateNestedManyWithoutUserInput
-  changeRequestsReviewed?: Prisma.ChangeRequestCreateNestedManyWithoutReviewerInput
+  reviewedChanges?: Prisma.ChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
-export type UserUncheckedCreateWithoutChangeRequestsMadeInput = {
+export type UserUncheckedCreateWithoutRequestedChangesInput = {
   id?: string
   email: string
   passwordHash?: string | null
@@ -1215,21 +1215,21 @@ export type UserUncheckedCreateWithoutChangeRequestsMadeInput = {
   emailVerified?: Date | string | null
   image?: string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  compoundSpecs?: Prisma.CompoundSpecUncheckedCreateNestedManyWithoutUserInput
+  emailDrafts?: Prisma.EmailDraftUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutUserInput
-  emailDrafts?: Prisma.EmailDraftUncheckedCreateNestedManyWithoutUserInput
-  compoundSpecs?: Prisma.CompoundSpecUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   treadDesigns?: Prisma.TreadDesignUncheckedCreateNestedManyWithoutUserInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
+  reviewedChanges?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
-export type UserCreateOrConnectWithoutChangeRequestsMadeInput = {
+export type UserCreateOrConnectWithoutRequestedChangesInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutChangeRequestsMadeInput, Prisma.UserUncheckedCreateWithoutChangeRequestsMadeInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRequestedChangesInput, Prisma.UserUncheckedCreateWithoutRequestedChangesInput>
 }
 
-export type UserCreateWithoutChangeRequestsReviewedInput = {
+export type UserCreateWithoutReviewedChangesInput = {
   id?: string
   email: string
   passwordHash?: string | null
@@ -1238,16 +1238,16 @@ export type UserCreateWithoutChangeRequestsReviewedInput = {
   emailVerified?: Date | string | null
   image?: string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  compoundSpecs?: Prisma.CompoundSpecCreateNestedManyWithoutUserInput
+  emailDrafts?: Prisma.EmailDraftCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
   quotes?: Prisma.QuoteCreateNestedManyWithoutUserInput
-  emailDrafts?: Prisma.EmailDraftCreateNestedManyWithoutUserInput
-  compoundSpecs?: Prisma.CompoundSpecCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   treadDesigns?: Prisma.TreadDesignCreateNestedManyWithoutUserInput
-  changeRequestsMade?: Prisma.ChangeRequestCreateNestedManyWithoutRequesterInput
+  requestedChanges?: Prisma.ChangeRequestCreateNestedManyWithoutRequesterInput
 }
 
-export type UserUncheckedCreateWithoutChangeRequestsReviewedInput = {
+export type UserUncheckedCreateWithoutReviewedChangesInput = {
   id?: string
   email: string
   passwordHash?: string | null
@@ -1256,32 +1256,32 @@ export type UserUncheckedCreateWithoutChangeRequestsReviewedInput = {
   emailVerified?: Date | string | null
   image?: string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  compoundSpecs?: Prisma.CompoundSpecUncheckedCreateNestedManyWithoutUserInput
+  emailDrafts?: Prisma.EmailDraftUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
   quotes?: Prisma.QuoteUncheckedCreateNestedManyWithoutUserInput
-  emailDrafts?: Prisma.EmailDraftUncheckedCreateNestedManyWithoutUserInput
-  compoundSpecs?: Prisma.CompoundSpecUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   treadDesigns?: Prisma.TreadDesignUncheckedCreateNestedManyWithoutUserInput
-  changeRequestsMade?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutRequesterInput
+  requestedChanges?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutRequesterInput
 }
 
-export type UserCreateOrConnectWithoutChangeRequestsReviewedInput = {
+export type UserCreateOrConnectWithoutReviewedChangesInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutChangeRequestsReviewedInput, Prisma.UserUncheckedCreateWithoutChangeRequestsReviewedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutReviewedChangesInput, Prisma.UserUncheckedCreateWithoutReviewedChangesInput>
 }
 
-export type UserUpsertWithoutChangeRequestsMadeInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutChangeRequestsMadeInput, Prisma.UserUncheckedUpdateWithoutChangeRequestsMadeInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutChangeRequestsMadeInput, Prisma.UserUncheckedCreateWithoutChangeRequestsMadeInput>
+export type UserUpsertWithoutRequestedChangesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutRequestedChangesInput, Prisma.UserUncheckedUpdateWithoutRequestedChangesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRequestedChangesInput, Prisma.UserUncheckedCreateWithoutRequestedChangesInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutChangeRequestsMadeInput = {
+export type UserUpdateToOneWithWhereWithoutRequestedChangesInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutChangeRequestsMadeInput, Prisma.UserUncheckedUpdateWithoutChangeRequestsMadeInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutRequestedChangesInput, Prisma.UserUncheckedUpdateWithoutRequestedChangesInput>
 }
 
-export type UserUpdateWithoutChangeRequestsMadeInput = {
+export type UserUpdateWithoutRequestedChangesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1290,16 +1290,16 @@ export type UserUpdateWithoutChangeRequestsMadeInput = {
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  compoundSpecs?: Prisma.CompoundSpecUpdateManyWithoutUserNestedInput
+  emailDrafts?: Prisma.EmailDraftUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   quotes?: Prisma.QuoteUpdateManyWithoutUserNestedInput
-  emailDrafts?: Prisma.EmailDraftUpdateManyWithoutUserNestedInput
-  compoundSpecs?: Prisma.CompoundSpecUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   treadDesigns?: Prisma.TreadDesignUpdateManyWithoutUserNestedInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUpdateManyWithoutReviewerNestedInput
+  reviewedChanges?: Prisma.ChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
-export type UserUncheckedUpdateWithoutChangeRequestsMadeInput = {
+export type UserUncheckedUpdateWithoutRequestedChangesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1308,27 +1308,27 @@ export type UserUncheckedUpdateWithoutChangeRequestsMadeInput = {
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  compoundSpecs?: Prisma.CompoundSpecUncheckedUpdateManyWithoutUserNestedInput
+  emailDrafts?: Prisma.EmailDraftUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   quotes?: Prisma.QuoteUncheckedUpdateManyWithoutUserNestedInput
-  emailDrafts?: Prisma.EmailDraftUncheckedUpdateManyWithoutUserNestedInput
-  compoundSpecs?: Prisma.CompoundSpecUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   treadDesigns?: Prisma.TreadDesignUncheckedUpdateManyWithoutUserNestedInput
-  changeRequestsReviewed?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  reviewedChanges?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
-export type UserUpsertWithoutChangeRequestsReviewedInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutChangeRequestsReviewedInput, Prisma.UserUncheckedUpdateWithoutChangeRequestsReviewedInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutChangeRequestsReviewedInput, Prisma.UserUncheckedCreateWithoutChangeRequestsReviewedInput>
+export type UserUpsertWithoutReviewedChangesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutReviewedChangesInput, Prisma.UserUncheckedUpdateWithoutReviewedChangesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutReviewedChangesInput, Prisma.UserUncheckedCreateWithoutReviewedChangesInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutChangeRequestsReviewedInput = {
+export type UserUpdateToOneWithWhereWithoutReviewedChangesInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutChangeRequestsReviewedInput, Prisma.UserUncheckedUpdateWithoutChangeRequestsReviewedInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutReviewedChangesInput, Prisma.UserUncheckedUpdateWithoutReviewedChangesInput>
 }
 
-export type UserUpdateWithoutChangeRequestsReviewedInput = {
+export type UserUpdateWithoutReviewedChangesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1337,16 +1337,16 @@ export type UserUpdateWithoutChangeRequestsReviewedInput = {
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  compoundSpecs?: Prisma.CompoundSpecUpdateManyWithoutUserNestedInput
+  emailDrafts?: Prisma.EmailDraftUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
   quotes?: Prisma.QuoteUpdateManyWithoutUserNestedInput
-  emailDrafts?: Prisma.EmailDraftUpdateManyWithoutUserNestedInput
-  compoundSpecs?: Prisma.CompoundSpecUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   treadDesigns?: Prisma.TreadDesignUpdateManyWithoutUserNestedInput
-  changeRequestsMade?: Prisma.ChangeRequestUpdateManyWithoutRequesterNestedInput
+  requestedChanges?: Prisma.ChangeRequestUpdateManyWithoutRequesterNestedInput
 }
 
-export type UserUncheckedUpdateWithoutChangeRequestsReviewedInput = {
+export type UserUncheckedUpdateWithoutReviewedChangesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1355,13 +1355,13 @@ export type UserUncheckedUpdateWithoutChangeRequestsReviewedInput = {
   emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  compoundSpecs?: Prisma.CompoundSpecUncheckedUpdateManyWithoutUserNestedInput
+  emailDrafts?: Prisma.EmailDraftUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
   quotes?: Prisma.QuoteUncheckedUpdateManyWithoutUserNestedInput
-  emailDrafts?: Prisma.EmailDraftUncheckedUpdateManyWithoutUserNestedInput
-  compoundSpecs?: Prisma.CompoundSpecUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   treadDesigns?: Prisma.TreadDesignUncheckedUpdateManyWithoutUserNestedInput
-  changeRequestsMade?: Prisma.ChangeRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  requestedChanges?: Prisma.ChangeRequestUncheckedUpdateManyWithoutRequesterNestedInput
 }
 
 
@@ -1371,26 +1371,26 @@ export type UserUncheckedUpdateWithoutChangeRequestsReviewedInput = {
 
 export type UserCountOutputType = {
   accounts: number
-  sessions: number
+  compoundSpecs: number
+  emailDrafts: number
   orders: number
   quotes: number
-  emailDrafts: number
-  compoundSpecs: number
+  sessions: number
   treadDesigns: number
-  changeRequestsMade: number
-  changeRequestsReviewed: number
+  requestedChanges: number
+  reviewedChanges: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accounts?: boolean | UserCountOutputTypeCountAccountsArgs
-  sessions?: boolean | UserCountOutputTypeCountSessionsArgs
+  compoundSpecs?: boolean | UserCountOutputTypeCountCompoundSpecsArgs
+  emailDrafts?: boolean | UserCountOutputTypeCountEmailDraftsArgs
   orders?: boolean | UserCountOutputTypeCountOrdersArgs
   quotes?: boolean | UserCountOutputTypeCountQuotesArgs
-  emailDrafts?: boolean | UserCountOutputTypeCountEmailDraftsArgs
-  compoundSpecs?: boolean | UserCountOutputTypeCountCompoundSpecsArgs
+  sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   treadDesigns?: boolean | UserCountOutputTypeCountTreadDesignsArgs
-  changeRequestsMade?: boolean | UserCountOutputTypeCountChangeRequestsMadeArgs
-  changeRequestsReviewed?: boolean | UserCountOutputTypeCountChangeRequestsReviewedArgs
+  requestedChanges?: boolean | UserCountOutputTypeCountRequestedChangesArgs
+  reviewedChanges?: boolean | UserCountOutputTypeCountReviewedChangesArgs
 }
 
 /**
@@ -1413,8 +1413,15 @@ export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends runtime.Types.E
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.SessionWhereInput
+export type UserCountOutputTypeCountCompoundSpecsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CompoundSpecWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountEmailDraftsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EmailDraftWhereInput
 }
 
 /**
@@ -1434,15 +1441,8 @@ export type UserCountOutputTypeCountQuotesArgs<ExtArgs extends runtime.Types.Ext
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountEmailDraftsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.EmailDraftWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountCompoundSpecsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.CompoundSpecWhereInput
+export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SessionWhereInput
 }
 
 /**
@@ -1455,14 +1455,14 @@ export type UserCountOutputTypeCountTreadDesignsArgs<ExtArgs extends runtime.Typ
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountChangeRequestsMadeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserCountOutputTypeCountRequestedChangesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ChangeRequestWhereInput
 }
 
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountChangeRequestsReviewedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserCountOutputTypeCountReviewedChangesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ChangeRequestWhereInput
 }
 
@@ -1476,14 +1476,14 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   emailVerified?: boolean
   image?: boolean
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
-  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
+  compoundSpecs?: boolean | Prisma.User$compoundSpecsArgs<ExtArgs>
+  emailDrafts?: boolean | Prisma.User$emailDraftsArgs<ExtArgs>
   orders?: boolean | Prisma.User$ordersArgs<ExtArgs>
   quotes?: boolean | Prisma.User$quotesArgs<ExtArgs>
-  emailDrafts?: boolean | Prisma.User$emailDraftsArgs<ExtArgs>
-  compoundSpecs?: boolean | Prisma.User$compoundSpecsArgs<ExtArgs>
+  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   treadDesigns?: boolean | Prisma.User$treadDesignsArgs<ExtArgs>
-  changeRequestsMade?: boolean | Prisma.User$changeRequestsMadeArgs<ExtArgs>
-  changeRequestsReviewed?: boolean | Prisma.User$changeRequestsReviewedArgs<ExtArgs>
+  requestedChanges?: boolean | Prisma.User$requestedChangesArgs<ExtArgs>
+  reviewedChanges?: boolean | Prisma.User$reviewedChangesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1520,14 +1520,14 @@ export type UserSelectScalar = {
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "name" | "role" | "emailVerified" | "image", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
-  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
+  compoundSpecs?: boolean | Prisma.User$compoundSpecsArgs<ExtArgs>
+  emailDrafts?: boolean | Prisma.User$emailDraftsArgs<ExtArgs>
   orders?: boolean | Prisma.User$ordersArgs<ExtArgs>
   quotes?: boolean | Prisma.User$quotesArgs<ExtArgs>
-  emailDrafts?: boolean | Prisma.User$emailDraftsArgs<ExtArgs>
-  compoundSpecs?: boolean | Prisma.User$compoundSpecsArgs<ExtArgs>
+  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   treadDesigns?: boolean | Prisma.User$treadDesignsArgs<ExtArgs>
-  changeRequestsMade?: boolean | Prisma.User$changeRequestsMadeArgs<ExtArgs>
-  changeRequestsReviewed?: boolean | Prisma.User$changeRequestsReviewedArgs<ExtArgs>
+  requestedChanges?: boolean | Prisma.User$requestedChangesArgs<ExtArgs>
+  reviewedChanges?: boolean | Prisma.User$reviewedChangesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1537,14 +1537,14 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "User"
   objects: {
     accounts: Prisma.$AccountPayload<ExtArgs>[]
-    sessions: Prisma.$SessionPayload<ExtArgs>[]
+    compoundSpecs: Prisma.$CompoundSpecPayload<ExtArgs>[]
+    emailDrafts: Prisma.$EmailDraftPayload<ExtArgs>[]
     orders: Prisma.$OrderPayload<ExtArgs>[]
     quotes: Prisma.$QuotePayload<ExtArgs>[]
-    emailDrafts: Prisma.$EmailDraftPayload<ExtArgs>[]
-    compoundSpecs: Prisma.$CompoundSpecPayload<ExtArgs>[]
+    sessions: Prisma.$SessionPayload<ExtArgs>[]
     treadDesigns: Prisma.$TreadDesignPayload<ExtArgs>[]
-    changeRequestsMade: Prisma.$ChangeRequestPayload<ExtArgs>[]
-    changeRequestsReviewed: Prisma.$ChangeRequestPayload<ExtArgs>[]
+    requestedChanges: Prisma.$ChangeRequestPayload<ExtArgs>[]
+    reviewedChanges: Prisma.$ChangeRequestPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1949,14 +1949,14 @@ readonly fields: UserFieldRefs;
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  compoundSpecs<T extends Prisma.User$compoundSpecsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$compoundSpecsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompoundSpecPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  emailDrafts<T extends Prisma.User$emailDraftsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$emailDraftsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmailDraftPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   orders<T extends Prisma.User$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   quotes<T extends Prisma.User$quotesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$quotesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  emailDrafts<T extends Prisma.User$emailDraftsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$emailDraftsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmailDraftPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  compoundSpecs<T extends Prisma.User$compoundSpecsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$compoundSpecsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompoundSpecPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   treadDesigns<T extends Prisma.User$treadDesignsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$treadDesignsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TreadDesignPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  changeRequestsMade<T extends Prisma.User$changeRequestsMadeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$changeRequestsMadeArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChangeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  changeRequestsReviewed<T extends Prisma.User$changeRequestsReviewedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$changeRequestsReviewedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChangeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  requestedChanges<T extends Prisma.User$requestedChangesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$requestedChangesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChangeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reviewedChanges<T extends Prisma.User$reviewedChangesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewedChangesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChangeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2405,27 +2405,51 @@ export type User$accountsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 }
 
 /**
- * User.sessions
+ * User.compoundSpecs
  */
-export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$compoundSpecsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Session
+   * Select specific fields to fetch from the CompoundSpec
    */
-  select?: Prisma.SessionSelect<ExtArgs> | null
+  select?: Prisma.CompoundSpecSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Session
+   * Omit specific fields from the CompoundSpec
    */
-  omit?: Prisma.SessionOmit<ExtArgs> | null
+  omit?: Prisma.CompoundSpecOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.SessionInclude<ExtArgs> | null
-  where?: Prisma.SessionWhereInput
-  orderBy?: Prisma.SessionOrderByWithRelationInput | Prisma.SessionOrderByWithRelationInput[]
-  cursor?: Prisma.SessionWhereUniqueInput
+  include?: Prisma.CompoundSpecInclude<ExtArgs> | null
+  where?: Prisma.CompoundSpecWhereInput
+  orderBy?: Prisma.CompoundSpecOrderByWithRelationInput | Prisma.CompoundSpecOrderByWithRelationInput[]
+  cursor?: Prisma.CompoundSpecWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
+  distinct?: Prisma.CompoundSpecScalarFieldEnum | Prisma.CompoundSpecScalarFieldEnum[]
+}
+
+/**
+ * User.emailDrafts
+ */
+export type User$emailDraftsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EmailDraft
+   */
+  select?: Prisma.EmailDraftSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EmailDraft
+   */
+  omit?: Prisma.EmailDraftOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmailDraftInclude<ExtArgs> | null
+  where?: Prisma.EmailDraftWhereInput
+  orderBy?: Prisma.EmailDraftOrderByWithRelationInput | Prisma.EmailDraftOrderByWithRelationInput[]
+  cursor?: Prisma.EmailDraftWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EmailDraftScalarFieldEnum | Prisma.EmailDraftScalarFieldEnum[]
 }
 
 /**
@@ -2477,51 +2501,27 @@ export type User$quotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 }
 
 /**
- * User.emailDrafts
+ * User.sessions
  */
-export type User$emailDraftsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the EmailDraft
+   * Select specific fields to fetch from the Session
    */
-  select?: Prisma.EmailDraftSelect<ExtArgs> | null
+  select?: Prisma.SessionSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the EmailDraft
+   * Omit specific fields from the Session
    */
-  omit?: Prisma.EmailDraftOmit<ExtArgs> | null
+  omit?: Prisma.SessionOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.EmailDraftInclude<ExtArgs> | null
-  where?: Prisma.EmailDraftWhereInput
-  orderBy?: Prisma.EmailDraftOrderByWithRelationInput | Prisma.EmailDraftOrderByWithRelationInput[]
-  cursor?: Prisma.EmailDraftWhereUniqueInput
+  include?: Prisma.SessionInclude<ExtArgs> | null
+  where?: Prisma.SessionWhereInput
+  orderBy?: Prisma.SessionOrderByWithRelationInput | Prisma.SessionOrderByWithRelationInput[]
+  cursor?: Prisma.SessionWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.EmailDraftScalarFieldEnum | Prisma.EmailDraftScalarFieldEnum[]
-}
-
-/**
- * User.compoundSpecs
- */
-export type User$compoundSpecsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the CompoundSpec
-   */
-  select?: Prisma.CompoundSpecSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the CompoundSpec
-   */
-  omit?: Prisma.CompoundSpecOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.CompoundSpecInclude<ExtArgs> | null
-  where?: Prisma.CompoundSpecWhereInput
-  orderBy?: Prisma.CompoundSpecOrderByWithRelationInput | Prisma.CompoundSpecOrderByWithRelationInput[]
-  cursor?: Prisma.CompoundSpecWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.CompoundSpecScalarFieldEnum | Prisma.CompoundSpecScalarFieldEnum[]
+  distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
 }
 
 /**
@@ -2549,9 +2549,9 @@ export type User$treadDesignsArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 /**
- * User.changeRequestsMade
+ * User.requestedChanges
  */
-export type User$changeRequestsMadeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$requestedChangesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the ChangeRequest
    */
@@ -2573,9 +2573,9 @@ export type User$changeRequestsMadeArgs<ExtArgs extends runtime.Types.Extensions
 }
 
 /**
- * User.changeRequestsReviewed
+ * User.reviewedChanges
  */
-export type User$changeRequestsReviewedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$reviewedChangesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the ChangeRequest
    */

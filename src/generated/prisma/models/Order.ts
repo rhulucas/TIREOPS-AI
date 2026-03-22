@@ -40,45 +40,45 @@ export type OrderMinAggregateOutputType = {
   id: string | null
   orderNumber: string | null
   status: string | null
-  customerId: string | null
   customerName: string | null
   tireSpec: string | null
   quantity: number | null
-  value: number | null
-  dueDate: Date | null
   userId: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  customerId: string | null
+  dueDate: Date | null
+  value: number | null
 }
 
 export type OrderMaxAggregateOutputType = {
   id: string | null
   orderNumber: string | null
   status: string | null
-  customerId: string | null
   customerName: string | null
   tireSpec: string | null
   quantity: number | null
-  value: number | null
-  dueDate: Date | null
   userId: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  customerId: string | null
+  dueDate: Date | null
+  value: number | null
 }
 
 export type OrderCountAggregateOutputType = {
   id: number
   orderNumber: number
   status: number
-  customerId: number
   customerName: number
   tireSpec: number
   quantity: number
-  value: number
-  dueDate: number
   userId: number
   createdAt: number
   updatedAt: number
+  customerId: number
+  dueDate: number
+  value: number
   _all: number
 }
 
@@ -97,45 +97,45 @@ export type OrderMinAggregateInputType = {
   id?: true
   orderNumber?: true
   status?: true
-  customerId?: true
   customerName?: true
   tireSpec?: true
   quantity?: true
-  value?: true
-  dueDate?: true
   userId?: true
   createdAt?: true
   updatedAt?: true
+  customerId?: true
+  dueDate?: true
+  value?: true
 }
 
 export type OrderMaxAggregateInputType = {
   id?: true
   orderNumber?: true
   status?: true
-  customerId?: true
   customerName?: true
   tireSpec?: true
   quantity?: true
-  value?: true
-  dueDate?: true
   userId?: true
   createdAt?: true
   updatedAt?: true
+  customerId?: true
+  dueDate?: true
+  value?: true
 }
 
 export type OrderCountAggregateInputType = {
   id?: true
   orderNumber?: true
   status?: true
-  customerId?: true
   customerName?: true
   tireSpec?: true
   quantity?: true
-  value?: true
-  dueDate?: true
   userId?: true
   createdAt?: true
   updatedAt?: true
+  customerId?: true
+  dueDate?: true
+  value?: true
   _all?: true
 }
 
@@ -229,15 +229,15 @@ export type OrderGroupByOutputType = {
   id: string
   orderNumber: string
   status: string
-  customerId: string | null
   customerName: string | null
   tireSpec: string | null
   quantity: number
-  value: number | null
-  dueDate: Date | null
   userId: string | null
   createdAt: Date
   updatedAt: Date
+  customerId: string | null
+  dueDate: Date | null
+  value: number | null
   _count: OrderCountAggregateOutputType | null
   _avg: OrderAvgAggregateOutputType | null
   _sum: OrderSumAggregateOutputType | null
@@ -267,15 +267,15 @@ export type OrderWhereInput = {
   id?: Prisma.StringFilter<"Order"> | string
   orderNumber?: Prisma.StringFilter<"Order"> | string
   status?: Prisma.StringFilter<"Order"> | string
-  customerId?: Prisma.StringNullableFilter<"Order"> | string | null
   customerName?: Prisma.StringNullableFilter<"Order"> | string | null
   tireSpec?: Prisma.StringNullableFilter<"Order"> | string | null
   quantity?: Prisma.IntFilter<"Order"> | number
-  value?: Prisma.FloatNullableFilter<"Order"> | number | null
-  dueDate?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
   userId?: Prisma.StringNullableFilter<"Order"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Order"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Order"> | Date | string
+  customerId?: Prisma.StringNullableFilter<"Order"> | string | null
+  dueDate?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
+  value?: Prisma.FloatNullableFilter<"Order"> | number | null
   customer?: Prisma.XOR<Prisma.CustomerNullableScalarRelationFilter, Prisma.CustomerWhereInput> | null
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
@@ -284,15 +284,15 @@ export type OrderOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   orderNumber?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  customerId?: Prisma.SortOrderInput | Prisma.SortOrder
   customerName?: Prisma.SortOrderInput | Prisma.SortOrder
   tireSpec?: Prisma.SortOrderInput | Prisma.SortOrder
   quantity?: Prisma.SortOrder
-  value?: Prisma.SortOrderInput | Prisma.SortOrder
-  dueDate?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  customerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  dueDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  value?: Prisma.SortOrderInput | Prisma.SortOrder
   customer?: Prisma.CustomerOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
 }
@@ -304,15 +304,15 @@ export type OrderWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.OrderWhereInput | Prisma.OrderWhereInput[]
   orderNumber?: Prisma.StringFilter<"Order"> | string
   status?: Prisma.StringFilter<"Order"> | string
-  customerId?: Prisma.StringNullableFilter<"Order"> | string | null
   customerName?: Prisma.StringNullableFilter<"Order"> | string | null
   tireSpec?: Prisma.StringNullableFilter<"Order"> | string | null
   quantity?: Prisma.IntFilter<"Order"> | number
-  value?: Prisma.FloatNullableFilter<"Order"> | number | null
-  dueDate?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
   userId?: Prisma.StringNullableFilter<"Order"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Order"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Order"> | Date | string
+  customerId?: Prisma.StringNullableFilter<"Order"> | string | null
+  dueDate?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
+  value?: Prisma.FloatNullableFilter<"Order"> | number | null
   customer?: Prisma.XOR<Prisma.CustomerNullableScalarRelationFilter, Prisma.CustomerWhereInput> | null
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id">
@@ -321,15 +321,15 @@ export type OrderOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   orderNumber?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  customerId?: Prisma.SortOrderInput | Prisma.SortOrder
   customerName?: Prisma.SortOrderInput | Prisma.SortOrder
   tireSpec?: Prisma.SortOrderInput | Prisma.SortOrder
   quantity?: Prisma.SortOrder
-  value?: Prisma.SortOrderInput | Prisma.SortOrder
-  dueDate?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  customerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  dueDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  value?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.OrderCountOrderByAggregateInput
   _avg?: Prisma.OrderAvgOrderByAggregateInput
   _max?: Prisma.OrderMaxOrderByAggregateInput
@@ -344,15 +344,15 @@ export type OrderScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Order"> | string
   orderNumber?: Prisma.StringWithAggregatesFilter<"Order"> | string
   status?: Prisma.StringWithAggregatesFilter<"Order"> | string
-  customerId?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
   customerName?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
   tireSpec?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
   quantity?: Prisma.IntWithAggregatesFilter<"Order"> | number
-  value?: Prisma.FloatNullableWithAggregatesFilter<"Order"> | number | null
-  dueDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
   userId?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Order"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Order"> | Date | string
+  customerId?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
+  dueDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
+  value?: Prisma.FloatNullableWithAggregatesFilter<"Order"> | number | null
 }
 
 export type OrderCreateInput = {
@@ -362,10 +362,10 @@ export type OrderCreateInput = {
   customerName?: string | null
   tireSpec?: string | null
   quantity?: number
-  value?: number | null
-  dueDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  dueDate?: Date | string | null
+  value?: number | null
   customer?: Prisma.CustomerCreateNestedOneWithoutOrdersInput
   user?: Prisma.UserCreateNestedOneWithoutOrdersInput
 }
@@ -374,15 +374,15 @@ export type OrderUncheckedCreateInput = {
   id?: string
   orderNumber: string
   status: string
-  customerId?: string | null
   customerName?: string | null
   tireSpec?: string | null
   quantity?: number
-  value?: number | null
-  dueDate?: Date | string | null
   userId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  customerId?: string | null
+  dueDate?: Date | string | null
+  value?: number | null
 }
 
 export type OrderUpdateInput = {
@@ -392,10 +392,10 @@ export type OrderUpdateInput = {
   customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tireSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   customer?: Prisma.CustomerUpdateOneWithoutOrdersNestedInput
   user?: Prisma.UserUpdateOneWithoutOrdersNestedInput
 }
@@ -404,30 +404,30 @@ export type OrderUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderNumber?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tireSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 export type OrderCreateManyInput = {
   id?: string
   orderNumber: string
   status: string
-  customerId?: string | null
   customerName?: string | null
   tireSpec?: string | null
   quantity?: number
-  value?: number | null
-  dueDate?: Date | string | null
   userId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  customerId?: string | null
+  dueDate?: Date | string | null
+  value?: number | null
 }
 
 export type OrderUpdateManyMutationInput = {
@@ -437,25 +437,25 @@ export type OrderUpdateManyMutationInput = {
   customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tireSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 export type OrderUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderNumber?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tireSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 export type OrderListRelationFilter = {
@@ -472,15 +472,15 @@ export type OrderCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   orderNumber?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  customerId?: Prisma.SortOrder
   customerName?: Prisma.SortOrder
   tireSpec?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
-  value?: Prisma.SortOrder
-  dueDate?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  customerId?: Prisma.SortOrder
+  dueDate?: Prisma.SortOrder
+  value?: Prisma.SortOrder
 }
 
 export type OrderAvgOrderByAggregateInput = {
@@ -492,30 +492,30 @@ export type OrderMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   orderNumber?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  customerId?: Prisma.SortOrder
   customerName?: Prisma.SortOrder
   tireSpec?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
-  value?: Prisma.SortOrder
-  dueDate?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  customerId?: Prisma.SortOrder
+  dueDate?: Prisma.SortOrder
+  value?: Prisma.SortOrder
 }
 
 export type OrderMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   orderNumber?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  customerId?: Prisma.SortOrder
   customerName?: Prisma.SortOrder
   tireSpec?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
-  value?: Prisma.SortOrder
-  dueDate?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  customerId?: Prisma.SortOrder
+  dueDate?: Prisma.SortOrder
+  value?: Prisma.SortOrder
 }
 
 export type OrderSumOrderByAggregateInput = {
@@ -630,10 +630,10 @@ export type OrderCreateWithoutUserInput = {
   customerName?: string | null
   tireSpec?: string | null
   quantity?: number
-  value?: number | null
-  dueDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  dueDate?: Date | string | null
+  value?: number | null
   customer?: Prisma.CustomerCreateNestedOneWithoutOrdersInput
 }
 
@@ -641,14 +641,14 @@ export type OrderUncheckedCreateWithoutUserInput = {
   id?: string
   orderNumber: string
   status: string
-  customerId?: string | null
   customerName?: string | null
   tireSpec?: string | null
   quantity?: number
-  value?: number | null
-  dueDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  customerId?: string | null
+  dueDate?: Date | string | null
+  value?: number | null
 }
 
 export type OrderCreateOrConnectWithoutUserInput = {
@@ -684,15 +684,15 @@ export type OrderScalarWhereInput = {
   id?: Prisma.StringFilter<"Order"> | string
   orderNumber?: Prisma.StringFilter<"Order"> | string
   status?: Prisma.StringFilter<"Order"> | string
-  customerId?: Prisma.StringNullableFilter<"Order"> | string | null
   customerName?: Prisma.StringNullableFilter<"Order"> | string | null
   tireSpec?: Prisma.StringNullableFilter<"Order"> | string | null
   quantity?: Prisma.IntFilter<"Order"> | number
-  value?: Prisma.FloatNullableFilter<"Order"> | number | null
-  dueDate?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
   userId?: Prisma.StringNullableFilter<"Order"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Order"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Order"> | Date | string
+  customerId?: Prisma.StringNullableFilter<"Order"> | string | null
+  dueDate?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
+  value?: Prisma.FloatNullableFilter<"Order"> | number | null
 }
 
 export type OrderCreateWithoutCustomerInput = {
@@ -702,10 +702,10 @@ export type OrderCreateWithoutCustomerInput = {
   customerName?: string | null
   tireSpec?: string | null
   quantity?: number
-  value?: number | null
-  dueDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  dueDate?: Date | string | null
+  value?: number | null
   user?: Prisma.UserCreateNestedOneWithoutOrdersInput
 }
 
@@ -716,11 +716,11 @@ export type OrderUncheckedCreateWithoutCustomerInput = {
   customerName?: string | null
   tireSpec?: string | null
   quantity?: number
-  value?: number | null
-  dueDate?: Date | string | null
   userId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  dueDate?: Date | string | null
+  value?: number | null
 }
 
 export type OrderCreateOrConnectWithoutCustomerInput = {
@@ -753,14 +753,14 @@ export type OrderCreateManyUserInput = {
   id?: string
   orderNumber: string
   status: string
-  customerId?: string | null
   customerName?: string | null
   tireSpec?: string | null
   quantity?: number
-  value?: number | null
-  dueDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  customerId?: string | null
+  dueDate?: Date | string | null
+  value?: number | null
 }
 
 export type OrderUpdateWithoutUserInput = {
@@ -770,10 +770,10 @@ export type OrderUpdateWithoutUserInput = {
   customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tireSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   customer?: Prisma.CustomerUpdateOneWithoutOrdersNestedInput
 }
 
@@ -781,28 +781,28 @@ export type OrderUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderNumber?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tireSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 export type OrderUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderNumber?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tireSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 export type OrderCreateManyCustomerInput = {
@@ -812,11 +812,11 @@ export type OrderCreateManyCustomerInput = {
   customerName?: string | null
   tireSpec?: string | null
   quantity?: number
-  value?: number | null
-  dueDate?: Date | string | null
   userId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  dueDate?: Date | string | null
+  value?: number | null
 }
 
 export type OrderUpdateWithoutCustomerInput = {
@@ -826,10 +826,10 @@ export type OrderUpdateWithoutCustomerInput = {
   customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tireSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   user?: Prisma.UserUpdateOneWithoutOrdersNestedInput
 }
 
@@ -840,11 +840,11 @@ export type OrderUncheckedUpdateWithoutCustomerInput = {
   customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tireSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 export type OrderUncheckedUpdateManyWithoutCustomerInput = {
@@ -854,11 +854,11 @@ export type OrderUncheckedUpdateManyWithoutCustomerInput = {
   customerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tireSpec?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 
@@ -867,15 +867,15 @@ export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   id?: boolean
   orderNumber?: boolean
   status?: boolean
-  customerId?: boolean
   customerName?: boolean
   tireSpec?: boolean
   quantity?: boolean
-  value?: boolean
-  dueDate?: boolean
   userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  customerId?: boolean
+  dueDate?: boolean
+  value?: boolean
   customer?: boolean | Prisma.Order$customerArgs<ExtArgs>
   user?: boolean | Prisma.Order$userArgs<ExtArgs>
 }, ExtArgs["result"]["order"]>
@@ -884,15 +884,15 @@ export type OrderSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   id?: boolean
   orderNumber?: boolean
   status?: boolean
-  customerId?: boolean
   customerName?: boolean
   tireSpec?: boolean
   quantity?: boolean
-  value?: boolean
-  dueDate?: boolean
   userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  customerId?: boolean
+  dueDate?: boolean
+  value?: boolean
   customer?: boolean | Prisma.Order$customerArgs<ExtArgs>
   user?: boolean | Prisma.Order$userArgs<ExtArgs>
 }, ExtArgs["result"]["order"]>
@@ -901,15 +901,15 @@ export type OrderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   id?: boolean
   orderNumber?: boolean
   status?: boolean
-  customerId?: boolean
   customerName?: boolean
   tireSpec?: boolean
   quantity?: boolean
-  value?: boolean
-  dueDate?: boolean
   userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  customerId?: boolean
+  dueDate?: boolean
+  value?: boolean
   customer?: boolean | Prisma.Order$customerArgs<ExtArgs>
   user?: boolean | Prisma.Order$userArgs<ExtArgs>
 }, ExtArgs["result"]["order"]>
@@ -918,18 +918,18 @@ export type OrderSelectScalar = {
   id?: boolean
   orderNumber?: boolean
   status?: boolean
-  customerId?: boolean
   customerName?: boolean
   tireSpec?: boolean
   quantity?: boolean
-  value?: boolean
-  dueDate?: boolean
   userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  customerId?: boolean
+  dueDate?: boolean
+  value?: boolean
 }
 
-export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderNumber" | "status" | "customerId" | "customerName" | "tireSpec" | "quantity" | "value" | "dueDate" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
+export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderNumber" | "status" | "customerName" | "tireSpec" | "quantity" | "userId" | "createdAt" | "updatedAt" | "customerId" | "dueDate" | "value", ExtArgs["result"]["order"]>
 export type OrderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   customer?: boolean | Prisma.Order$customerArgs<ExtArgs>
   user?: boolean | Prisma.Order$userArgs<ExtArgs>
@@ -953,15 +953,15 @@ export type $OrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     id: string
     orderNumber: string
     status: string
-    customerId: string | null
     customerName: string | null
     tireSpec: string | null
     quantity: number
-    value: number | null
-    dueDate: Date | null
     userId: string | null
     createdAt: Date
     updatedAt: Date
+    customerId: string | null
+    dueDate: Date | null
+    value: number | null
   }, ExtArgs["result"]["order"]>
   composites: {}
 }
@@ -1390,15 +1390,15 @@ export interface OrderFieldRefs {
   readonly id: Prisma.FieldRef<"Order", 'String'>
   readonly orderNumber: Prisma.FieldRef<"Order", 'String'>
   readonly status: Prisma.FieldRef<"Order", 'String'>
-  readonly customerId: Prisma.FieldRef<"Order", 'String'>
   readonly customerName: Prisma.FieldRef<"Order", 'String'>
   readonly tireSpec: Prisma.FieldRef<"Order", 'String'>
   readonly quantity: Prisma.FieldRef<"Order", 'Int'>
-  readonly value: Prisma.FieldRef<"Order", 'Float'>
-  readonly dueDate: Prisma.FieldRef<"Order", 'DateTime'>
   readonly userId: Prisma.FieldRef<"Order", 'String'>
   readonly createdAt: Prisma.FieldRef<"Order", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Order", 'DateTime'>
+  readonly customerId: Prisma.FieldRef<"Order", 'String'>
+  readonly dueDate: Prisma.FieldRef<"Order", 'DateTime'>
+  readonly value: Prisma.FieldRef<"Order", 'Float'>
 }
     
 

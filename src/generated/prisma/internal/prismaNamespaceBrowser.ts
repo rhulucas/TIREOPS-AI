@@ -148,15 +148,15 @@ export const OrderScalarFieldEnum = {
   id: 'id',
   orderNumber: 'orderNumber',
   status: 'status',
-  customerId: 'customerId',
   customerName: 'customerName',
   tireSpec: 'tireSpec',
   quantity: 'quantity',
-  value: 'value',
-  dueDate: 'dueDate',
   userId: 'userId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  customerId: 'customerId',
+  dueDate: 'dueDate',
+  value: 'value'
 } as const
 
 export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
@@ -164,18 +164,18 @@ export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof Or
 
 export const QuoteScalarFieldEnum = {
   id: 'id',
-  customerName: 'customerName',
-  category: 'category',
   size: 'size',
   loadIndex: 'loadIndex',
   speedRating: 'speedRating',
-  quantity: 'quantity',
-  compound: 'compound',
-  notes: 'notes',
-  result: 'result',
-  customerId: 'customerId',
   userId: 'userId',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  category: 'category',
+  compound: 'compound',
+  customerId: 'customerId',
+  customerName: 'customerName',
+  notes: 'notes',
+  quantity: 'quantity',
+  result: 'result'
 } as const
 
 export type QuoteScalarFieldEnum = (typeof QuoteScalarFieldEnum)[keyof typeof QuoteScalarFieldEnum]
@@ -233,21 +233,21 @@ export type CompoundSpecScalarFieldEnum = (typeof CompoundSpecScalarFieldEnum)[k
 export const TreadDesignScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  application: 'application',
+  widthMm: 'widthMm',
+  heightMm: 'heightMm',
+  moldSpec: 'moldSpec',
+  userId: 'userId',
+  createdAt: 'createdAt',
   category: 'category',
   season: 'season',
   status: 'status',
   version: 'version',
-  application: 'application',
-  widthMm: 'widthMm',
-  heightMm: 'heightMm',
   grooveDepthMm: 'grooveDepthMm',
   noiseRating: 'noiseRating',
   wetGripRating: 'wetGripRating',
   rollingResistance: 'rollingResistance',
   notes: 'notes',
-  moldSpec: 'moldSpec',
-  userId: 'userId',
-  createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
