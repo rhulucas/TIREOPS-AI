@@ -137,16 +137,16 @@ export default function LandingPage() {
       </section>
 
       {/* ── Featured AI Modules ── */}
-      <section className="bg-[#f8fafc] py-20">
+      <section className="bg-[#0d1424] py-20">
         <div className="mx-auto max-w-5xl px-6">
           <div className="text-center mb-12">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700 uppercase tracking-wide">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1 text-xs font-semibold text-blue-400 uppercase tracking-wide">
               <Sparkles className="h-3 w-3" /> AI Core Features
             </span>
-            <h2 className="mt-4 text-3xl font-bold text-[var(--text)] sm:text-4xl">
+            <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">
               Intelligent Manufacturing, Simplified
             </h2>
-            <p className="mt-3 text-[var(--text-dim)] max-w-xl mx-auto">
+            <p className="mt-3 text-slate-400 max-w-xl mx-auto">
               GPT-powered modules that handle complex decisions so your team can focus on production.
             </p>
           </div>
@@ -181,15 +181,15 @@ export default function LandingPage() {
               return (
                 <div
                   key={f.title}
-                  className="group rounded-xl border border-[var(--border)] bg-white p-5 shadow-sm transition-all hover:border-blue-200 hover:shadow-md hover:-translate-y-0.5"
+                  className="group rounded-xl border border-white/8 bg-white/5 p-5 backdrop-blur-sm transition-all hover:border-blue-500/40 hover:bg-white/8 hover:-translate-y-0.5"
                 >
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--accent-light)] text-[var(--accent)] transition-colors group-hover:bg-blue-100">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/15 text-blue-400 transition-colors group-hover:bg-blue-500/25">
                     <Icon className="h-5 w-5" />
                   </div>
-                  <h3 className="mt-4 text-sm font-semibold text-[var(--text)]">
+                  <h3 className="mt-4 text-sm font-semibold text-white">
                     {f.title}
                   </h3>
-                  <p className="mt-2 text-xs leading-relaxed text-[var(--text-dim)]">
+                  <p className="mt-2 text-xs leading-relaxed text-slate-400">
                     {f.desc}
                   </p>
                 </div>
@@ -200,22 +200,28 @@ export default function LandingPage() {
       </section>
 
       {/* ── CTA Banner ── */}
-      <section className="bg-[#0f172a] py-20">
-        <div className="mx-auto max-w-3xl px-6 text-center">
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#1e3a8a] to-[#0f172a] py-20">
+        <div className="absolute inset-0 opacity-[0.06]"
+          style={{
+            backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+            backgroundSize: "48px 48px",
+          }}
+        />
+        <div className="relative mx-auto max-w-3xl px-6 text-center">
           <h2 className="text-3xl font-bold text-white sm:text-4xl">
             Ready to run smarter operations?
           </h2>
-          <p className="mt-4 text-slate-400 text-base max-w-xl mx-auto">
+          <p className="mt-4 text-blue-200/70 text-base max-w-xl mx-auto">
             Sign in to access the full dashboard, real-time production data, AI modules, and your team's workflow tools.
           </p>
           <Link
             href="/login?callbackUrl=/dashboard"
-            className="mt-8 inline-flex items-center gap-2.5 rounded-xl bg-[var(--accent)] px-8 py-4 text-base font-semibold text-white shadow-lg shadow-blue-900/40 transition-all hover:bg-blue-600 hover:-translate-y-0.5 hover:shadow-xl"
+            className="mt-8 inline-flex items-center gap-2.5 rounded-xl bg-white px-8 py-4 text-base font-semibold text-[#1e3a8a] shadow-xl shadow-blue-900/40 transition-all hover:bg-blue-50 hover:-translate-y-0.5 hover:shadow-2xl"
           >
             Sign In to Dashboard
             <ArrowRight className="h-5 w-5" />
           </Link>
-          <p className="mt-4 text-xs text-slate-600">
+          <p className="mt-4 text-xs text-blue-300/40">
             Authorized employees only · Internal use
           </p>
         </div>
