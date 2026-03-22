@@ -13,7 +13,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: read #This is required for actions/checkout
 
     steps:
       - uses: actions/checkout@v4
@@ -22,60 +22,38 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
-          cache: 'npm'
-
-      - name: Set env for build (Prisma needs DATABASE_URL to parse schema)
-        run: echo "DATABASE_URL=postgresql://dummy:dummy@localhost:5432/dummy" >> $GITHUB_ENV
-
-      - name: npm install
-        run: npm install
-
-      - name: Generate Prisma client
-        run: npx prisma generate
-
-      - name: Build
-        run: npm run build
-
-      - name: Prepare standalone for Azure
-        run: |
-          cp -r public .next/standalone/
-          cp -r .next/static .next/standalone/.next/static
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: .next/standalone
+          path: .
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
     permissions:
-      id-token: write
-      contents: read
+      id-token: write #This is required for requesting the JWT
+      contents: read #This is required for actions/checkout
 
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: node-app
-
+      
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_EB92F464310D4DEDB90DD8A44E4A1012 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_1E1581CD236B45359737542380FA5C3F }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_166257B5608D4A52A91D0B4ABFCC3771 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_9D8ECD14327E43C7A70700C0ECC55CC6 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_EF736508AAF74DF4B7B7CAE04193669E }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_80FC5815BF734D4CB2884FBA440FC1BE }}
 
-      - name: Configure Azure (disable Oryx build, set startup command)
-        run: |
-          az webapp config set --name tireops-app --resource-group tireops-rg --startup-file "node server.js"
-          az webapp config appsettings set --name tireops-app --resource-group tireops-rg --settings SCM_DO_BUILD_DURING_DEPLOYMENT=false ENABLE_ORYX_BUILD=false --output none
-
-      - name: Deploy to Azure Web App
+      - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'tireops-app'
           slot-name: 'Production'
           package: .
+          
