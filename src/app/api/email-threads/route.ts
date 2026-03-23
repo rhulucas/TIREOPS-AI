@@ -9,11 +9,18 @@ export async function GET(req: NextRequest) {
   const q = req.nextUrl.searchParams.get("q") || "";
   const status = req.nextUrl.searchParams.get("status") || "all";
   const sort = req.nextUrl.searchParams.get("sort") || "newest";
+  const year = req.nextUrl.searchParams.get("year") || "all";
   const page = Math.max(Number(req.nextUrl.searchParams.get("page") || 1), 1);
   const pageSize = Math.min(Number(req.nextUrl.searchParams.get("pageSize") || 30), 100);
 
   const where = {
     ...(status !== "all" ? { status } : {}),
+    ...(year !== "all" ? {
+      updatedAt: {
+        gte: new Date(`${year}-01-01T00:00:00.000Z`),
+        lt: new Date(`${Number(year) + 1}-01-01T00:00:00.000Z`),
+      },
+    } : {}),
     ...(q ? {
       OR: [
         { customerName: { contains: q, mode: "insensitive" as const } },

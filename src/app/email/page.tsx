@@ -60,8 +60,11 @@ function EmailAIContent() {
   const [search, setSearch] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [yearFilter, setYearFilter] = useState("all");
   const [sort, setSort] = useState("newest");
   const pageSize = 30;
+  const currentYear = new Date().getFullYear();
+  const years = ["all", ...Array.from({ length: 6 }, (_, i) => String(currentYear - i))];
 
   const [selectedId, setSelectedId] = useState<string | null>(initialThreadId);
   const [thread, setThread] = useState<Thread | null>(null);
@@ -92,6 +95,7 @@ function EmailAIContent() {
       pageSize: String(pageSize),
       sort,
       status: statusFilter,
+      year: yearFilter,
       ...(search ? { q: search } : {}),
     });
     const r = await fetch(`/api/email-threads?${params}`);
@@ -110,8 +114,8 @@ function EmailAIContent() {
     setLoadingThread(false);
   };
 
-  useEffect(() => { loadThreads(); }, [page, search, statusFilter, sort]);
-  useEffect(() => { setPage(1); }, [search, statusFilter, sort]);
+  useEffect(() => { loadThreads(); }, [page, search, statusFilter, yearFilter, sort]);
+  useEffect(() => { setPage(1); }, [search, statusFilter, yearFilter, sort]);
   useEffect(() => {
     if (selectedId) loadThread(selectedId);
     else setThread(null);
@@ -270,6 +274,23 @@ function EmailAIContent() {
                 }`}
               >
                 {s === "all" ? "All" : STATUS_LABEL[s] || s}
+              </button>
+            ))}
+          </div>
+
+          {/* Year filter */}
+          <div className="mb-2 flex gap-1 overflow-x-auto">
+            {years.map((y) => (
+              <button
+                key={y}
+                onClick={() => setYearFilter(y)}
+                className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold transition-colors ${
+                  yearFilter === y
+                    ? "bg-[var(--accent)] text-white"
+                    : "border border-[var(--border2)] text-[var(--text-dim)] hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                }`}
+              >
+                {y === "all" ? "All Years" : y}
               </button>
             ))}
           </div>
