@@ -18,6 +18,7 @@ model User {
   accounts         Account[]
   compoundSpecs    CompoundSpec[]
   emailDrafts      EmailDraft[]
+  emailThreads     EmailThread[]
   orders           Order[]
   quotes           Quote[]
   sessions         Session[]
@@ -212,4 +213,31 @@ model ProductionLine {
   status     String
   efficiency Float  @default(0)
   qcFails    Int    @default(0) @map("qc_fails")
+}
+
+model EmailThread {
+  id            String         @id @default(cuid())
+  subject       String
+  customerName  String         @map("customer_name")
+  customerEmail String?        @map("customer_email")
+  quoteId       String?        @map("quote_id")
+  orderId       String?        @map("order_id")
+  status        String         @default("OPEN")
+  tireSpec      String?        @map("tire_spec")
+  quantity      Int?
+  unitPrice     Float?         @map("unit_price")
+  userId        String?        @map("user_id")
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+  messages      EmailMessage[]
+  user          User?          @relation(fields: [userId], references: [id])
+}
+
+model EmailMessage {
+  id        String      @id @default(cuid())
+  threadId  String      @map("thread_id")
+  sender    String
+  content   String
+  createdAt DateTime    @default(now()) @map("created_at")
+  thread    EmailThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
 }

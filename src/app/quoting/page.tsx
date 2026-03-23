@@ -83,6 +83,7 @@ export default function AIQuotingPage() {
   const [lastCreatedOrderId, setLastCreatedOrderId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [converting, setConverting] = useState(false);
+  const [sendingEmail, setSendingEmail] = useState(false);
   const [quotes, setQuotes] = useState<QuoteRow[]>([]);
   const [quoteSearch, setQuoteSearch] = useState("");
   const [quotePage, setQuotePage] = useState(1);
@@ -250,6 +251,40 @@ export default function AIQuotingPage() {
       setConverting(false);
     }
   };
+  const handleSendQuoteEmail = async () => {
+    if (!customer.trim()) { alert("Please enter a customer name first."); return; }
+    if (!result) { alert("Please generate a quote first."); return; }
+    setSendingEmail(true);
+    try {
+      const tireSpec = `${size}${category ? ` · ${category}` : ""}`;
+      const unitPrice = resolvedSalesAssistant?.recommendedQuote.estimatedUnitPrice ?? null;
+      const subject = `Quote for ${tireSpec} × ${quantity || "?"} units — ${customer}`;
+      const initialMessage = result.slice(0, 1200);
+      const res = await fetch("/api/email-threads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          subject,
+          customerName: customer.trim(),
+          customerEmail: null,
+          quoteId: lastCreatedQuoteId || null,
+          tireSpec,
+          quantity: quantity ? Number(quantity) : null,
+          unitPrice,
+          initialMessage,
+        }),
+      });
+      const d = await safeJson<{ thread?: { id: string } }>(res);
+      if (d.thread) {
+        router.push(`/inbox/${d.thread.id}`);
+      }
+    } catch (e) {
+      alert(String(e));
+    } finally {
+      setSendingEmail(false);
+    }
+  };
+
   const clearQuoteForm = () => {
     setCustomer("");
     setSelectedCustomer(null);
@@ -545,13 +580,15 @@ export default function AIQuotingPage() {
           >
             Copy
           </button>
-          {lastCreatedQuoteId && (
-            <Link
-              href={`/email?scenario=Quote+Follow-up&quoteId=${lastCreatedQuoteId}${selectedCustomer?.id ? `&customerId=${selectedCustomer.id}` : ""}`}
-              className="inline-flex items-center gap-1.5 rounded-[7px] border border-blue-300 bg-blue-50 px-4 py-2 text-[13px] font-semibold text-blue-700 transition-colors hover:bg-blue-100"
+          {result && (
+            <button
+              type="button"
+              onClick={handleSendQuoteEmail}
+              disabled={sendingEmail}
+              className="inline-flex items-center gap-1.5 rounded-[7px] border border-blue-300 bg-blue-50 px-4 py-2 text-[13px] font-semibold text-blue-700 transition-colors hover:bg-blue-100 disabled:opacity-40"
             >
-              ✉ Send Quote Email
-            </Link>
+              {sendingEmail ? "Opening…" : "✉ Send Quote Email"}
+            </button>
           )}
           <button
             type="button"
