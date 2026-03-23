@@ -23,7 +23,34 @@ const CUSTOMER_REPLIES: Record<number, string[]> = {
   ],
 };
 
-function getCustomerReply(roundIndex: number, unitPrice?: number | null): string {
+const INVOICE_CUSTOMER_REPLIES: Record<number, string[]> = {
+  1: [
+    "Thank you for sending the invoice. We've reviewed it and everything looks correct. We'll process the payment per the terms stated.",
+    "Invoice received. Our accounts payable team is processing it now — payment should go out within the week.",
+    "Thanks for the invoice. We'll need a couple of days for internal approval before releasing payment. We'll keep you posted.",
+    "Received, thank you. The invoice matches our PO. We'll initiate the wire transfer shortly.",
+  ],
+  2: [
+    "Payment has been initiated. You should see the transfer within 2–3 business days.",
+    "We've sent the payment through our bank today. Please confirm when received.",
+    "AP has approved the invoice. Wire transfer will be processed by end of day.",
+    "Payment sent. Transfer reference: TRF-{ref}. Please acknowledge receipt.",
+  ],
+  3: [
+    "Please confirm you've received our payment. We'd appreciate a receipt or paid confirmation.",
+    "Following up on the wire transfer. Has it cleared on your end?",
+    "Just checking in — did you receive the payment? Let us know when you can confirm.",
+    "Can you please issue a receipt once payment is confirmed? Thank you.",
+  ],
+};
+
+function getCustomerReply(roundIndex: number, unitPrice?: number | null, isInvoice?: boolean): string {
+  if (isInvoice) {
+    const replies = INVOICE_CUSTOMER_REPLIES[Math.min(roundIndex, 3)] || INVOICE_CUSTOMER_REPLIES[3]!;
+    const reply = replies[Math.floor(Math.random() * replies.length)]!;
+    const ref = Math.floor(Math.random() * 900000 + 100000).toString();
+    return reply.replace("{ref}", ref);
+  }
   const replies = CUSTOMER_REPLIES[Math.min(roundIndex, 3)] || CUSTOMER_REPLIES[3]!;
   const reply = replies[Math.floor(Math.random() * replies.length)]!;
   const lower = unitPrice ? `$${Math.round(unitPrice * 0.88).toLocaleString()}` : "$80";
@@ -60,7 +87,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
         include: { messages: true },
       });
       const salesRound = (thread?.messages || []).filter((m) => m.sender === "sales").length;
-      const replyText = getCustomerReply(salesRound, thread?.unitPrice);
+      const isInvoice = thread?.subject?.startsWith("Invoice ") ?? false;
+      const replyText = getCustomerReply(salesRound, thread?.unitPrice, isInvoice);
 
       // Simulate delay by saving immediately (in real app you'd use a queue/webhook)
       customerReply = await prisma.emailMessage.create({

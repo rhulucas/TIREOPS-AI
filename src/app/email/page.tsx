@@ -389,29 +389,41 @@ function EmailAIContent() {
                 {thread.customerName}
                 {thread.tireSpec && <> · {thread.tireSpec}</>}
                 {thread.quantity && <> · Qty {thread.quantity}</>}
-                {thread.unitPrice && <> · ${thread.unitPrice.toLocaleString()}/unit</>}
+                {thread.unitPrice && (thread.subject?.startsWith("Invoice ")
+                  ? <> · Invoice Total: ${thread.unitPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</>
+                  : <> · ${thread.unitPrice.toLocaleString()}/unit</>
+                )}
               </p>
             </div>
             <div className="flex gap-2">
-              {thread.status === "OPEN" && (
-                <button
-                  onClick={markAgreed}
-                  className="rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-100"
-                >
-                  ✓ Mark Agreed
-                </button>
+              {!thread.subject?.startsWith("Invoice ") && (
+                <>
+                  {thread.status === "OPEN" && (
+                    <button
+                      onClick={markAgreed}
+                      className="rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-100"
+                    >
+                      ✓ Mark Agreed
+                    </button>
+                  )}
+                  {(thread.status === "AGREED" || (thread.messages.length >= 3 && thread.status !== "CLOSED")) && (
+                    <button
+                      onClick={convertToOrder}
+                      disabled={converting}
+                      className="rounded-lg bg-[var(--accent)] px-3 py-1.5 text-xs font-semibold text-white hover:opacity-90 disabled:opacity-50"
+                    >
+                      {converting ? "Creating…" : "Convert to Order →"}
+                    </button>
+                  )}
+                  {thread.status === "CLOSED" && (
+                    <span className="rounded-lg bg-gray-100 px-3 py-1.5 text-xs font-semibold text-gray-500">✓ Order Created</span>
+                  )}
+                </>
               )}
-              {(thread.status === "AGREED" || (thread.messages.length >= 3 && thread.status !== "CLOSED")) && (
-                <button
-                  onClick={convertToOrder}
-                  disabled={converting}
-                  className="rounded-lg bg-[var(--accent)] px-3 py-1.5 text-xs font-semibold text-white hover:opacity-90 disabled:opacity-50"
-                >
-                  {converting ? "Creating…" : "Convert to Order →"}
-                </button>
-              )}
-              {thread.status === "CLOSED" && (
-                <span className="rounded-lg bg-gray-100 px-3 py-1.5 text-xs font-semibold text-gray-500">✓ Order Created</span>
+              {thread.subject?.startsWith("Invoice ") && (
+                <span className="rounded-lg bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-600">
+                  Invoice Thread — go to Invoices to mark paid
+                </span>
               )}
             </div>
           </div>

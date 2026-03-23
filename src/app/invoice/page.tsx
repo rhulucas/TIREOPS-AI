@@ -1,8 +1,7 @@
 "use client";
 
 import { Suspense, useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
-import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
 import { AlertTriangle, Loader2, Mail, Save, Search, RotateCcw, Plus, Trash2, WandSparkles } from "lucide-react";
 import { safeJson } from "@/lib/safe-json";
 import { CustomerAutocomplete, type Customer } from "@/components/CustomerAutocomplete";
@@ -21,7 +20,21 @@ type InvoiceRow = {
   paidAt?: string | null;
   createdAt: string;
   preview?: string | null;
+  items?: string | null;
+  taxRate?: number | null;
+  paymentTerms?: string | null;
 };
+
+function calcInvoiceTotal(row: InvoiceRow): number {
+  if (!row.items) return 0;
+  try {
+    const items: LineItem[] = JSON.parse(row.items);
+    const sub = items.reduce((s, i) => s + i.quantity * i.unitPrice, 0);
+    return sub * (1 + (row.taxRate ?? 0) / 100);
+  } catch {
+    return 0;
+  }
+}
 
 type OrderSuggestion = {
   id: string;
@@ -140,7 +153,9 @@ function InvoiceAIContent() {
   const [draftSeed, setDraftSeed] = useState<DraftSeed | null>(null);
   const [linkedOrderId, setLinkedOrderId] = useState<string | null>(null);
   const [markingPaid, setMarkingPaid] = useState<string | null>(null);
+  const [sendingEmail, setSendingEmail] = useState<string | null>(null);
   const searchParams = useSearchParams();
+  const router = useRouter();
   const invoicePageSize = 20;
   const availableYears = ["all", "2026", "2025", "2024", "2023", "2022", "2021"];
   const subtotal = lineItems.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
@@ -426,6 +441,42 @@ function InvoiceAIContent() {
       alert("Failed to update payment status");
     } finally {
       setMarkingPaid(null);
+    }
+  };
+
+  const handleSendInvoiceEmail = async (inv: InvoiceRow) => {
+    setSendingEmail(inv.id);
+    try {
+      const total = calcInvoiceTotal(inv);
+      const totalStr = total > 0 ? `$${formatCurrency(total)}` : "(see invoice)";
+      const subject = `Invoice ${inv.invoiceNumber} — ${inv.customerName}`;
+      const initialMessage =
+        `Dear ${inv.customerName},\n\nPlease find your invoice below.\n\n` +
+        `• Invoice Number: ${inv.invoiceNumber}\n` +
+        `• Order Reference: ${inv.orderRef || "—"}\n` +
+        `• Payment Terms: ${inv.paymentTerms || "Net 30"}\n` +
+        `• Invoice Total: ${totalStr}\n\n` +
+        (inv.preview ? `Invoice Details:\n${inv.preview}\n\n` : "") +
+        `Please remit payment per the terms above. If you have any questions, don't hesitate to reach out.\n\nBest regards,\nTireOps Billing Team`;
+      const res = await fetch("/api/email-threads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          subject,
+          customerName: inv.customerName,
+          initialMessage,
+          invoiceId: inv.id,
+          invoiceNumber: inv.invoiceNumber,
+          invoiceTotal: total,
+        }),
+      });
+      if (!res.ok) throw new Error("Failed to create email thread");
+      const data = await res.json();
+      router.push(`/email?threadId=${data.thread?.id}`);
+    } catch (e) {
+      alert(String(e));
+    } finally {
+      setSendingEmail(null);
     }
   };
 
@@ -802,13 +853,14 @@ function InvoiceAIContent() {
                 <th className="pb-2 pr-4 font-semibold text-[var(--text-mid)]">Invoice #</th>
                 <th className="pb-2 pr-4 font-semibold text-[var(--text-mid)]">Customer</th>
                 <th className="pb-2 pr-4 font-semibold text-[var(--text-mid)]">Order Ref</th>
+                <th className="pb-2 pr-4 font-semibold text-[var(--text-mid)]">Total</th>
                 <th className="pb-2 pr-4 font-semibold text-[var(--text-mid)]">Status</th>
                 <th className="pb-2 font-semibold text-[var(--text-mid)]">Actions</th>
               </tr>
             </thead>
             <tbody>
               {invoices.length === 0 ? (
-                <tr><td colSpan={4} className="py-4 text-center text-[var(--text-dim)]">No invoices yet.</td></tr>
+                <tr><td colSpan={6} className="py-4 text-center text-[var(--text-dim)]">No invoices yet.</td></tr>
               ) : (
                 invoices.map((inv) => (
                   <tr key={inv.id} className="border-b border-[var(--border2)]">
@@ -823,6 +875,9 @@ function InvoiceAIContent() {
                     </td>
                     <td className="py-2 pr-4">{inv.customerName}</td>
                     <td className="py-2 pr-4">{inv.orderRef || "—"}</td>
+                    <td className="py-2 pr-4 tabular-nums">
+                      {calcInvoiceTotal(inv) > 0 ? `$${formatCurrency(calcInvoiceTotal(inv))}` : "—"}
+                    </td>
                     <td className="py-2 pr-4">
                       {inv.status === "PAID" ? (
                         <span className="rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-semibold text-green-700">
@@ -847,12 +902,14 @@ function InvoiceAIContent() {
                           </button>
                         )}
                         {inv.id !== "pending" && (
-                          <Link
-                            href={`/email?scenario=Invoice+Delivery&invoiceId=${inv.id}`}
-                            className="rounded-[5px] border border-blue-200 bg-blue-50 px-2 py-0.5 text-[10px] font-semibold text-blue-600 hover:bg-blue-100 whitespace-nowrap"
+                          <button
+                            type="button"
+                            onClick={() => handleSendInvoiceEmail(inv)}
+                            disabled={sendingEmail === inv.id}
+                            className="rounded-[5px] border border-blue-200 bg-blue-50 px-2 py-0.5 text-[10px] font-semibold text-blue-600 hover:bg-blue-100 whitespace-nowrap disabled:opacity-50"
                           >
-                            ✉ Email
-                          </Link>
+                            {sendingEmail === inv.id ? "..." : "✉ Send Invoice"}
+                          </button>
                         )}
                       </div>
                     </td>
