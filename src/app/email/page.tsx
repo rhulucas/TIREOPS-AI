@@ -371,8 +371,7 @@ function EmailAIContent() {
             </div>
 
             {/* ── AI Draft Panel ─────────────────────────────────────────── */}
-            {thread.status !== "CLOSED" && (
-              <div className="flex w-80 shrink-0 flex-col gap-3 overflow-y-auto border-l border-[var(--border2)] bg-[var(--bg)] p-4">
+            <div className="flex w-80 shrink-0 flex-col gap-3 overflow-y-auto border-l border-[var(--border2)] bg-[var(--bg)] p-4">
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-bold text-[var(--text)]">✨ AI Draft</span>
                   <span className="rounded-full bg-[var(--accent-light)] px-2 py-0.5 text-[10px] font-semibold text-[var(--accent)]">
@@ -455,7 +454,6 @@ function EmailAIContent() {
                   </div>
                 )}
               </div>
-            )}
           </div>
         </div>
       ) : null}
