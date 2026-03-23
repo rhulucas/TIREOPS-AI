@@ -344,27 +344,27 @@ function EmailAIContent() {
 
               {/* Reply box */}
               {thread.status !== "CLOSED" ? (
-                <div className="border-t border-[var(--border2)] px-6 py-3">
+                <div className="shrink-0 border-t border-[var(--border2)] px-6 py-4">
                   <textarea
                     value={reply}
                     onChange={(e) => setReply(e.target.value)}
                     onKeyDown={(e) => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) sendReply(); }}
                     placeholder="Type your reply… (Cmd+Enter to send)"
-                    rows={3}
-                    className="w-full resize-none rounded-xl border border-[var(--border2)] bg-[var(--card)] px-4 py-2.5 text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
+                    rows={12}
+                    className="w-full resize-y rounded-xl border border-[var(--border2)] bg-[var(--card)] px-4 py-3 text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
                   />
                   <div className="mt-2 flex justify-end">
                     <button
                       onClick={sendReply}
                       disabled={!reply.trim() || sending}
-                      className="rounded-xl bg-[var(--accent)] px-5 py-2 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-40"
+                      className="rounded-xl bg-[var(--accent)] px-6 py-2.5 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-40"
                     >
                       {sending ? "Sending…" : "Send Reply"}
                     </button>
                   </div>
                 </div>
               ) : (
-                <div className="border-t border-[var(--border2)] px-6 py-3 text-center text-sm font-semibold text-emerald-700">
+                <div className="shrink-0 border-t border-[var(--border2)] px-6 py-3 text-center text-sm font-semibold text-emerald-700">
                   ✓ Conversation closed — Order created
                 </div>
               )}
