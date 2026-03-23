@@ -1,631 +1,472 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
-import { Loader2, Search } from "lucide-react";
+import { Suspense, useEffect, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Loader2 } from "lucide-react";
 import { safeJson } from "@/lib/safe-json";
 
-type CustomerOption = {
-  id: string;
-  name: string | null;
-  company: string | null;
-  email: string | null;
-};
+// ── Types ─────────────────────────────────────────────────────────────────────
 
-type QuoteOption = {
+type Message = { id: string; sender: string; content: string; createdAt: string };
+type Thread = {
   id: string;
-  customerName: string | null;
-  category: string | null;
-  size: string;
-  quantity: number | null;
-  createdAt: string;
-  customerId: string | null;
-};
-
-type OrderOption = {
-  id: string;
-  orderNumber: string;
-  customerName: string | null;
-  tireSpec: string | null;
-  quantity: number;
-  value: number | null;
-  createdAt: string;
-};
-
-type InvoiceOption = {
-  id: string;
-  invoiceNumber: string;
+  subject: string;
   customerName: string;
-  orderRef: string | null;
-  paymentTerms: string;
-  createdAt: string;
+  tireSpec: string | null;
+  quantity: number | null;
+  unitPrice: number | null;
+  quoteId: string | null;
+  status: string;
+  updatedAt: string;
+  messages: Message[];
 };
 
-type EmailAssistantResponse = {
-  result?: string;
-  subject?: string;
-  body?: string;
-  goal?: string;
-  followUp?: string;
-  sendTiming?: string;
-  contextSummary?: string;
-  error?: string;
-};
-
-type DraftHistoryRow = {
-  id: string;
-  inquiryType: string;
-  createdAt: string;
-  result: string | null;
-};
-
-const scenarios = [
+const SCENARIOS = [
   "Quote Follow-up",
-  "Invoice Delivery",
-  "Reorder Reminder",
-  "Delay Notice",
   "Customer Inquiry Reply",
+  "Delay Notice",
+  "Reorder Reminder",
+  "Invoice Delivery",
 ] as const;
 
-const tones = [
+const TONES = [
   "Professional & technical",
   "Friendly & casual",
   "Formal & corporate",
   "Concise & direct",
 ];
 
-const LATEST_EMAIL_DRAFT_STORAGE_KEY = "tireops_latest_email_draft";
+const STATUS_LABEL: Record<string, string> = {
+  OPEN: "In Progress",
+  AGREED: "Agreed",
+  CLOSED: "Closed",
+};
+const STATUS_COLOR: Record<string, string> = {
+  OPEN: "bg-blue-100 text-blue-700",
+  AGREED: "bg-emerald-100 text-emerald-700",
+  CLOSED: "bg-gray-100 text-gray-500",
+};
 
-export default function EmailAIPage() {
-  const [scenario, setScenario] = useState<(typeof scenarios)[number]>(scenarios[0]);
-  const [tone, setTone] = useState(tones[0]);
-  const [notes, setNotes] = useState("");
-  const [customers, setCustomers] = useState<CustomerOption[]>([]);
-  const [selectedCustomerId, setSelectedCustomerId] = useState("");
-  const [quotes, setQuotes] = useState<QuoteOption[]>([]);
-  const [orders, setOrders] = useState<OrderOption[]>([]);
-  const [invoices, setInvoices] = useState<InvoiceOption[]>([]);
-  const [selectedQuoteId, setSelectedQuoteId] = useState("");
-  const [selectedOrderId, setSelectedOrderId] = useState("");
-  const [selectedInvoiceId, setSelectedInvoiceId] = useState("");
-  const [result, setResult] = useState<EmailAssistantResponse | null>(null);
-  const [draftSubject, setDraftSubject] = useState("");
-  const [draftBody, setDraftBody] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [savingDraft, setSavingDraft] = useState(false);
-  const [drafts, setDrafts] = useState<DraftHistoryRow[]>([]);
-  const [draftSearch, setDraftSearch] = useState("");
-  const [draftPage, setDraftPage] = useState(1);
-  const [draftTotal, setDraftTotal] = useState(0);
-  const [draftYear, setDraftYear] = useState("all");
-  const [draftSortOrder, setDraftSortOrder] = useState<"default" | "newest" | "oldest">("default");
-  const [pinnedDraft, setPinnedDraft] = useState<DraftHistoryRow | null>(null);
-  const [previewDraft, setPreviewDraft] = useState<DraftHistoryRow | null>(null);
-  const draftPageSize = 20;
-  const availableYears = ["all", "2026", "2025", "2024", "2023", "2022", "2021"];
+// ── Main Page ──────────────────────────────────────────────────────────────────
 
-  const selectedCustomer = customers.find((customer) => customer.id === selectedCustomerId) || null;
+function EmailAIContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const initialThreadId = searchParams.get("threadId");
 
-  const loadDrafts = async () => {
-    const params = new URLSearchParams({
-      page: String(draftPage),
-      pageSize: String(draftPageSize),
-    });
-    if (draftSearch) params.set("q", draftSearch);
-    if (draftYear !== "all") params.set("year", draftYear);
-    if (draftSortOrder !== "default") params.set("sort", draftSortOrder);
-    const res = await fetch(`/api/email-drafts?${params.toString()}`);
-    const data = await safeJson<{ drafts?: DraftHistoryRow[]; total?: number }>(res);
-    setDrafts((currentDrafts) => {
-      const incoming = data.drafts || [];
-      if (draftSortOrder !== "default") return incoming;
-      if (draftPage !== 1 || draftSearch || draftYear !== "all") return incoming;
+  const [threads, setThreads] = useState<Thread[]>([]);
+  const [selectedId, setSelectedId] = useState<string | null>(initialThreadId);
+  const [thread, setThread] = useState<Thread | null>(null);
+  const [loadingThreads, setLoadingThreads] = useState(true);
+  const [loadingThread, setLoadingThread] = useState(false);
 
-      const incomingIds = new Set(incoming.map((draft) => draft.id));
-      const preserved = currentDrafts.filter((draft) => !incomingIds.has(draft.id));
-      return [...incoming, ...preserved];
-    });
-    setDraftTotal(data.total || 0);
+  // Reply
+  const [reply, setReply] = useState("");
+  const [sending, setSending] = useState(false);
+
+  // AI Draft
+  const [scenario, setScenario] = useState<string>(SCENARIOS[0]);
+  const [tone, setTone] = useState(TONES[0]);
+  const [draftNotes, setDraftNotes] = useState("");
+  const [aiDraft, setAiDraft] = useState("");
+  const [generatingDraft, setGeneratingDraft] = useState(false);
+
+  // Convert to order
+  const [converting, setConverting] = useState(false);
+
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  // ── Load thread list ─────────────────────────────────────────────────────────
+  const loadThreads = async () => {
+    const r = await fetch("/api/email-threads");
+    const d = await safeJson<{ threads?: Thread[] }>(r);
+    setThreads(d.threads || []);
+    setLoadingThreads(false);
   };
 
-  const loadCustomers = async () => {
-    const res = await fetch("/api/customers");
-    const data = await safeJson<{ customers?: CustomerOption[] }>(res);
-    const list = data.customers || [];
-    setCustomers(list);
-    if (!selectedCustomerId && list[0]) setSelectedCustomerId(list[0].id);
+  // ── Load single thread ───────────────────────────────────────────────────────
+  const loadThread = async (id: string) => {
+    setLoadingThread(true);
+    const r = await fetch(`/api/email-threads/${id}`);
+    const d = await safeJson<{ thread?: Thread }>(r);
+    if (d.thread) setThread(d.thread);
+    setLoadingThread(false);
   };
 
-  const loadContext = async (customerId: string) => {
-    if (!customerId) {
-      setQuotes([]);
-      setOrders([]);
-      setInvoices([]);
-      return;
-    }
-    const [quoteRes, orderRes, invoiceRes] = await Promise.all([
-      fetch(`/api/quotes?customerId=${customerId}&pageSize=12`),
-      fetch(`/api/orders?customerId=${customerId}&pageSize=12&sort=newest`),
-      fetch(`/api/invoices?customerId=${customerId}&pageSize=12`),
-    ]);
-    const [quoteData, orderData, invoiceData] = await Promise.all([
-      safeJson<{ quotes?: QuoteOption[] }>(quoteRes),
-      safeJson<{ orders?: OrderOption[] }>(orderRes),
-      safeJson<{ invoices?: InvoiceOption[] }>(invoiceRes),
-    ]);
-    setQuotes(quoteData.quotes || []);
-    setOrders(orderData.orders || []);
-    setInvoices(invoiceData.invoices || []);
-  };
-
+  useEffect(() => { loadThreads(); }, []);
   useEffect(() => {
-    loadCustomers();
-    loadDrafts();
-    const saved = window.localStorage.getItem(LATEST_EMAIL_DRAFT_STORAGE_KEY);
-    if (!saved) return;
+    if (selectedId) loadThread(selectedId);
+    else setThread(null);
+  }, [selectedId]);
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [thread?.messages.length]);
+
+  // ── Send reply ───────────────────────────────────────────────────────────────
+  const sendReply = async () => {
+    if (!reply.trim() || !selectedId || sending) return;
+    setSending(true);
     try {
-      setPinnedDraft(JSON.parse(saved) as DraftHistoryRow);
-    } catch {
-      window.localStorage.removeItem(LATEST_EMAIL_DRAFT_STORAGE_KEY);
+      await fetch(`/api/email-threads/${selectedId}/messages`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: reply.trim(), sender: "sales" }),
+      });
+      setReply("");
+      setAiDraft("");
+      await loadThread(selectedId);
+      await loadThreads();
+    } finally {
+      setSending(false);
     }
-    // bootstrap only
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  };
 
-  useEffect(() => {
-    loadDrafts();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [draftSearch, draftPage, draftYear, draftSortOrder]);
-
-  useEffect(() => {
-    setDraftPage(1);
-  }, [draftSearch, draftYear, draftSortOrder]);
-
-  useEffect(() => {
-    loadContext(selectedCustomerId);
-    setSelectedQuoteId("");
-    setSelectedOrderId("");
-    setSelectedInvoiceId("");
-  }, [selectedCustomerId]);
-
-  const handleDraft = async () => {
-    setLoading(true);
-    setResult(null);
+  // ── Generate AI draft ────────────────────────────────────────────────────────
+  const generateDraft = async () => {
+    if (!thread) return;
+    setGeneratingDraft(true);
+    setAiDraft("");
     try {
+      const lastCustomerMsg = [...(thread.messages || [])]
+        .reverse()
+        .find((m) => m.sender === "customer");
       const res = await fetch("/api/email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           scenario,
           tone,
-          customerId: selectedCustomerId || undefined,
-          customerName: selectedCustomer?.company || selectedCustomer?.name || undefined,
-          quoteId: selectedQuoteId || undefined,
-          orderId: selectedOrderId || undefined,
-          invoiceId: selectedInvoiceId || undefined,
-          notes,
+          customerName: thread.customerName,
+          notes: [
+            thread.tireSpec ? `Tire spec: ${thread.tireSpec}` : "",
+            thread.quantity ? `Quantity: ${thread.quantity}` : "",
+            thread.unitPrice ? `Unit price: $${thread.unitPrice}` : "",
+            lastCustomerMsg ? `Customer's last message: "${lastCustomerMsg.content}"` : "",
+            draftNotes,
+          ].filter(Boolean).join("\n"),
         }),
       });
-      const data = await safeJson<EmailAssistantResponse>(res);
-      setResult(data);
-      setDraftSubject(data.subject || "");
-      setDraftBody(data.body || "");
-    } catch {
-      setResult({ error: "Failed to generate draft." });
-      setDraftSubject("");
-      setDraftBody("");
+      const d = await safeJson<{ body?: string; result?: string }>(res);
+      setAiDraft(d.body || d.result || "");
     } finally {
-      setLoading(false);
+      setGeneratingDraft(false);
     }
   };
 
-  const clearComposer = () => {
-    setScenario(scenarios[0]);
-    setTone(tones[0]);
-    setNotes("");
-    setSelectedQuoteId("");
-    setSelectedOrderId("");
-    setSelectedInvoiceId("");
-    setResult(null);
-    setDraftSubject("");
-    setDraftBody("");
+  // ── Mark agreed ──────────────────────────────────────────────────────────────
+  const markAgreed = async () => {
+    if (!selectedId) return;
+    await fetch(`/api/email-threads/${selectedId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: "AGREED" }),
+    });
+    await loadThread(selectedId);
+    await loadThreads();
   };
 
-  const handleSaveDraft = async () => {
-    const composed = draftSubject.trim()
-      ? `Subject: ${draftSubject}\n\n${draftBody}`
-      : draftBody.trim();
-    if (!composed) return;
-
-    setSavingDraft(true);
+  // ── Convert to order ─────────────────────────────────────────────────────────
+  const convertToOrder = async () => {
+    if (!thread) return;
+    setConverting(true);
     try {
-      const res = await fetch("/api/email-drafts", {
+      const orderNumber = `TO-${Date.now().toString().slice(-6)}`;
+      const res = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          inquiryType: `${scenario} (Edited)`,
-          emailText: notes,
-          tone,
-          result: composed,
+          orderNumber,
+          customerName: thread.customerName,
+          tireSpec: thread.tireSpec || "TBD",
+          quantity: thread.quantity || 0,
+          value: thread.unitPrice && thread.quantity ? thread.unitPrice * thread.quantity : null,
+          quoteId: thread.quoteId || null,
         }),
       });
-      const data = await safeJson<{ error?: string; draft?: DraftHistoryRow }>(res);
-      if (!res.ok) {
-        throw new Error(data.error || "Failed to save draft");
+      const d = await safeJson<{ order?: { id: string; orderNumber: string } }>(res);
+      if (d.order) {
+        await fetch(`/api/email-threads/${selectedId}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: "CLOSED" }),
+        });
+        router.push(`/orders?newOrderId=${d.order.id}&orderNumber=${encodeURIComponent(d.order.orderNumber)}&customerName=${encodeURIComponent(thread.customerName)}`);
       }
-      if (data.draft) {
-        setPinnedDraft(data.draft);
-        window.localStorage.setItem(LATEST_EMAIL_DRAFT_STORAGE_KEY, JSON.stringify(data.draft));
-        setDrafts((currentDrafts) => [data.draft as DraftHistoryRow, ...currentDrafts.filter((draft) => draft.id !== data.draft?.id)]);
-        setDraftTotal((total) => total + 1);
-      }
-      if (draftSortOrder !== "default" || draftPage !== 1 || draftSearch || draftYear !== "all") {
-        loadDrafts();
-      }
-    } catch (error) {
-      alert(String(error));
     } finally {
-      setSavingDraft(false);
+      setConverting(false);
     }
   };
 
-  const inputClass =
-    "form-input w-full rounded-[9px] border border-[var(--border2)] bg-[rgba(255,255,255,0.84)] px-3 py-2.5 text-[13.5px] text-[var(--text)] placeholder-[var(--text-light)] focus:border-[var(--accent)] focus:shadow-[0_0_0_3px_rgba(29,111,219,0.12)] focus:outline-none";
-  const labelClass = "mb-1.5 block text-xs font-semibold text-[var(--text-mid)]";
-  const btnPrimary =
-    "inline-flex items-center gap-2 rounded-[9px] bg-[var(--accent)] px-4 py-2.5 text-[13px] font-semibold text-white transition-all hover:bg-[#1860c4]";
-  const btnSecondary =
-    "rounded-[9px] border border-[var(--border2)] bg-[rgba(255,255,255,0.84)] px-4 py-2 text-[13px] font-semibold text-[var(--text-mid)] transition-colors hover:border-[var(--accent)] hover:bg-[var(--accent-light)] hover:text-[var(--accent)]";
-  const displayedDrafts = (() => {
-    const combined = pinnedDraft
-      ? [pinnedDraft, ...drafts.filter((draft) => draft.id !== pinnedDraft.id)]
-      : drafts;
-    const seen = new Set<string>();
-    return combined.filter((draft) => {
-      if (seen.has(draft.id)) return false;
-      seen.add(draft.id);
-      return true;
-    });
-  })();
+  // ── Unread count ─────────────────────────────────────────────────────────────
+  const unreadCount = threads.filter(
+    (t) => t.status === "OPEN" && t.messages.at(-1)?.sender === "customer"
+  ).length;
 
+  // ── Render ───────────────────────────────────────────────────────────────────
   return (
-    <div className="page-shell grid gap-4 grid-cols-[minmax(380px,0.9fr)_minmax(0,1.1fr)]">
-      <div className="card panel-strong">
-        <div className="mb-4">
-          <div className="text-sm font-bold text-[var(--text)]">Email Workflow Setup</div>
-          <div className="mt-1 text-[12px] text-[var(--text-dim)]">
-            Build a customer-facing draft using quote, order, or invoice context.
+    <div className="flex h-[calc(100vh-64px)] overflow-hidden">
+      {/* ── Left: Thread list ────────────────────────────────────────────────── */}
+      <div className="flex w-72 shrink-0 flex-col border-r border-[var(--border2)] bg-[var(--card)]">
+        <div className="flex items-center justify-between border-b border-[var(--border2)] px-4 py-3">
+          <div>
+            <span className="text-sm font-bold text-[var(--text)]">Customer Inbox</span>
+            {unreadCount > 0 && (
+              <span className="ml-2 rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                {unreadCount}
+              </span>
+            )}
           </div>
         </div>
-        <div className="space-y-4">
-          <div>
-            <label className={labelClass}>Email Scenario</label>
-            <select value={scenario} onChange={(e) => setScenario(e.target.value as (typeof scenarios)[number])} className={inputClass}>
-              {scenarios.map((item) => (
-                <option key={item} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
+
+        <div className="flex-1 overflow-y-auto">
+          {loadingThreads ? (
+            <div className="flex justify-center py-10"><Loader2 className="h-5 w-5 animate-spin text-[var(--text-dim)]" /></div>
+          ) : threads.length === 0 ? (
+            <div className="px-4 py-10 text-center text-xs text-[var(--text-dim)]">
+              No threads yet.<br />Go to Quoting and click &ldquo;Send Quote Email&rdquo;.
+            </div>
+          ) : (
+            threads.map((t) => {
+              const isUnread = t.status === "OPEN" && t.messages.at(-1)?.sender === "customer";
+              const isSelected = t.id === selectedId;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => setSelectedId(t.id)}
+                  className={`w-full border-b border-[var(--border2)] px-4 py-3 text-left transition-colors ${
+                    isSelected ? "bg-[var(--accent-light)]" : isUnread ? "bg-blue-50" : "hover:bg-[var(--bg)]"
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className={`truncate text-[13px] font-semibold ${isUnread ? "text-[var(--text)]" : "text-[var(--text-mid)]"}`}>
+                      {t.customerName}
+                      {isUnread && <span className="ml-1.5 inline-block h-1.5 w-1.5 rounded-full bg-blue-500" />}
+                    </span>
+                    <span className="shrink-0 text-[10px] text-[var(--text-dim)]">
+                      {new Date(t.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                    </span>
+                  </div>
+                  <p className="mt-0.5 truncate text-[11px] text-[var(--text-dim)]">{t.subject}</p>
+                  <div className="mt-1 flex items-center gap-1.5">
+                    <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-semibold ${STATUS_COLOR[t.status] || STATUS_COLOR.CLOSED}`}>
+                      {STATUS_LABEL[t.status] || t.status}
+                    </span>
+                    <span className="text-[9px] text-[var(--text-dim)]">{t.messages.length} msgs</span>
+                  </div>
+                </button>
+              );
+            })
+          )}
+        </div>
+      </div>
+
+      {/* ── Right: Conversation + AI Draft ──────────────────────────────────── */}
+      {!selectedId ? (
+        <div className="flex flex-1 items-center justify-center">
+          <div className="text-center">
+            <div className="text-5xl">📨</div>
+            <p className="mt-3 font-semibold text-[var(--text)]">Select a conversation</p>
+            <p className="mt-1 text-sm text-[var(--text-dim)]">Or go to Quoting to start a new one</p>
           </div>
-          <div>
-            <label className={labelClass}>Customer</label>
-            <select value={selectedCustomerId} onChange={(e) => setSelectedCustomerId(e.target.value)} className={inputClass}>
-              <option value="">Select customer...</option>
-              {customers.map((customer) => (
-                <option key={customer.id} value={customer.id}>
-                  {customer.company || customer.name || "Unnamed customer"}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="grid gap-3 grid-cols-3">
+        </div>
+      ) : loadingThread ? (
+        <div className="flex flex-1 items-center justify-center">
+          <Loader2 className="h-6 w-6 animate-spin text-[var(--text-dim)]" />
+        </div>
+      ) : thread ? (
+        <div className="flex flex-1 flex-col overflow-hidden">
+          {/* Thread header */}
+          <div className="flex items-center justify-between border-b border-[var(--border2)] px-6 py-3">
             <div>
-              <label className={labelClass}>Reference Quote</label>
-              <select value={selectedQuoteId} onChange={(e) => setSelectedQuoteId(e.target.value)} className={inputClass}>
-                <option value="">Optional</option>
-                {quotes.map((quote) => (
-                  <option key={quote.id} value={quote.id}>
-                    {quote.size} · {quote.quantity || 0}u
-                  </option>
-                ))}
-              </select>
+              <h2 className="text-[15px] font-bold text-[var(--text)]">{thread.subject}</h2>
+              <p className="text-xs text-[var(--text-dim)]">
+                {thread.customerName}
+                {thread.tireSpec && <> · {thread.tireSpec}</>}
+                {thread.quantity && <> · Qty {thread.quantity}</>}
+                {thread.unitPrice && <> · ${thread.unitPrice.toLocaleString()}/unit</>}
+              </p>
             </div>
-            <div>
-              <label className={labelClass}>Reference Order</label>
-              <select value={selectedOrderId} onChange={(e) => setSelectedOrderId(e.target.value)} className={inputClass}>
-                <option value="">Optional</option>
-                {orders.map((order) => (
-                  <option key={order.id} value={order.id}>
-                    {order.orderNumber} · {order.quantity}u
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className={labelClass}>Reference Invoice</label>
-              <select value={selectedInvoiceId} onChange={(e) => setSelectedInvoiceId(e.target.value)} className={inputClass}>
-                <option value="">Optional</option>
-                {invoices.map((invoice) => (
-                  <option key={invoice.id} value={invoice.id}>
-                    {invoice.invoiceNumber}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div>
-            <label className={labelClass}>Tone</label>
-            <select value={tone} onChange={(e) => setTone(e.target.value)} className={inputClass}>
-              {tones.map((item) => (
-                <option key={item} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className={labelClass}>Internal Notes</label>
-            <textarea
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              className={`${inputClass} min-h-[150px] resize-y`}
-              placeholder="Add delivery notes, payment reminders, delay details, or customer-specific instructions..."
-            />
-          </div>
-          <div className="rounded-lg border border-[var(--border)] bg-[var(--bg2)] p-3 text-[12px] text-[var(--text-mid)]">
-            <div className="font-semibold text-[var(--text)]">Loaded business context</div>
-            <div className="mt-1">
-              {selectedCustomer
-                ? `${selectedCustomer.company || selectedCustomer.name}${selectedCustomer.email ? ` · ${selectedCustomer.email}` : ""}`
-                : "Select a customer to load recent quotes, orders, and invoices."}
-            </div>
-          </div>
-          <div className="flex gap-2">
-            <button onClick={handleDraft} disabled={loading} className={btnPrimary}>
-              {loading ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Drafting email...
-                </>
-              ) : (
-                "Draft Email"
+            <div className="flex gap-2">
+              {thread.status === "OPEN" && (
+                <button
+                  onClick={markAgreed}
+                  className="rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-100"
+                >
+                  ✓ Mark Agreed
+                </button>
               )}
-            </button>
-            <button type="button" onClick={clearComposer} className={btnSecondary}>
-              Clear
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div className="card panel-strong">
-        <div className="mb-4">
-          <div className="text-sm font-bold text-[var(--text)]">Email Assistant Output</div>
-          <div className="mt-1 text-[12px] text-[var(--text-dim)]">
-            Subject, send guidance, and a ready-to-send customer email draft.
-          </div>
-        </div>
-        <div className="grid gap-4">
-          <div className="grid gap-3 grid-cols-3">
-            <div className="rounded-lg border border-[var(--border)] bg-[var(--bg2)] p-4">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--text-light)]">Email Goal</div>
-              <div className="mt-2 text-[13px] text-[var(--text)]">{result?.goal || "Choose a scenario to set the email objective."}</div>
-            </div>
-            <div className="rounded-lg border border-[var(--border)] bg-[var(--bg2)] p-4">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--text-light)]">Send Timing</div>
-              <div className="mt-2 text-[13px] text-[var(--text)]">{result?.sendTiming || "No timing recommendation yet."}</div>
-            </div>
-            <div className="rounded-lg border border-[var(--border)] bg-[var(--bg2)] p-4">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--text-light)]">Follow-up</div>
-              <div className="mt-2 text-[13px] text-[var(--text)]">{result?.followUp || "No follow-up recommendation yet."}</div>
-            </div>
-          </div>
-
-          <div className="rounded-lg border border-[var(--border)] bg-white p-4">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--text-light)]">Suggested Subject</div>
-            <input
-              type="text"
-              value={draftSubject}
-              onChange={(e) => setDraftSubject(e.target.value)}
-              className={`${inputClass} mt-2 text-[14px] font-semibold`}
-              placeholder="No subject generated yet."
-            />
-          </div>
-
-          <div className="rounded-lg border border-[var(--border)] bg-white p-4">
-            <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--text-light)]">Email Draft</div>
-            <textarea
-              value={loading ? "Drafting email..." : draftBody}
-              onChange={(e) => setDraftBody(e.target.value)}
-              readOnly={loading}
-              className="min-h-[420px] w-full resize-y rounded-xl border border-[var(--border)] bg-[rgba(234,240,247,0.62)] p-4 font-mono text-[13px] leading-7 text-[var(--text)] outline-none focus:border-[var(--accent)] focus:shadow-[0_0_0_3px_rgba(29,111,219,0.12)]"
-              placeholder="Select a customer and scenario, then click Draft Email."
-            />
-            <div className="mt-3 flex gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  const composed = draftSubject.trim()
-                    ? `Subject: ${draftSubject}\n\n${draftBody}`
-                    : draftBody;
-                  if (composed) navigator.clipboard.writeText(composed);
-                }}
-                className={btnSecondary}
-              >
-                Copy
-              </button>
-              <button type="button" onClick={handleSaveDraft} disabled={savingDraft || !draftBody.trim()} className={btnSecondary}>
-                {savingDraft ? "Saving..." : "Save Draft"}
-              </button>
-              <button type="button" onClick={() => setResult(null)} className={btnSecondary}>
-                Clear Output
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="card panel-strong col-span-full">
-        <div className="mb-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-bold text-[var(--text)]">Email Draft History</span>
-            <div className="flex items-center gap-1.5">
-              <span className="text-[12px] font-semibold text-[var(--text-dim)]">Year:</span>
-              {availableYears.map((year) => (
+              {(thread.status === "AGREED" || (thread.messages.length >= 3 && thread.status !== "CLOSED")) && (
                 <button
-                  key={year}
-                  type="button"
-                  onClick={() => setDraftYear(year)}
-                  className={`rounded-[6px] px-2.5 py-1 text-[11px] font-semibold transition-all ${
-                    draftYear === year
-                      ? "bg-[var(--accent)] text-white shadow-sm"
-                      : "border border-[var(--border2)] bg-[var(--bg)] text-[var(--text-mid)] hover:border-[var(--accent)] hover:bg-[var(--accent-light)] hover:text-[var(--accent)]"
-                  }`}
+                  onClick={convertToOrder}
+                  disabled={converting}
+                  className="rounded-lg bg-[var(--accent)] px-3 py-1.5 text-xs font-semibold text-white hover:opacity-90 disabled:opacity-50"
                 >
-                  {year === "all" ? "All" : year}
+                  {converting ? "Creating…" : "Convert to Order →"}
                 </button>
-              ))}
-            </div>
-            <div className="flex items-center gap-1.5">
-              <span className="text-[12px] font-semibold text-[var(--text-dim)]">Sort:</span>
-              {[
-                { value: "newest", label: "Newest" },
-                { value: "default", label: "Default" },
-                { value: "oldest", label: "Oldest" },
-              ].map((item) => (
-                <button
-                  key={item.value}
-                  type="button"
-                  onClick={() => setDraftSortOrder(item.value as "default" | "newest" | "oldest")}
-                  className={`rounded-[6px] px-2.5 py-1 text-[11px] font-semibold transition-all ${
-                    draftSortOrder === item.value
-                      ? "bg-[var(--bg3)] text-[var(--text)] shadow-sm"
-                      : "text-[var(--text-dim)] hover:text-[var(--text-mid)]"
-                  }`}
-                >
-                  {item.label}
-                </button>
-              ))}
+              )}
+              {thread.status === "CLOSED" && (
+                <span className="rounded-lg bg-gray-100 px-3 py-1.5 text-xs font-semibold text-gray-500">✓ Order Created</span>
+              )}
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Search className="h-4 w-4 text-[var(--text-dim)]" />
-            <input
-              type="text"
-              value={draftSearch}
-              onChange={(e) => setDraftSearch(e.target.value)}
-              placeholder="Search scenario or email content"
-              className="max-w-xs rounded border border-[var(--border2)] bg-[rgba(255,255,255,0.84)] px-2 py-1 text-[13px]"
-            />
-          </div>
-        </div>
-        <div className="max-h-[260px] overflow-y-auto overflow-x-auto">
-          <table className="table-demo w-full">
-            <thead className="sticky top-0 z-10 bg-[var(--bg2)]">
-              <tr>
-                <th>Scenario</th>
-                <th>Preview</th>
-                <th>Date</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {displayedDrafts.length === 0 ? (
-                <tr><td colSpan={4} className="py-4 text-center text-[var(--text-dim)]">No drafts yet.</td></tr>
-              ) : (
-                displayedDrafts.map((draft) => (
-                  <tr key={draft.id}>
-                    <td>
-                      <div className="flex items-center gap-2">
-                        <span>{draft.inquiryType}</span>
-                        {pinnedDraft?.id === draft.id && (
-                          <span className="rounded-full bg-[var(--accent-light)] px-2 py-0.5 text-[10px] font-semibold text-[var(--accent)]">
-                            New
+
+          <div className="flex flex-1 overflow-hidden">
+            {/* Messages */}
+            <div className="flex flex-1 flex-col overflow-hidden">
+              <div className="flex-1 overflow-y-auto px-6 py-4">
+                <div className="flex flex-col gap-4">
+                  {thread.messages.map((msg) => {
+                    const isSales = msg.sender === "sales";
+                    return (
+                      <div key={msg.id} className={`flex ${isSales ? "justify-end" : "justify-start"}`}>
+                        <div className={`flex max-w-[75%] flex-col gap-1 ${isSales ? "items-end" : "items-start"}`}>
+                          <span className="text-[10px] text-[var(--text-dim)]">
+                            {isSales ? "You (Sales)" : thread.customerName} ·{" "}
+                            {new Date(msg.createdAt).toLocaleString("en-US", {
+                              month: "short", day: "numeric",
+                              hour: "2-digit", minute: "2-digit",
+                            })}
                           </span>
-                        )}
+                          <div className={`rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
+                            isSales
+                              ? "rounded-tr-sm bg-[var(--accent)] text-white"
+                              : "rounded-tl-sm bg-[var(--bg)] text-[var(--text)]"
+                          }`}>
+                            {msg.content}
+                          </div>
+                        </div>
                       </div>
-                    </td>
-                    <td className="max-w-[340px] truncate text-[var(--text-dim)]">
-                      {draft.result ? draft.result.slice(0, 92) + "…" : "—"}
-                    </td>
-                    <td>{new Date(draft.createdAt).toLocaleDateString("en-US")}</td>
-                    <td>
-                      <button
-                        type="button"
-                        onClick={() => setPreviewDraft(draft)}
-                        className="text-[13px] font-medium text-[var(--accent)] hover:underline"
-                      >
-                        Load
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-        <div className="mt-3 flex items-center justify-between text-[12px] text-[var(--text-dim)]">
-          <span>
-            Showing {(draftPage - 1) * draftPageSize + (drafts.length ? 1 : 0)}-{(draftPage - 1) * draftPageSize + drafts.length} of {draftTotal}
-          </span>
-          <div className="flex gap-2">
-            <button type="button" onClick={() => setDraftPage((page) => Math.max(1, page - 1))} disabled={draftPage === 1} className={btnSecondary}>
-              Previous
-            </button>
-            <button type="button" onClick={() => setDraftPage((page) => page + 1)} disabled={draftPage * draftPageSize >= draftTotal} className={btnSecondary}>
-              Next
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {previewDraft && typeof document !== "undefined" && createPortal(
-        <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50"
-          onClick={() => setPreviewDraft(null)}
-        >
-          <div
-            className="w-full max-w-3xl rounded-[18px] border border-[var(--border)] bg-white shadow-[0_24px_60px_rgba(15,23,42,0.18)]"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-start justify-between gap-4 border-b border-[var(--border)] px-6 py-4">
-              <div>
-                <div className="text-lg font-bold text-[var(--text)]">{previewDraft.inquiryType}</div>
-                <div className="mt-1 text-[12px] text-[var(--text-dim)]">
-                  Saved on {new Date(previewDraft.createdAt).toLocaleDateString("en-US")}
+                    );
+                  })}
+                  <div ref={bottomRef} />
                 </div>
               </div>
-              <button
-                type="button"
-                onClick={() => setPreviewDraft(null)}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border2)] text-[var(--text-mid)] hover:bg-[var(--bg3)]"
-                aria-label="Close draft preview"
-              >
-                ×
-              </button>
+
+              {/* Reply box */}
+              {thread.status !== "CLOSED" ? (
+                <div className="border-t border-[var(--border2)] px-6 py-3">
+                  <textarea
+                    value={reply}
+                    onChange={(e) => setReply(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) sendReply(); }}
+                    placeholder="Type your reply… (Cmd+Enter to send)"
+                    rows={3}
+                    className="w-full resize-none rounded-xl border border-[var(--border2)] bg-[var(--card)] px-4 py-2.5 text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
+                  />
+                  <div className="mt-2 flex justify-end">
+                    <button
+                      onClick={sendReply}
+                      disabled={!reply.trim() || sending}
+                      className="rounded-xl bg-[var(--accent)] px-5 py-2 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-40"
+                    >
+                      {sending ? "Sending…" : "Send Reply"}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="border-t border-[var(--border2)] px-6 py-3 text-center text-sm font-semibold text-emerald-700">
+                  ✓ Conversation closed — Order created
+                </div>
+              )}
             </div>
-            <div className="max-h-[420px] overflow-y-auto px-6 py-5">
-              <div className="whitespace-pre-wrap rounded-xl border border-[var(--border)] bg-[rgba(234,240,247,0.62)] p-4 font-mono text-[13px] leading-7 text-[var(--text)]">
-                {previewDraft.result || "No draft content available."}
+
+            {/* ── AI Draft Panel ─────────────────────────────────────────── */}
+            {thread.status !== "CLOSED" && (
+              <div className="flex w-80 shrink-0 flex-col gap-3 overflow-y-auto border-l border-[var(--border2)] bg-[var(--bg)] p-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-bold text-[var(--text)]">✨ AI Draft</span>
+                  <span className="rounded-full bg-[var(--accent-light)] px-2 py-0.5 text-[10px] font-semibold text-[var(--accent)]">
+                    AI-powered
+                  </span>
+                </div>
+                <p className="text-[11px] text-[var(--text-dim)]">
+                  Generate a suggested reply. Review and edit before sending.
+                </p>
+
+                {/* Scenario */}
+                <div>
+                  <label className="mb-1 block text-[11px] font-semibold text-[var(--text-mid)]">Scenario</label>
+                  <select
+                    value={scenario}
+                    onChange={(e) => setScenario(e.target.value)}
+                    className="w-full rounded-lg border border-[var(--border2)] bg-[var(--card)] px-3 py-2 text-[12px] text-[var(--text)] focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+                  >
+                    {SCENARIOS.map((s) => <option key={s} value={s}>{s}</option>)}
+                  </select>
+                </div>
+
+                {/* Tone */}
+                <div>
+                  <label className="mb-1 block text-[11px] font-semibold text-[var(--text-mid)]">Tone</label>
+                  <select
+                    value={tone}
+                    onChange={(e) => setTone(e.target.value)}
+                    className="w-full rounded-lg border border-[var(--border2)] bg-[var(--card)] px-3 py-2 text-[12px] text-[var(--text)] focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+                  >
+                    {TONES.map((t) => <option key={t} value={t}>{t}</option>)}
+                  </select>
+                </div>
+
+                {/* Extra notes */}
+                <div>
+                  <label className="mb-1 block text-[11px] font-semibold text-[var(--text-mid)]">Additional context (optional)</label>
+                  <textarea
+                    value={draftNotes}
+                    onChange={(e) => setDraftNotes(e.target.value)}
+                    placeholder="e.g. offer 5% discount, mention lead time is 2 weeks…"
+                    rows={2}
+                    className="w-full resize-none rounded-lg border border-[var(--border2)] bg-[var(--card)] px-3 py-2 text-[12px] text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+                  />
+                </div>
+
+                <button
+                  onClick={generateDraft}
+                  disabled={generatingDraft}
+                  className="flex items-center justify-center gap-2 rounded-xl bg-[var(--accent)] py-2.5 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-50"
+                >
+                  {generatingDraft ? <><Loader2 className="h-4 w-4 animate-spin" /> Generating…</> : "✨ Generate Draft"}
+                </button>
+
+                {/* Draft result */}
+                {aiDraft && (
+                  <div className="flex flex-col gap-2 rounded-xl border border-[var(--accent)]/20 bg-[var(--accent-light)] p-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-bold text-[var(--accent)]">AI Suggested Reply</span>
+                      <button
+                        onClick={() => setAiDraft("")}
+                        className="text-[11px] text-[var(--text-dim)] hover:text-[var(--text)]"
+                      >✕</button>
+                    </div>
+                    <p className="whitespace-pre-wrap text-[12px] leading-relaxed text-[var(--text)]">{aiDraft}</p>
+                    <div className="flex gap-2 pt-1">
+                      <button
+                        onClick={() => setReply(aiDraft)}
+                        className="flex-1 rounded-lg bg-[var(--accent)] py-1.5 text-[11px] font-semibold text-white hover:opacity-90"
+                      >
+                        Use This Draft
+                      </button>
+                      <button
+                        onClick={() => { setReply((prev) => prev + (prev ? "\n\n" : "") + aiDraft); }}
+                        className="flex-1 rounded-lg border border-[var(--accent)] py-1.5 text-[11px] font-semibold text-[var(--accent)] hover:bg-[var(--accent-light)]"
+                      >
+                        Append
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
-            <div className="flex justify-end gap-2 border-t border-[var(--border)] px-6 py-4">
-              <button
-                type="button"
-                onClick={() => previewDraft.result && navigator.clipboard.writeText(previewDraft.result)}
-                className={btnSecondary}
-              >
-                Copy
-              </button>
-              <button type="button" onClick={() => setPreviewDraft(null)} className={btnSecondary}>
-                Close
-              </button>
-            </div>
+            )}
           </div>
-        </div>,
-        document.body
-      )}
+        </div>
+      ) : null}
     </div>
+  );
+}
+
+export default function EmailAIPage() {
+  return (
+    <Suspense fallback={<div className="flex h-full items-center justify-center"><Loader2 className="h-6 w-6 animate-spin" /></div>}>
+      <EmailAIContent />
+    </Suspense>
   );
 }

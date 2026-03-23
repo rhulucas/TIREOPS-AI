@@ -7,7 +7,6 @@ import {
   LayoutDashboard,
   FileText,
   ShoppingCart,
-  Mail,
   Inbox,
   Receipt,
   PencilRuler,
@@ -30,8 +29,7 @@ const navSections = [
     items: [
       { href: "/quoting", label: "Sales Quote Assistant", icon: FileText },
       { href: "/orders", label: "Orders", icon: ShoppingCart },
-      { href: "/inbox", label: "Customer Inbox", icon: Inbox },
-      { href: "/email", label: "Email AI", icon: Mail },
+      { href: "/email", label: "Email AI + Inbox", icon: Inbox },
       { href: "/invoice", label: "Invoice AI", icon: Receipt },
     ],
   },

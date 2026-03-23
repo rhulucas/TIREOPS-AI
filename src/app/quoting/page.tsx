@@ -276,7 +276,7 @@ export default function AIQuotingPage() {
       });
       const d = await safeJson<{ thread?: { id: string } }>(res);
       if (d.thread) {
-        router.push(`/inbox/${d.thread.id}`);
+        router.push(`/email?threadId=${d.thread.id}`);
       }
     } catch (e) {
       alert(String(e));
