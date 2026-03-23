@@ -24,6 +24,7 @@ const statusClass: Record<string, string> = {
   PRODUCTION: "badge-production",
   QC_CHECK: "badge-qc",
   SHIPPED: "badge-complete",
+  DELIVERED: "badge-complete",
   COMPLETE: "badge-complete",
 };
 
@@ -265,10 +266,13 @@ function OrdersContent() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status }),
       });
-      if (!res.ok) throw new Error("Failed");
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData?.error || `HTTP ${res.status}`);
+      }
       loadOrders();
-    } catch {
-      alert("Failed to update status");
+    } catch (e) {
+      alert("Failed to update status: " + (e instanceof Error ? e.message : String(e)));
     } finally {
       setUpdating(null);
     }
@@ -354,7 +358,8 @@ function OrdersContent() {
                 { value: "URGENT", label: "Urgent" },
                 { value: "PRODUCTION", label: "Production" },
                 { value: "QC_CHECK", label: "QC Check" },
-                { value: "COMPLETE", label: "Complete" },
+                { value: "SHIPPED", label: "Shipped" },
+                { value: "DELIVERED", label: "Delivered" },
               ].map(({ value, label }) => (
                 <button
                   key={value}
