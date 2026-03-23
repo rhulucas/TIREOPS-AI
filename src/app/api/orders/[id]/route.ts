@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { auth } from "@/lib/auth";
+import type { Prisma } from "@prisma/client";
 
 const STATUSES = ["PENDING", "URGENT", "PRODUCTION", "QC_CHECK", "SHIPPED", "DELIVERED"];
 
@@ -23,7 +24,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   try {
     const body = await req.json();
     const { status, customerId, customerName, tireSpec, quantity, value, dueDate, trackingNumber, shippedAt, deliveredAt } = body;
-    const data: Record<string, unknown> = {};
+    const data: Prisma.OrderUncheckedUpdateInput = {};
     if (status && STATUSES.includes(status)) {
       data.status = status;
       if (status === "SHIPPED" && !shippedAt) data.shippedAt = new Date();
