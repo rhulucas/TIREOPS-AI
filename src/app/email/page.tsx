@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { Loader2, Search, X } from "lucide-react";
 import { safeJson } from "@/lib/safe-json";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -55,6 +55,14 @@ function EmailAIContent() {
   const initialThreadId = searchParams.get("threadId");
 
   const [threads, setThreads] = useState<Thread[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [sort, setSort] = useState("newest");
+  const pageSize = 30;
+
   const [selectedId, setSelectedId] = useState<string | null>(initialThreadId);
   const [thread, setThread] = useState<Thread | null>(null);
   const [loadingThreads, setLoadingThreads] = useState(true);
@@ -78,9 +86,18 @@ function EmailAIContent() {
 
   // ── Load thread list ─────────────────────────────────────────────────────────
   const loadThreads = async () => {
-    const r = await fetch("/api/email-threads");
-    const d = await safeJson<{ threads?: Thread[] }>(r);
+    setLoadingThreads(true);
+    const params = new URLSearchParams({
+      page: String(page),
+      pageSize: String(pageSize),
+      sort,
+      status: statusFilter,
+      ...(search ? { q: search } : {}),
+    });
+    const r = await fetch(`/api/email-threads?${params}`);
+    const d = await safeJson<{ threads?: Thread[]; total?: number }>(r);
     setThreads(d.threads || []);
+    setTotal(d.total || 0);
     setLoadingThreads(false);
   };
 
@@ -93,7 +110,8 @@ function EmailAIContent() {
     setLoadingThread(false);
   };
 
-  useEffect(() => { loadThreads(); }, []);
+  useEffect(() => { loadThreads(); }, [page, search, statusFilter, sort]);
+  useEffect(() => { setPage(1); }, [search, statusFilter, sort]);
   useEffect(() => {
     if (selectedId) loadThread(selectedId);
     else setThread(null);
@@ -207,23 +225,73 @@ function EmailAIContent() {
     <div className="flex h-[calc(100vh-64px)] overflow-hidden">
       {/* ── Left: Thread list ────────────────────────────────────────────────── */}
       <div className="flex w-72 shrink-0 flex-col border-r border-[var(--border2)] bg-[var(--card)]">
-        <div className="flex items-center justify-between border-b border-[var(--border2)] px-4 py-3">
-          <div>
-            <span className="text-sm font-bold text-[var(--text)]">Customer Inbox</span>
-            {unreadCount > 0 && (
-              <span className="ml-2 rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
-                {unreadCount}
-              </span>
+        {/* Header */}
+        <div className="border-b border-[var(--border2)] px-3 py-3">
+          <div className="mb-2 flex items-center justify-between">
+            <span className="text-sm font-bold text-[var(--text)]">
+              Customer Inbox
+              {unreadCount > 0 && (
+                <span className="ml-2 rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                  {unreadCount}
+                </span>
+              )}
+            </span>
+            <span className="text-[10px] text-[var(--text-dim)]">{total} total</span>
+          </div>
+
+          {/* Search */}
+          <div className="relative mb-2">
+            <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[var(--text-dim)]" />
+            <input
+              type="text"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter") setSearch(searchInput); }}
+              placeholder="Search customer, subject…"
+              className="w-full rounded-lg border border-[var(--border2)] bg-[var(--bg)] py-1.5 pl-7 pr-7 text-[12px] text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+            />
+            {searchInput && (
+              <button onClick={() => { setSearchInput(""); setSearch(""); }} className="absolute right-2 top-1/2 -translate-y-1/2">
+                <X className="h-3.5 w-3.5 text-[var(--text-dim)]" />
+              </button>
             )}
           </div>
+
+          {/* Status filter */}
+          <div className="mb-2 flex gap-1 overflow-x-auto">
+            {["all", "OPEN", "AGREED", "CLOSED"].map((s) => (
+              <button
+                key={s}
+                onClick={() => setStatusFilter(s)}
+                className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold transition-colors ${
+                  statusFilter === s
+                    ? "bg-[var(--accent)] text-white"
+                    : "border border-[var(--border2)] text-[var(--text-dim)] hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                }`}
+              >
+                {s === "all" ? "All" : STATUS_LABEL[s] || s}
+              </button>
+            ))}
+          </div>
+
+          {/* Sort */}
+          <select
+            value={sort}
+            onChange={(e) => setSort(e.target.value)}
+            className="w-full rounded-lg border border-[var(--border2)] bg-[var(--bg)] px-2 py-1 text-[11px] text-[var(--text-mid)] focus:outline-none"
+          >
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+          </select>
         </div>
 
+        {/* Thread list */}
         <div className="flex-1 overflow-y-auto">
           {loadingThreads ? (
             <div className="flex justify-center py-10"><Loader2 className="h-5 w-5 animate-spin text-[var(--text-dim)]" /></div>
           ) : threads.length === 0 ? (
             <div className="px-4 py-10 text-center text-xs text-[var(--text-dim)]">
-              No threads yet.<br />Go to Quoting and click &ldquo;Send Quote Email&rdquo;.
+              {search ? `No results for "${search}"` : "No threads yet."}
             </div>
           ) : (
             threads.map((t) => {
@@ -258,6 +326,23 @@ function EmailAIContent() {
             })
           )}
         </div>
+
+        {/* Pagination */}
+        {total > pageSize && (
+          <div className="flex items-center justify-between border-t border-[var(--border2)] px-3 py-2">
+            <button
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page === 1}
+              className="rounded-lg border border-[var(--border2)] px-2.5 py-1 text-[11px] font-semibold text-[var(--text-mid)] disabled:opacity-40 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+            >← Prev</button>
+            <span className="text-[10px] text-[var(--text-dim)]">{page} / {Math.ceil(total / pageSize)}</span>
+            <button
+              onClick={() => setPage((p) => p + 1)}
+              disabled={page * pageSize >= total}
+              className="rounded-lg border border-[var(--border2)] px-2.5 py-1 text-[11px] font-semibold text-[var(--text-mid)] disabled:opacity-40 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+            >Next →</button>
+          </div>
+        )}
       </div>
 
       {/* ── Right: Conversation + AI Draft ──────────────────────────────────── */}
@@ -342,32 +427,36 @@ function EmailAIContent() {
                 </div>
               </div>
 
-              {/* Reply box */}
-              {thread.status !== "CLOSED" ? (
-                <div className="shrink-0 border-t border-[var(--border2)] px-6 py-4">
-                  <textarea
-                    value={reply}
-                    onChange={(e) => setReply(e.target.value)}
-                    onKeyDown={(e) => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) sendReply(); }}
-                    placeholder="Type your reply… (Cmd+Enter to send)"
-                    rows={12}
-                    className="w-full resize-y rounded-xl border border-[var(--border2)] bg-[var(--card)] px-4 py-3 text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
-                  />
-                  <div className="mt-2 flex justify-end">
-                    <button
-                      onClick={sendReply}
-                      disabled={!reply.trim() || sending}
-                      className="rounded-xl bg-[var(--accent)] px-6 py-2.5 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-40"
-                    >
-                      {sending ? "Sending…" : "Send Reply"}
-                    </button>
+              {/* Reply box — always visible */}
+              <div className="shrink-0 border-t border-[var(--border2)] px-6 py-4">
+                {thread.status === "CLOSED" && (
+                  <div className="mb-2 rounded-lg bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700">
+                    ✓ Order created — you can still message the customer
                   </div>
+                )}
+                {thread.status === "AGREED" && (
+                  <div className="mb-2 rounded-lg bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700">
+                    ✓ Agreed — follow up or clarify details before converting
+                  </div>
+                )}
+                <textarea
+                  value={reply}
+                  onChange={(e) => setReply(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) sendReply(); }}
+                  placeholder="Type your reply… (Cmd+Enter to send)"
+                  rows={12}
+                  className="w-full resize-y rounded-xl border border-[var(--border2)] bg-[var(--card)] px-4 py-3 text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
+                />
+                <div className="mt-2 flex justify-end">
+                  <button
+                    onClick={sendReply}
+                    disabled={!reply.trim() || sending}
+                    className="rounded-xl bg-[var(--accent)] px-6 py-2.5 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-40"
+                  >
+                    {sending ? "Sending…" : "Send Reply"}
+                  </button>
                 </div>
-              ) : (
-                <div className="shrink-0 border-t border-[var(--border2)] px-6 py-3 text-center text-sm font-semibold text-emerald-700">
-                  ✓ Conversation closed — Order created
-                </div>
-              )}
+              </div>
             </div>
 
             {/* ── AI Draft Panel ─────────────────────────────────────────── */}

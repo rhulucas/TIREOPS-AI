@@ -5,11 +5,40 @@ import { auth } from "@/lib/auth";
 export async function GET(req: NextRequest) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const threads = await prisma.emailThread.findMany({
-    orderBy: { updatedAt: "desc" },
-    include: { messages: { orderBy: { createdAt: "asc" } } },
-  });
-  return NextResponse.json({ threads });
+
+  const q = req.nextUrl.searchParams.get("q") || "";
+  const status = req.nextUrl.searchParams.get("status") || "all";
+  const sort = req.nextUrl.searchParams.get("sort") || "newest";
+  const page = Math.max(Number(req.nextUrl.searchParams.get("page") || 1), 1);
+  const pageSize = Math.min(Number(req.nextUrl.searchParams.get("pageSize") || 30), 100);
+
+  const where = {
+    ...(status !== "all" ? { status } : {}),
+    ...(q ? {
+      OR: [
+        { customerName: { contains: q, mode: "insensitive" as const } },
+        { subject: { contains: q, mode: "insensitive" as const } },
+        { tireSpec: { contains: q, mode: "insensitive" as const } },
+      ],
+    } : {}),
+  };
+
+  const orderBy = sort === "oldest"
+    ? { updatedAt: "asc" as const }
+    : { updatedAt: "desc" as const };
+
+  const [threads, total] = await Promise.all([
+    prisma.emailThread.findMany({
+      where,
+      orderBy,
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+      include: { messages: { orderBy: { createdAt: "asc" } } },
+    }),
+    prisma.emailThread.count({ where }),
+  ]);
+
+  return NextResponse.json({ threads, total, page, pageSize });
 }
 
 export async function POST(req: NextRequest) {
