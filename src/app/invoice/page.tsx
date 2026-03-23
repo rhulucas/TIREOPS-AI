@@ -2,6 +2,7 @@
 
 import { Suspense, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { AlertTriangle, Loader2, Mail, Save, Search, RotateCcw, Plus, Trash2, WandSparkles } from "lucide-react";
 import { safeJson } from "@/lib/safe-json";
 import { CustomerAutocomplete, type Customer } from "@/components/CustomerAutocomplete";
@@ -15,6 +16,9 @@ type InvoiceRow = {
   invoiceNumber: string;
   customerName: string;
   orderRef: string | null;
+  orderId?: string | null;
+  status?: string | null;
+  paidAt?: string | null;
   createdAt: string;
   preview?: string | null;
 };
@@ -134,6 +138,8 @@ function InvoiceAIContent() {
   const [emailDraft, setEmailDraft] = useState<string | null>(null);
   const [draftingEmail, setDraftingEmail] = useState(false);
   const [draftSeed, setDraftSeed] = useState<DraftSeed | null>(null);
+  const [linkedOrderId, setLinkedOrderId] = useState<string | null>(null);
+  const [markingPaid, setMarkingPaid] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const invoicePageSize = 20;
   const availableYears = ["all", "2026", "2025", "2024", "2023", "2022", "2021"];
@@ -187,7 +193,9 @@ function InvoiceAIContent() {
   }, [selectedCustomer]);
 
   useEffect(() => {
-    const orderNumber = searchParams.get("order");
+    const orderIdFromQuery = searchParams.get("orderId") || "";
+    const orderRefFromQuery = searchParams.get("orderRef") || "";
+    const orderNumber = searchParams.get("order") || orderRefFromQuery;
     const displayOrder = searchParams.get("displayOrder") || orderNumber || "";
     const customerIdFromQuery = searchParams.get("customerId") || "";
     const customerFromQuery = searchParams.get("customer") || "";
@@ -195,7 +203,9 @@ function InvoiceAIContent() {
     const quantityFromQuery = Number(searchParams.get("quantity") || 0) || 0;
     const valueFromQuery = searchParams.get("value") || "";
 
-    if (!orderNumber && !displayOrder && !customerFromQuery && !customerIdFromQuery) return;
+    if (orderIdFromQuery) setLinkedOrderId(orderIdFromQuery);
+
+    if (!orderNumber && !displayOrder && !customerFromQuery && !customerIdFromQuery && !orderIdFromQuery) return;
 
     const loadOrderFromQuery = async () => {
       if (customerFromQuery) setCustomerName(customerFromQuery);
@@ -375,6 +385,7 @@ function InvoiceAIContent() {
           customerName,
           customerAddress: address,
           orderRef: orderRef || null,
+          orderId: linkedOrderId || null,
           items: JSON.stringify(validItems),
           paymentTerms: paymentTermsVal,
           taxRate: Number(taxRate) || 0,
@@ -397,6 +408,24 @@ function InvoiceAIContent() {
       alert(String(e));
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleMarkPaid = async (invoiceId: string) => {
+    if (!confirm("Mark this invoice as paid?")) return;
+    setMarkingPaid(invoiceId);
+    try {
+      const res = await fetch(`/api/invoices/${invoiceId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "PAID" }),
+      });
+      if (!res.ok) throw new Error("Failed");
+      setInvoices((prev) => prev.map((inv) => inv.id === invoiceId ? { ...inv, status: "PAID", paidAt: new Date().toISOString() } : inv));
+    } catch {
+      alert("Failed to update payment status");
+    } finally {
+      setMarkingPaid(null);
     }
   };
 
@@ -773,7 +802,8 @@ function InvoiceAIContent() {
                 <th className="pb-2 pr-4 font-semibold text-[var(--text-mid)]">Invoice #</th>
                 <th className="pb-2 pr-4 font-semibold text-[var(--text-mid)]">Customer</th>
                 <th className="pb-2 pr-4 font-semibold text-[var(--text-mid)]">Order Ref</th>
-                <th className="pb-2 font-semibold text-[var(--text-mid)]">Date</th>
+                <th className="pb-2 pr-4 font-semibold text-[var(--text-mid)]">Status</th>
+                <th className="pb-2 font-semibold text-[var(--text-mid)]">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -793,7 +823,39 @@ function InvoiceAIContent() {
                     </td>
                     <td className="py-2 pr-4">{inv.customerName}</td>
                     <td className="py-2 pr-4">{inv.orderRef || "—"}</td>
-                    <td className="py-2">{new Date(inv.createdAt).toLocaleDateString()}</td>
+                    <td className="py-2 pr-4">
+                      {inv.status === "PAID" ? (
+                        <span className="rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-semibold text-green-700">
+                          ✓ Paid
+                        </span>
+                      ) : (
+                        <span className="rounded-full bg-yellow-100 px-2 py-0.5 text-[10px] font-semibold text-yellow-700">
+                          Pending
+                        </span>
+                      )}
+                    </td>
+                    <td className="py-2">
+                      <div className="flex gap-1.5">
+                        {inv.status !== "PAID" && inv.id !== "pending" && (
+                          <button
+                            type="button"
+                            onClick={() => handleMarkPaid(inv.id)}
+                            disabled={markingPaid === inv.id}
+                            className="rounded-[5px] border border-green-300 bg-green-50 px-2 py-0.5 text-[10px] font-semibold text-green-700 hover:bg-green-100 disabled:opacity-50 whitespace-nowrap"
+                          >
+                            {markingPaid === inv.id ? "..." : "Mark Paid"}
+                          </button>
+                        )}
+                        {inv.id !== "pending" && (
+                          <Link
+                            href={`/email?scenario=Invoice+Delivery&invoiceId=${inv.id}`}
+                            className="rounded-[5px] border border-blue-200 bg-blue-50 px-2 py-0.5 text-[10px] font-semibold text-blue-600 hover:bg-blue-100 whitespace-nowrap"
+                          >
+                            ✉ Email
+                          </Link>
+                        )}
+                      </div>
+                    </td>
                   </tr>
                 ))
               )}

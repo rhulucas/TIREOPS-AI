@@ -6,15 +6,16 @@ import Link from "next/link";
 import { CustomerAutocomplete, type Customer } from "@/components/CustomerAutocomplete";
 import { safeJson } from "@/lib/safe-json";
 
-type OrderStatus = "URGENT" | "PENDING" | "PRODUCTION" | "QC_CHECK" | "SHIPPED" | "COMPLETE";
+type OrderStatus = "URGENT" | "PENDING" | "PRODUCTION" | "QC_CHECK" | "SHIPPED" | "DELIVERED" | "COMPLETE";
 
 const statusLabels: Record<string, string> = {
   URGENT: "Urgent",
   PENDING: "Pending",
   PRODUCTION: "Production",
   QC_CHECK: "QC Check",
-  SHIPPED: "Complete",
-  COMPLETE: "Complete",
+  SHIPPED: "Shipped",
+  DELIVERED: "Delivered",
+  COMPLETE: "Delivered",
 };
 
 const statusClass: Record<string, string> = {
@@ -26,7 +27,7 @@ const statusClass: Record<string, string> = {
   COMPLETE: "badge-complete",
 };
 
-const STATUS_OPTIONS: OrderStatus[] = ["PENDING", "URGENT", "PRODUCTION", "QC_CHECK", "SHIPPED"];
+const STATUS_OPTIONS: OrderStatus[] = ["PENDING", "URGENT", "PRODUCTION", "QC_CHECK", "SHIPPED", "DELIVERED"];
 const LATEST_ORDER_STORAGE_KEY = "tireops_latest_order";
 
 interface OrderRow {
@@ -169,7 +170,7 @@ function OrdersContent() {
         id: o.id,
         orderNumber: o.orderNumber.startsWith("T0") || o.orderNumber.startsWith("#") ? o.orderNumber : `#T0-${o.orderNumber.replace(/\D/g, "")}`,
         rawOrderNumber: o.orderNumber,
-        status: o.status === "SHIPPED" ? "COMPLETE" : o.status,
+        status: o.status,
         customerName: o.customerName ?? o.customer?.name ?? o.customer?.company ?? null,
         tireSpec: o.tireSpec,
         quantity: o.quantity,
@@ -422,12 +423,13 @@ function OrdersContent() {
                 <th>Due Date</th>
                 <th>Status</th>
                 <th>Update</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {displayOrders.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="py-8 text-center text-[var(--text-dim)]">
+                  <td colSpan={9} className="py-8 text-center text-[var(--text-dim)]">
                     No orders for this selection. Try another year or status.
                   </td>
                 </tr>
@@ -462,7 +464,7 @@ function OrdersContent() {
                   </td>
                   <td>
                     <select
-                      value={o.status === "COMPLETE" ? "SHIPPED" : o.status}
+                      value={o.status === "COMPLETE" ? "DELIVERED" : o.status}
                       onChange={(e) => handleUpdateStatus(o.id, e.target.value)}
                       disabled={!!updating}
                       className="rounded-[6px] border border-[var(--border2)] bg-[var(--bg)] px-2 py-1 text-[11px] font-semibold text-[var(--text-mid)]"
@@ -471,6 +473,24 @@ function OrdersContent() {
                         <option key={s} value={s}>{statusLabels[s]}</option>
                       ))}
                     </select>
+                  </td>
+                  <td>
+                    {(o.status === "SHIPPED" || o.status === "DELIVERED" || o.status === "COMPLETE") && (
+                      <Link
+                        href={`/invoice?orderId=${o.id}&orderRef=${encodeURIComponent(o.rawOrderNumber)}&customer=${encodeURIComponent(o.customerName || "")}&tireSpec=${encodeURIComponent(o.tireSpec || "")}&quantity=${o.quantity}&value=${o.value.replace(/[$,]/g, "")}`}
+                        className="inline-flex items-center gap-1 rounded-[6px] border border-emerald-300 bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 hover:bg-emerald-100 whitespace-nowrap"
+                      >
+                        📄 Invoice
+                      </Link>
+                    )}
+                    {(o.status === "PENDING" || o.status === "PRODUCTION") && (
+                      <Link
+                        href={`/email?scenario=Quote+Follow-up&orderId=${o.id}`}
+                        className="inline-flex items-center gap-1 rounded-[6px] border border-blue-200 bg-blue-50 px-2.5 py-1 text-[11px] font-semibold text-blue-600 hover:bg-blue-100 whitespace-nowrap"
+                      >
+                        ✉ Email
+                      </Link>
+                    )}
                   </td>
                 </tr>
               ))

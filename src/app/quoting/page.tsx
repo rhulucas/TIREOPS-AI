@@ -212,6 +212,7 @@ export default function AIQuotingPage() {
           tireSpec,
           quantity: Number(quantity),
           value: resolvedSalesAssistant?.recommendedQuote.estimatedTotal ?? undefined,
+          quoteId: lastCreatedQuoteId || undefined,
         }),
       });
       const data = await safeJson<{
@@ -537,28 +538,36 @@ export default function AIQuotingPage() {
             Fill the specification form and click &ldquo;Generate AI Quote&rdquo; to receive a structured sales recommendation, pricing draft, and risk review.
           </div>
         )}
-        <div className="mt-3 flex gap-2">
+        <div className="mt-3 flex flex-wrap gap-2">
           <button
             onClick={() => result && navigator.clipboard.writeText(result)}
             className={btnSecondary}
           >
             Copy
           </button>
+          {lastCreatedQuoteId && (
+            <Link
+              href={`/email?scenario=Quote+Follow-up&quoteId=${lastCreatedQuoteId}${selectedCustomer?.id ? `&customerId=${selectedCustomer.id}` : ""}`}
+              className="inline-flex items-center gap-1.5 rounded-[7px] border border-blue-300 bg-blue-50 px-4 py-2 text-[13px] font-semibold text-blue-700 transition-colors hover:bg-blue-100"
+            >
+              ✉ Send Quote Email
+            </Link>
+          )}
           <button
             type="button"
             onClick={handleConvertToOrder}
             disabled={!result || converting}
-            className={btnSecondary}
+            className="inline-flex items-center gap-1.5 rounded-[7px] border border-green-300 bg-green-50 px-4 py-2 text-[13px] font-semibold text-green-700 transition-colors hover:bg-green-100 disabled:opacity-40"
           >
-            {converting ? "Converting..." : "Convert to Order"}
+            {converting ? "Converting..." : "✓ Convert to Order"}
           </button>
           <Link href={invoiceHref} className={btnSecondary}>
             Create Invoice →
           </Link>
         </div>
         {lastCreatedOrderId && (
-          <div className="mt-3 text-[12px] text-[var(--text-dim)]">
-            Order created. Continue in <Link href="/orders" className="font-semibold text-[var(--accent)]">Orders</Link>.
+          <div className="mt-3 rounded-lg border border-green-200 bg-green-50 px-3 py-2 text-[12px] text-green-800">
+            ✓ Order created. <Link href="/orders" className="font-semibold underline">View in Orders →</Link>
           </div>
         )}
       </div>

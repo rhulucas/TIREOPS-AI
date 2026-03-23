@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   try {
     const body = await req.json();
-    const { orderNumber, customerId, customerName, tireSpec, quantity, value, dueDate } = body;
+    const { orderNumber, customerId, customerName, tireSpec, quantity, value, dueDate, quoteId } = body;
     if (!orderNumber?.trim() || !tireSpec?.trim() || quantity == null) {
       return NextResponse.json(
         { error: "orderNumber, tireSpec, quantity required" },
@@ -78,9 +78,13 @@ export async function POST(req: NextRequest) {
         quantity: Number(quantity) || 0,
         value: value != null ? Number(value) : null,
         dueDate: dueDate ? new Date(dueDate) : null,
+        quoteId: quoteId || null,
         userId: (session.user as { id?: string }).id || null,
       },
     });
+    if (quoteId) {
+      await prisma.quote.update({ where: { id: quoteId }, data: { status: "ACCEPTED" } }).catch(() => {});
+    }
     return NextResponse.json({ order });
   } catch (e) {
     console.error(e);

@@ -75,20 +75,26 @@ model Customer {
 }
 
 model Order {
-  id           String    @id @default(cuid())
-  orderNumber  String    @map("order_number")
-  status       String
-  customerName String?   @map("customer_name")
-  tireSpec     String?   @map("tire_spec")
-  quantity     Int       @default(0)
-  userId       String?   @map("user_id")
-  createdAt    DateTime  @default(now()) @map("created_at")
-  updatedAt    DateTime  @updatedAt @map("updated_at")
-  customerId   String?   @map("customer_id")
-  dueDate      DateTime? @map("due_date")
-  value        Float?
-  customer     Customer? @relation(fields: [customerId], references: [id])
-  user         User?     @relation(fields: [userId], references: [id])
+  id              String    @id @default(cuid())
+  orderNumber     String    @map("order_number")
+  status          String
+  customerName    String?   @map("customer_name")
+  tireSpec        String?   @map("tire_spec")
+  quantity        Int       @default(0)
+  userId          String?   @map("user_id")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  customerId      String?   @map("customer_id")
+  dueDate         DateTime? @map("due_date")
+  value           Float?
+  quoteId         String?   @unique @map("quote_id")
+  trackingNumber  String?   @map("tracking_number")
+  shippedAt       DateTime? @map("shipped_at")
+  deliveredAt     DateTime? @map("delivered_at")
+  customer        Customer? @relation(fields: [customerId], references: [id])
+  user            User?     @relation(fields: [userId], references: [id])
+  quote           Quote?    @relation(fields: [quoteId], references: [id])
+  invoice         Invoice?
 }
 
 model Quote {
@@ -105,8 +111,11 @@ model Quote {
   notes        String?
   quantity     Int?
   result       String?
+  status       String    @default("DRAFT")
+  deliveryDate DateTime? @map("delivery_date")
   customer     Customer? @relation(fields: [customerId], references: [id])
   user         User?     @relation(fields: [userId], references: [id])
+  order        Order?
 }
 
 model Invoice {
@@ -116,13 +125,17 @@ model Invoice {
   customerName    String    @map("customer_name")
   customerAddress String    @map("customer_address")
   orderRef        String?   @map("order_ref")
+  orderId         String?   @unique @map("order_id")
   items           String
   paymentTerms    String    @default("Net 30") @map("payment_terms")
   taxRate         Float     @default(0) @map("tax_rate")
   preview         String?
+  status          String    @default("DRAFT")
+  paidAt          DateTime? @map("paid_at")
   userId          String?   @map("user_id")
   createdAt       DateTime  @default(now()) @map("created_at")
   customer        Customer? @relation(fields: [customerId], references: [id])
+  order           Order?    @relation(fields: [orderId], references: [id])
 }
 
 model EmailDraft {
