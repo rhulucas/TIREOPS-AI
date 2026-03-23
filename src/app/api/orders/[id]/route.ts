@@ -38,6 +38,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     if (trackingNumber !== undefined) data.trackingNumber = trackingNumber?.trim() || null;
     if (shippedAt !== undefined) data.shippedAt = shippedAt ? new Date(shippedAt) : null;
     if (deliveredAt !== undefined) data.deliveredAt = deliveredAt ? new Date(deliveredAt) : null;
+    if (Object.keys(data).length === 0) {
+      return NextResponse.json({ error: "No fields to update" }, { status: 400 });
+    }
     const order = await prisma.order.update({
       where: { id },
       data,
