@@ -20,7 +20,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const { id } = await params;
   try {
     const body = await req.json();
-    const { status } = body;
+    const { status, customerName, customerAddress, orderRef, items, paymentTerms, taxRate, preview } = body;
     const data: Record<string, unknown> = {};
     if (status === "PAID") {
       data.status = "PAID";
@@ -30,6 +30,13 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     } else if (status === "DRAFT") {
       data.status = "DRAFT";
     }
+    if (customerName !== undefined) data.customerName = String(customerName);
+    if (customerAddress !== undefined) data.customerAddress = String(customerAddress);
+    if (orderRef !== undefined) data.orderRef = orderRef ? String(orderRef) : null;
+    if (items !== undefined) data.items = typeof items === "string" ? items : JSON.stringify(items);
+    if (paymentTerms !== undefined) data.paymentTerms = String(paymentTerms);
+    if (taxRate !== undefined) data.taxRate = Number(taxRate);
+    if (preview !== undefined) data.preview = preview ? String(preview) : null;
     const invoice = await prisma.invoice.update({ where: { id }, data });
     return NextResponse.json({ invoice });
   } catch (e) {

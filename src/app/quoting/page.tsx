@@ -276,7 +276,7 @@ export default function AIQuotingPage() {
       });
       const d = await safeJson<{ thread?: { id: string } }>(res);
       if (d.thread) {
-        router.push(`/email?threadId=${d.thread.id}`);
+        router.push(`/email?threadId=${d.thread.id}&customerName=${encodeURIComponent(customer.trim())}`);
       }
     } catch (e) {
       alert(String(e));
@@ -425,10 +425,15 @@ export default function AIQuotingPage() {
           </div>
           {result && (
             <div className="rounded-lg border border-[var(--border)] bg-[var(--bg2)] p-4">
-              <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--text-light)]">Quote Draft</div>
-              <div className="h-[420px] overflow-y-auto whitespace-pre-wrap rounded-lg border border-[var(--border)] bg-white px-4 py-3 font-mono text-[13px] leading-7 text-[var(--text)]">
-                {result}
+              <div className="mb-3 flex items-center justify-between">
+                <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--text-light)]">Quote Draft</div>
+                <span className="text-[10px] text-[var(--text-dim)]">Editable — modify before sending</span>
               </div>
+              <textarea
+                value={result}
+                onChange={(e) => setResult(e.target.value)}
+                className="h-[420px] w-full resize-none overflow-y-auto rounded-lg border border-[var(--border)] bg-white px-4 py-3 font-mono text-[13px] leading-7 text-[var(--text)] focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+              />
             </div>
           )}
         </div>

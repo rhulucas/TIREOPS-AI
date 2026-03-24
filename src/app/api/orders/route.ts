@@ -68,19 +68,23 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    const order = await prisma.order.create({
-      data: {
-        orderNumber: String(orderNumber).trim(),
-        status: "PENDING",
-        customerId: customerId || null,
-        customerName: customerName?.trim() || null,
-        tireSpec: String(tireSpec).trim(),
-        quantity: Number(quantity) || 0,
-        value: value != null ? Number(value) : null,
-        dueDate: dueDate ? new Date(dueDate) : null,
-        quoteId: quoteId || null,
-        userId: (session.user as { id?: string }).id || null,
-      },
+    const orderData = {
+      orderNumber: String(orderNumber).trim(),
+      status: "PENDING" as const,
+      customerId: customerId || null,
+      customerName: customerName?.trim() || null,
+      tireSpec: String(tireSpec).trim(),
+      quantity: Number(quantity) || 0,
+      value: value != null ? Number(value) : null,
+      dueDate: dueDate ? new Date(dueDate) : null,
+      quoteId: quoteId || null,
+      userId: (session.user as { id?: string }).id || null,
+    };
+    const order = await prisma.order.create({ data: orderData }).catch(async (err) => {
+      if (err?.code === "P2003") {
+        return prisma.order.create({ data: { ...orderData, userId: null } });
+      }
+      throw err;
     });
     if (quoteId) {
       await prisma.quote.update({ where: { id: quoteId }, data: { status: "ACCEPTED" } }).catch(() => {});

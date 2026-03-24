@@ -232,16 +232,11 @@ async function quoteHandler(req: NextRequest) {
         messages: [
           {
             role: "system",
-            content: `You are a tire industry quoting expert. Based on the tire specifications provided, output professional quote details including:
-- Size and spec description
-- Load index and speed rating with max load/speed
-- Estimated EU label grades (wet grip, rolling resistance, noise)
-- DOT/ECE compliance
-- Unit price and total estimate if quantity provided`,
+            content: `You are a tire industry sales rep writing a quote summary. Output plain text only — no markdown, no asterisks, no bullet dashes. Format each field on its own line as "Label: Value". Use exactly these labels in this order: Customer, Tire Spec, Category, Load Index, Speed Rating, Unit Price, Total Value, Lead Time, Payment Terms, EU Label, Compliance, Notes. If a value is not applicable write N/A. After the fields, add one blank line then a short 1-sentence sales note.`,
           },
           {
             role: "user",
-            content: `Generate a quote for: customer ${customerRecord?.company || customerRecord?.name || customer || "—"}, category ${category || "—"}, ${spec}. Suggested unit price ${estimatedUnitPrice}. Estimated total ${estimatedTotal || "N/A"}. Lead time ${leadTime}. Payment terms ${paymentTerms}. Notes: ${notes || "—"}`,
+            content: `Generate a quote for: Customer: ${customerRecord?.company || customerRecord?.name || customer || "—"}, Category: ${category || "—"}, ${spec}, Unit price: $${estimatedUnitPrice}${estimatedTotal ? `, Total: $${estimatedTotal.toLocaleString("en-US")}` : ""}, Lead time: ${leadTime}, Payment: ${paymentTerms}, Notes: ${notes || "none"}.`,
           },
         ],
       });
@@ -260,20 +255,24 @@ async function quoteHandler(req: NextRequest) {
         }
       | null = null;
     if (session?.user) {
-      const createdQuote = await prisma.quote.create({
-        data: {
-          customerName: customer || customerRecord?.company || customerRecord?.name || null,
-          category: category || null,
-          size: size || "",
-          loadIndex: loadIndex || null,
-          speedRating: speedRating || null,
-          quantity: quantity ? Number(quantity) : null,
-          compound: compound || null,
-          notes: notes || null,
-          result,
-          customerId: customerId || null,
-          userId: (session.user as { id?: string }).id || null,
-        },
+      const quoteData = {
+        customerName: customer || customerRecord?.company || customerRecord?.name || null,
+        category: category || null,
+        size: size || "",
+        loadIndex: loadIndex || null,
+        speedRating: speedRating || null,
+        quantity: quantity ? Number(quantity) : null,
+        compound: compound || null,
+        notes: notes || null,
+        result,
+        customerId: customerId || null,
+        userId: (session.user as { id?: string }).id || null,
+      };
+      const createdQuote = await prisma.quote.create({ data: quoteData }).catch(async (err) => {
+        if (err?.code === "P2003") {
+          return prisma.quote.create({ data: { ...quoteData, userId: null } });
+        }
+        throw err;
       });
       createdQuoteId = createdQuote.id;
       createdQuoteSummary = {

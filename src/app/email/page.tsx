@@ -49,10 +49,13 @@ const STATUS_COLOR: Record<string, string> = {
 
 // ── Main Page ──────────────────────────────────────────────────────────────────
 
+const LATEST_THREAD_STORAGE_KEY = "tireops_latest_email_thread";
+
 function EmailAIContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialThreadId = searchParams.get("threadId");
+  const initialCustomerName = searchParams.get("customerName") || "";
 
   const [threads, setThreads] = useState<Thread[]>([]);
   const [total, setTotal] = useState(0);
@@ -67,6 +70,9 @@ function EmailAIContent() {
   const years = ["all", ...Array.from({ length: 6 }, (_, i) => String(currentYear - i))];
 
   const [selectedId, setSelectedId] = useState<string | null>(initialThreadId);
+  const [pinnedThread, setPinnedThread] = useState<Thread | null>(null);
+  const [pinnedViewed, setPinnedViewed] = useState(false);
+  const shouldPinNext = useRef(!!(initialThreadId || initialCustomerName));
   const [thread, setThread] = useState<Thread | null>(null);
   const [loadingThreads, setLoadingThreads] = useState(true);
   const [loadingThread, setLoadingThread] = useState(false);
@@ -81,6 +87,7 @@ function EmailAIContent() {
   const [draftNotes, setDraftNotes] = useState("");
   const [aiDraft, setAiDraft] = useState("");
   const [generatingDraft, setGeneratingDraft] = useState(false);
+  const [expandedMsg, setExpandedMsg] = useState<string | null>(null);
 
   // Convert to order
   const [converting, setConverting] = useState(false);
@@ -116,6 +123,40 @@ function EmailAIContent() {
 
   useEffect(() => { loadThreads(); }, [page, search, statusFilter, yearFilter, sort]);
   useEffect(() => { setPage(1); }, [search, statusFilter, yearFilter, sort]);
+
+  // On mount: load pinned thread from localStorage (when no URL params)
+  useEffect(() => {
+    if (!initialThreadId && !initialCustomerName) {
+      const saved = window.localStorage.getItem(LATEST_THREAD_STORAGE_KEY);
+      if (saved) {
+        try { setPinnedThread(JSON.parse(saved) as Thread); }
+        catch { window.localStorage.removeItem(LATEST_THREAD_STORAGE_KEY); }
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Auto-select first matching thread when coming from orders with customerName (no threadId)
+  useEffect(() => {
+    if (initialCustomerName && !initialThreadId && threads.length > 0 && !selectedId) {
+      const match = threads.find((t) =>
+        t.customerName.toLowerCase().includes(initialCustomerName.toLowerCase())
+      );
+      if (match) setSelectedId(match.id);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [threads]);
+
+  // Pin the first thread that loads when coming from external navigation
+  useEffect(() => {
+    if (thread && shouldPinNext.current) {
+      shouldPinNext.current = false;
+      setPinnedThread(thread);
+      setPinnedViewed(false);
+      window.localStorage.setItem(LATEST_THREAD_STORAGE_KEY, JSON.stringify(thread));
+    }
+  }, [thread]);
+
   useEffect(() => {
     if (selectedId) loadThread(selectedId);
     else setThread(null);
@@ -308,43 +349,63 @@ function EmailAIContent() {
 
         {/* Thread list */}
         <div className="flex-1 overflow-y-auto">
-          {loadingThreads ? (
+          {loadingThreads && !pinnedThread ? (
             <div className="flex justify-center py-10"><Loader2 className="h-5 w-5 animate-spin text-[var(--text-dim)]" /></div>
-          ) : threads.length === 0 ? (
-            <div className="px-4 py-10 text-center text-xs text-[var(--text-dim)]">
-              {search ? `No results for "${search}"` : "No threads yet."}
-            </div>
           ) : (
-            threads.map((t) => {
-              const isUnread = t.status === "OPEN" && t.messages.at(-1)?.sender === "customer";
-              const isSelected = t.id === selectedId;
-              return (
-                <button
-                  key={t.id}
-                  onClick={() => setSelectedId(t.id)}
-                  className={`w-full border-b border-[var(--border2)] px-4 py-3 text-left transition-colors ${
-                    isSelected ? "bg-[var(--accent-light)]" : isUnread ? "bg-blue-50" : "hover:bg-[var(--bg)]"
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <span className={`truncate text-[13px] font-semibold ${isUnread ? "text-[var(--text)]" : "text-[var(--text-mid)]"}`}>
-                      {t.customerName}
-                      {isUnread && <span className="ml-1.5 inline-block h-1.5 w-1.5 rounded-full bg-blue-500" />}
-                    </span>
-                    <span className="shrink-0 text-[10px] text-[var(--text-dim)]">
-                      {new Date(t.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-                    </span>
+            (() => {
+              const seen = new Set<string>();
+              const displayThreads = (pinnedThread
+                ? [pinnedThread, ...threads.filter((t) => t.id !== pinnedThread.id)]
+                : threads
+              ).filter((t) => { if (seen.has(t.id)) return false; seen.add(t.id); return true; });
+              if (displayThreads.length === 0) {
+                return (
+                  <div className="px-4 py-10 text-center text-xs text-[var(--text-dim)]">
+                    {search ? `No results for "${search}"` : "No threads yet."}
                   </div>
-                  <p className="mt-0.5 truncate text-[11px] text-[var(--text-dim)]">{t.subject}</p>
-                  <div className="mt-1 flex items-center gap-1.5">
-                    <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-semibold ${STATUS_COLOR[t.status] || STATUS_COLOR.CLOSED}`}>
-                      {STATUS_LABEL[t.status] || t.status}
-                    </span>
-                    <span className="text-[9px] text-[var(--text-dim)]">{t.messages.length} msgs</span>
-                  </div>
-                </button>
-              );
-            })
+                );
+              }
+              return displayThreads.map((t, idx) => {
+                const isPinnedPos = pinnedThread?.id === t.id && idx === 0;
+                const showNewBadge = isPinnedPos && !pinnedViewed;
+                const isUnread = t.status === "OPEN" && t.messages.at(-1)?.sender === "customer";
+                const isSelected = t.id === selectedId;
+                return (
+                  <button
+                    key={t.id}
+                    onClick={() => {
+                      setSelectedId(t.id);
+                      if (isPinnedPos && !pinnedViewed) setPinnedViewed(true);
+                    }}
+                    className={`w-full border-b border-[var(--border2)] px-4 py-3 text-left transition-colors ${
+                      isSelected ? "bg-blue-100" : showNewBadge ? "bg-amber-50" : isUnread ? "bg-blue-50/60" : "hover:bg-[var(--bg)]"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-1">
+                      <span className={`truncate text-[13px] font-semibold ${isUnread ? "text-[var(--text)]" : "text-[var(--text-mid)]"}`}>
+                        {t.customerName}
+                        {isUnread && <span className="ml-1.5 inline-block h-1.5 w-1.5 rounded-full bg-blue-500" />}
+                      </span>
+                      {showNewBadge && (
+                        <span className="shrink-0 rounded-full bg-amber-100 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-amber-700">
+                          New
+                        </span>
+                      )}
+                      <span className="shrink-0 text-[10px] text-[var(--text-dim)]">
+                        {new Date(t.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                      </span>
+                    </div>
+                    <p className="mt-0.5 truncate text-[11px] text-[var(--text-dim)]">{t.subject}</p>
+                    <div className="mt-1 flex items-center gap-1.5">
+                      <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-semibold ${STATUS_COLOR[t.status] || STATUS_COLOR.CLOSED}`}>
+                        {STATUS_LABEL[t.status] || t.status}
+                      </span>
+                      <span className="text-[9px] text-[var(--text-dim)]">{t.messages.length} msgs</span>
+                    </div>
+                  </button>
+                );
+              });
+            })()
           )}
         </div>
 
@@ -401,16 +462,16 @@ function EmailAIContent() {
                   {thread.status === "OPEN" && (
                     <button
                       onClick={markAgreed}
-                      className="rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-100"
+                      className="rounded-lg border border-emerald-400 bg-white px-4 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-50 whitespace-nowrap"
                     >
                       ✓ Mark Agreed
                     </button>
                   )}
-                  {(thread.status === "AGREED" || (thread.messages.length >= 3 && thread.status !== "CLOSED")) && (
+                  {thread.status !== "CLOSED" && (
                     <button
                       onClick={convertToOrder}
                       disabled={converting}
-                      className="rounded-lg bg-[var(--accent)] px-3 py-1.5 text-xs font-semibold text-white hover:opacity-90 disabled:opacity-50"
+                      className="rounded-lg border border-[var(--accent)] bg-[var(--accent)] px-4 py-1.5 text-xs font-semibold text-white hover:opacity-90 disabled:opacity-50 whitespace-nowrap"
                     >
                       {converting ? "Creating…" : "Convert to Order →"}
                     </button>
@@ -435,6 +496,7 @@ function EmailAIContent() {
                 <div className="flex flex-col gap-4">
                   {thread.messages.map((msg) => {
                     const isSales = msg.sender === "sales";
+                    const isInvoice = /^INVOICE\b/m.test(msg.content) || msg.content.includes("Invoice Number:");
                     return (
                       <div key={msg.id} className={`flex ${isSales ? "justify-end" : "justify-start"}`}>
                         <div className={`flex max-w-[75%] flex-col gap-1 ${isSales ? "items-end" : "items-start"}`}>
@@ -445,13 +507,26 @@ function EmailAIContent() {
                               hour: "2-digit", minute: "2-digit",
                             })}
                           </span>
-                          <div className={`rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
+                          {isInvoice ? (
+                            <button
+                              type="button"
+                              onClick={() => setExpandedMsg(msg.content)}
+                              className={`rounded-2xl px-4 py-2.5 text-left font-mono text-[10px] leading-relaxed whitespace-pre-wrap overflow-hidden max-h-[300px] overflow-y-auto w-full cursor-pointer hover:opacity-90 ${
+                                isSales ? "rounded-tr-sm bg-[var(--accent)] text-white" : "rounded-tl-sm bg-[var(--bg)] text-[var(--text)]"
+                              }`}
+                            >
+                              {msg.content}
+                              <span className="block mt-2 text-[9px] opacity-60">↗ Click to expand</span>
+                            </button>
+                          ) : (
+                          <div className={`rounded-2xl px-4 py-2.5 leading-relaxed text-sm whitespace-pre-wrap ${
                             isSales
                               ? "rounded-tr-sm bg-[var(--accent)] text-white"
                               : "rounded-tl-sm bg-[var(--bg)] text-[var(--text)]"
                           }`}>
                             {msg.content}
                           </div>
+                          )}
                         </div>
                       </div>
                     );
@@ -477,7 +552,7 @@ function EmailAIContent() {
                   onChange={(e) => setReply(e.target.value)}
                   onKeyDown={(e) => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) sendReply(); }}
                   placeholder="Type your reply… (Cmd+Enter to send)"
-                  rows={12}
+                  rows={7}
                   className="w-full resize-y rounded-xl border border-[var(--border2)] bg-[var(--card)] px-4 py-3 text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
                 />
                 <div className="mt-2 flex justify-end">
@@ -579,6 +654,24 @@ function EmailAIContent() {
           </div>
         </div>
       ) : null}
+
+      {/* Invoice floating panel - non-blocking, leaves reply area usable */}
+      {expandedMsg && (
+        <div className="fixed top-[60px] left-1/2 -translate-x-1/2 z-50 w-[700px] max-w-[90vw] flex flex-col bg-white rounded-2xl shadow-2xl border border-gray-200 max-h-[55vh]">
+          <div className="flex items-center justify-between border-b border-gray-200 px-5 py-3 shrink-0">
+            <span className="text-sm font-bold text-gray-800">Invoice Detail</span>
+            <button
+              onClick={() => setExpandedMsg(null)}
+              className="text-gray-400 hover:text-gray-600 text-lg leading-none"
+            >✕</button>
+          </div>
+          <div className="overflow-y-auto p-5">
+            <pre className="font-mono text-[12px] leading-relaxed text-gray-800 whitespace-pre">
+              {expandedMsg}
+            </pre>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

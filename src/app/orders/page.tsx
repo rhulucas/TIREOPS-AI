@@ -270,6 +270,11 @@ function OrdersContent() {
         const errData = await res.json().catch(() => ({}));
         throw new Error(errData?.error || `HTTP ${res.status}`);
       }
+      if (pinnedOrder?.id === orderId) {
+        const updated = { ...pinnedOrder, status };
+        setPinnedOrder(updated);
+        window.localStorage.setItem(LATEST_ORDER_STORAGE_KEY, JSON.stringify(updated));
+      }
       loadOrders();
     } catch (e) {
       alert("Failed to update status: " + (e instanceof Error ? e.message : String(e)));
@@ -490,7 +495,7 @@ function OrdersContent() {
                     )}
                     {(o.status === "PENDING" || o.status === "PRODUCTION") && (
                       <Link
-                        href={`/email?scenario=Quote+Follow-up&orderId=${o.id}`}
+                        href={`/email?scenario=Quote+Follow-up&orderId=${o.id}&customerName=${encodeURIComponent(o.customerName || "")}`}
                         className="inline-flex items-center gap-1 rounded-[6px] border border-blue-200 bg-blue-50 px-2.5 py-1 text-[11px] font-semibold text-blue-600 hover:bg-blue-100 whitespace-nowrap"
                       >
                         ✉ Email

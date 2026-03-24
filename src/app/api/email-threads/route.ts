@@ -57,25 +57,28 @@ export async function POST(req: NextRequest) {
     if (!subject || !customerName || !initialMessage) {
       return NextResponse.json({ error: "subject, customerName, initialMessage required" }, { status: 400 });
     }
-    const thread = await prisma.emailThread.create({
-      data: {
-        subject,
-        customerName,
-        customerEmail: customerEmail || null,
-        quoteId: quoteId || null,
-        tireSpec: tireSpec || null,
-        quantity: quantity ? Number(quantity) : null,
-        unitPrice: unitPrice ? Number(unitPrice) : invoiceTotal ? Number(invoiceTotal) : null,
-        status: "OPEN",
-        userId: (session.user as { id?: string }).id || null,
-        messages: {
-          create: {
-            sender: "sales",
-            content: initialMessage,
-          },
+    const threadData = {
+      subject,
+      customerName,
+      customerEmail: customerEmail || null,
+      quoteId: quoteId || null,
+      tireSpec: tireSpec || null,
+      quantity: quantity ? Number(quantity) : null,
+      unitPrice: unitPrice ? Number(unitPrice) : invoiceTotal ? Number(invoiceTotal) : null,
+      status: "OPEN",
+      userId: (session.user as { id?: string }).id || null,
+      messages: {
+        create: {
+          sender: "sales" as const,
+          content: initialMessage,
         },
       },
-      include: { messages: true },
+    };
+    const thread = await prisma.emailThread.create({ data: threadData, include: { messages: true } }).catch(async (err) => {
+      if (err?.code === "P2003") {
+        return prisma.emailThread.create({ data: { ...threadData, userId: null }, include: { messages: true } });
+      }
+      throw err;
     });
     return NextResponse.json({ thread });
   } catch (e) {

@@ -272,20 +272,28 @@ function formatInvoicePreview(opts: {
   const tax = subtotal * rate;
   const total = subtotal + tax;
   const date = invoiceDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  const C1 = 32, C2 = 6, C3 = 17, C4 = 13;
+  const GAP = "  ";
+  const LINE = C1 + GAP.length + C2 + GAP.length + C3 + GAP.length + C4;
+  const row = (desc: string, qty: string, up: string, tot: string) =>
+    desc.slice(0, C1).padEnd(C1) + GAP + qty.padStart(C2) + GAP + up.padStart(C3) + GAP + tot.padStart(C4);
+  const summaryRow = (label: string, value: string) =>
+    label.padEnd(C1 + GAP.length + C2 + GAP.length + C3) + GAP + value.padStart(C4);
+
   let out = "INVOICE\n";
   out += `Invoice Number: ${invoiceNumber}\n`;
   out += `Invoice Date: ${date}\n\n`;
   out += `Bill To:\n${customerName}\n${address}\n\n`;
   out += `Order Reference: ${orderRef || "—"}\n\n`;
-  out += "Item Description          Qty      Unit Price (USD)      Total (USD)\n";
-  out += `${"—".repeat(70)}\n`;
+  out += row("Item Description", "Qty", "Unit Price (USD)", "Total (USD)") + "\n";
+  out += `${"—".repeat(LINE)}\n`;
   for (const l of lines) {
-    out += `${l.description.slice(0, 30).padEnd(30)} ${String(l.quantity).padStart(6)} ${fmtCurrency(l.unitPrice).padStart(18)} ${fmtCurrency(l.total).padStart(18)}\n`;
+    out += row(l.description, String(l.quantity), fmtCurrency(l.unitPrice), fmtCurrency(l.total)) + "\n";
   }
-  out += `${"—".repeat(70)}\n`;
-  out += `Subtotal:                                                ${fmtCurrency(subtotal).padStart(18)}\n`;
-  out += `Tax (${taxRate}%):                                             ${fmtCurrency(tax).padStart(18)}\n`;
-  out += `Total:                                                  ${fmtCurrency(total).padStart(18)}\n\n`;
+  out += `${"—".repeat(LINE)}\n`;
+  out += summaryRow("Subtotal:", fmtCurrency(subtotal)) + "\n";
+  out += summaryRow(`Tax (${taxRate}%):`, fmtCurrency(tax)) + "\n";
+  out += summaryRow("Total:", fmtCurrency(total)) + "\n\n";
   out += `Payment Terms: ${paymentTerms}\n\n`;
   out += "Thank you for your business!";
   return out;
@@ -462,18 +470,10 @@ async function main() {
       unitPrice: order.value && order.quantity > 0 ? Math.round((order.value / order.quantity) * 100) / 100 : randInt(70, 120),
     };
     const lineItems: LineItem[] = [baseItem];
-    if (order.quantity >= 250) {
-      const charge = EXTRA_LINE_ITEMS[0]!;
-      lineItems.push({ description: charge.description, quantity: 1, unitPrice: pick(charge.prices) });
-    }
-    if (order.status === "URGENT") {
-      const charge = EXTRA_LINE_ITEMS[4]!;
-      lineItems.push({ description: charge.description, quantity: 1, unitPrice: pick(charge.prices) });
-    }
-    if (index % 4 === 0) {
-      const charge = pick(EXTRA_LINE_ITEMS.slice(1, 4));
-      lineItems.push({ description: charge.description, quantity: 1, unitPrice: pick(charge.prices) });
-    }
+    // Always add a second line item; pick based on customer index so each customer gets a different one
+    const customerIndex = customers.indexOf(customer);
+    const secondCharge = EXTRA_LINE_ITEMS[customerIndex % EXTRA_LINE_ITEMS.length]!;
+    lineItems.push({ description: secondCharge.description, quantity: 1, unitPrice: pick(secondCharge.prices) });
     const paymentTerms = pick(["Net 15", "Net 30", "Net 45", "Net 60", "Due on receipt"]);
     const taxRate = [0, 5, 7.5, 8, 8.25, 9.5][index % 6]!;
     const yearWindow = yearWindows[index % yearWindows.length]!;

@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState, useEffect } from "react";
+import { Suspense, useState, useEffect, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { AlertTriangle, Loader2, Mail, Save, Search, RotateCcw, Plus, Trash2, WandSparkles } from "lucide-react";
 import { safeJson } from "@/lib/safe-json";
@@ -107,20 +107,28 @@ function formatInvoice(data: {
   const fmt = (n: number) => n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const date = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
 
+  const C1 = 32, C2 = 6, C3 = 17, C4 = 13;
+  const GAP = "  ";
+  const LINE = C1 + GAP.length + C2 + GAP.length + C3 + GAP.length + C4;
+  const row = (desc: string, qty: string, up: string, tot: string) =>
+    desc.slice(0, C1).padEnd(C1) + GAP + qty.padStart(C2) + GAP + up.padStart(C3) + GAP + tot.padStart(C4);
+  const summaryRow = (label: string, value: string) =>
+    label.padEnd(C1 + GAP.length + C2 + GAP.length + C3) + GAP + value.padStart(C4);
+
   let out = `INVOICE\n`;
   out += `Invoice Number: ${invoiceNumber}\n`;
   out += `Invoice Date: ${date}\n\n`;
   out += `Bill To:\n${customerName}\n${address.replace(/\n/g, "\n")}\n\n`;
   out += `Order Reference: ${orderRef || "—"}\n\n`;
-  out += `Item Description          Qty      Unit Price (USD)      Total (USD)\n`;
-  out += `${"—".repeat(70)}\n`;
+  out += row("Item Description", "Qty", "Unit Price (USD)", "Total (USD)") + "\n";
+  out += `${"—".repeat(LINE)}\n`;
   for (const l of lines) {
-    out += `${l.desc.slice(0, 30).padEnd(30)} ${String(l.qty).padStart(6)} ${fmt(l.up).padStart(18)} ${fmt(l.total).padStart(18)}\n`;
+    out += row(l.desc, String(l.qty), fmt(l.up), fmt(l.total)) + "\n";
   }
-  out += `${"—".repeat(70)}\n`;
-  out += `Subtotal:                                                ${fmt(subtotal).padStart(18)}\n`;
-  out += `Tax (${taxRate}%):                                             ${fmt(tax).padStart(18)}\n`;
-  out += `Total:                                                  ${fmt(total).padStart(18)}\n\n`;
+  out += `${"—".repeat(LINE)}\n`;
+  out += summaryRow("Subtotal:", fmt(subtotal)) + "\n";
+  out += summaryRow(`Tax (${taxRate}%):`, fmt(tax)) + "\n";
+  out += summaryRow("Total:", fmt(total)) + "\n\n";
   out += `Payment Terms: ${paymentTerms}\n\n`;
   out += `Thank you for your business!`;
   return out;
@@ -132,7 +140,10 @@ function InvoiceAIContent() {
   const [invoiceNumber, setInvoiceNumber] = useState(nextInvoiceNumber);
   const [address, setAddress] = useState("");
   const [orderRef, setOrderRef] = useState("");
-  const [lineItems, setLineItems] = useState<LineItem[]>([{ description: "", quantity: 0, unitPrice: 0 }]);
+  const [lineItems, setLineItems] = useState<LineItem[]>([
+    { description: "", quantity: 0, unitPrice: 0 },
+    { description: "", quantity: 0, unitPrice: 0 },
+  ]);
   const [paymentTermsVal, setPaymentTermsVal] = useState("Net 30");
   const [taxRate, setTaxRate] = useState("8");
   const [preview, setPreview] = useState<string | null>(null);
@@ -154,6 +165,12 @@ function InvoiceAIContent() {
   const [linkedOrderId, setLinkedOrderId] = useState<string | null>(null);
   const [markingPaid, setMarkingPaid] = useState<string | null>(null);
   const [sendingEmail, setSendingEmail] = useState<string | null>(null);
+  const [selectedLinkedOrder, setSelectedLinkedOrder] = useState<OrderSuggestion | null>(null);
+  const [pinnedInvoice, setPinnedInvoice] = useState<InvoiceRow | null>(null);
+  const [pinnedViewed, setPinnedViewed] = useState(false);
+  const [savedInvoiceId, setSavedInvoiceId] = useState<string | null>(null);
+  const [isDirty, setIsDirty] = useState(false);
+  const hasSavedOnce = useRef(false);
   const searchParams = useSearchParams();
   const router = useRouter();
   const invoicePageSize = 20;
@@ -196,6 +213,11 @@ function InvoiceAIContent() {
   }, [invoiceSearch, invoicePage, invoiceYear]);
 
   useEffect(() => {
+    if (hasSavedOnce.current) setIsDirty(true);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [customerName, address, orderRef, lineItems, paymentTermsVal, taxRate, preview]);
+
+  useEffect(() => {
     setInvoicePage(1);
   }, [invoiceSearch, invoiceYear]);
 
@@ -229,7 +251,13 @@ function InvoiceAIContent() {
         const parsedValue = Number(String(valueFromQuery).replace(/[^\d.-]/g, "")) || 0;
         const inferredUnitPrice =
           quantityFromQuery > 0 && parsedValue > 0 ? Math.round((parsedValue / quantityFromQuery) * 100) / 100 : 85;
-        setLineItems([{ description: tireSpecFromQuery, quantity: quantityFromQuery, unitPrice: inferredUnitPrice }]);
+        const secondItem =
+          quantityFromQuery >= 500
+            ? { description: "Priority production surcharge", quantity: 1, unitPrice: 500 }
+            : quantityFromQuery >= 200
+              ? { description: "Freight & handling", quantity: 1, unitPrice: 750 }
+              : { description: "Quality inspection report", quantity: 1, unitPrice: 150 };
+        setLineItems([{ description: tireSpecFromQuery, quantity: quantityFromQuery, unitPrice: inferredUnitPrice }, secondItem]);
         setDraftSeed({
           orderNumber: displayOrder || orderNumber || "",
           customerName: customerFromQuery,
@@ -368,7 +396,11 @@ function InvoiceAIContent() {
       alert("Customer name, address, and at least one line item are required.");
       return;
     }
-    if (!confirm("Save this invoice?")) return;
+    if (savedInvoiceId && !isDirty) {
+      alert("This invoice has already been saved. Modify the invoice content to save changes.");
+      return;
+    }
+    if (!confirm(savedInvoiceId ? "Update the saved invoice with your changes?" : "Save this invoice?")) return;
     const previewText =
       preview ||
       formatInvoice({
@@ -380,46 +412,77 @@ function InvoiceAIContent() {
         paymentTerms: paymentTermsVal,
         taxRate: Number(taxRate) || 0,
       });
-    const optimisticRow: InvoiceRow = {
-      id: "pending",
-      invoiceNumber,
-      customerName,
-      orderRef: orderRef || null,
-      createdAt: new Date().toISOString(),
-      preview: previewText,
-    };
-    setInvoices((prev) => [optimisticRow, ...prev]);
     setSaving(true);
     try {
-      const res = await fetch("/api/invoices", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      if (savedInvoiceId) {
+        // Update existing invoice
+        const res = await fetch(`/api/invoices/${savedInvoiceId}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            customerName,
+            customerAddress: address,
+            orderRef: orderRef || null,
+            items: JSON.stringify(validItems),
+            paymentTerms: paymentTermsVal,
+            taxRate: Number(taxRate) || 0,
+            preview: previewText,
+          }),
+        });
+        if (!res.ok) {
+          const err = await safeJson<{ error?: string }>(res);
+          throw new Error(err.error || "Failed to update");
+        }
+        const data = await safeJson<{ invoice?: InvoiceRow }>(res);
+        if (data.invoice) {
+          setInvoices((prev) => prev.map((inv) => inv.id === savedInvoiceId ? { ...inv, ...data.invoice } : inv));
+        }
+        setIsDirty(false);
+      } else {
+        // Create new invoice
+        const optimisticRow: InvoiceRow = {
+          id: "pending",
           invoiceNumber,
-          customerId: selectedCustomer?.id,
           customerName,
-          customerAddress: address,
           orderRef: orderRef || null,
-          orderId: linkedOrderId || null,
-          items: JSON.stringify(validItems),
-          paymentTerms: paymentTermsVal,
-          taxRate: Number(taxRate) || 0,
+          createdAt: new Date().toISOString(),
           preview: previewText,
-        }),
-      });
-      if (!res.ok) {
-        const err = await safeJson<{ error?: string }>(res);
-        throw new Error(err.error || "Failed to save");
-      }
-      const data = await safeJson<{ invoice?: InvoiceRow }>(res);
-      if (data.invoice) {
-        setInvoices((prev) =>
-          prev.map((inv) => (inv.id === "pending" ? { ...data.invoice!, id: data.invoice!.id } : inv))
-        );
-        setInvoiceNumber(nextInvoiceNumber());
+        };
+        setInvoices((prev) => [optimisticRow, ...prev]);
+        const res = await fetch("/api/invoices", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            invoiceNumber,
+            customerId: selectedCustomer?.id,
+            customerName,
+            customerAddress: address,
+            orderRef: orderRef || null,
+            orderId: linkedOrderId || null,
+            items: JSON.stringify(validItems),
+            paymentTerms: paymentTermsVal,
+            taxRate: Number(taxRate) || 0,
+            preview: previewText,
+          }),
+        });
+        if (!res.ok) {
+          setInvoices((prev) => prev.filter((inv) => inv.id !== "pending"));
+          const err = await safeJson<{ error?: string }>(res);
+          throw new Error(err.error || "Failed to save");
+        }
+        const data = await safeJson<{ invoice?: InvoiceRow }>(res);
+        if (data.invoice) {
+          setInvoices((prev) =>
+            prev.map((inv) => (inv.id === "pending" ? { ...data.invoice!, id: data.invoice!.id } : inv))
+          );
+          setSavedInvoiceId(data.invoice.id);
+          setPinnedInvoice(data.invoice);
+          setPinnedViewed(false);
+          hasSavedOnce.current = true;
+          setIsDirty(false);
+        }
       }
     } catch (e) {
-      setInvoices((prev) => prev.filter((inv) => inv.id !== "pending"));
       alert(String(e));
     } finally {
       setSaving(false);
@@ -451,12 +514,11 @@ function InvoiceAIContent() {
       const totalStr = total > 0 ? `$${formatCurrency(total)}` : "(see invoice)";
       const subject = `Invoice ${inv.invoiceNumber} — ${inv.customerName}`;
       const initialMessage =
-        `Dear ${inv.customerName},\n\nPlease find your invoice below.\n\n` +
-        `• Invoice Number: ${inv.invoiceNumber}\n` +
-        `• Order Reference: ${inv.orderRef || "—"}\n` +
-        `• Payment Terms: ${inv.paymentTerms || "Net 30"}\n` +
-        `• Invoice Total: ${totalStr}\n\n` +
-        (inv.preview ? `Invoice Details:\n${inv.preview}\n\n` : "") +
+        `Dear ${inv.customerName},\n\nPlease find your invoice details below.\n\n` +
+        `Invoice Number: ${inv.invoiceNumber}\n` +
+        `Order Reference: ${inv.orderRef || "—"}\n` +
+        `Payment Terms: ${inv.paymentTerms || "Net 30"}\n` +
+        `Invoice Total: ${totalStr}\n\n` +
         `Please remit payment per the terms above. If you have any questions, don't hesitate to reach out.\n\nBest regards,\nTireOps Billing Team`;
       const res = await fetch("/api/email-threads", {
         method: "POST",
@@ -512,18 +574,44 @@ function InvoiceAIContent() {
               </div>
               <div>
                 <label className={labelClass}>Linked Order</label>
-                <select
-                  value={orderRef}
-                  onChange={(e) => setOrderRef(e.target.value)}
-                  className={inputClass}
-                >
-                  <option value="">No linked order</option>
-                  {orderSuggestions.map((order) => (
-                    <option key={order.id} value={order.orderNumber}>
-                      {order.orderNumber} | {order.tireSpec || "No spec"} | Qty {order.quantity}
-                    </option>
-                  ))}
-                </select>
+                <div className="flex gap-2">
+                  <select
+                    value={orderRef}
+                    onChange={(e) => {
+                      setOrderRef(e.target.value);
+                      const found = orderSuggestions.find((o) => o.orderNumber === e.target.value) || null;
+                      setSelectedLinkedOrder(found);
+                      if (found) setLinkedOrderId(found.id);
+                    }}
+                    className={`${inputClass} flex-1`}
+                  >
+                    <option value="">No linked order</option>
+                    {orderSuggestions.map((order) => (
+                      <option key={order.id} value={order.orderNumber}>
+                        {order.orderNumber} | {order.tireSpec || "No spec"} | Qty {order.quantity}
+                      </option>
+                    ))}
+                  </select>
+                  {selectedLinkedOrder?.tireSpec && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const o = selectedLinkedOrder;
+                        const unitPrice = o.value && o.quantity > 0 ? Math.round((o.value / o.quantity) * 100) / 100 : 0;
+                        setLineItems((prev) => {
+                          const updated = [...prev];
+                          const emptyIdx = updated.findIndex((item) => !item.description.trim());
+                          const newItem = { description: o.tireSpec!, quantity: o.quantity, unitPrice };
+                          if (emptyIdx >= 0) { updated[emptyIdx] = newItem; return updated; }
+                          return [...updated, newItem];
+                        });
+                      }}
+                      className="shrink-0 rounded-[7px] border border-[var(--accent)] bg-[var(--accent)] px-3 py-2 text-[13px] font-semibold text-white hover:bg-[#1860c4]"
+                    >
+                      Add
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
             <div>
@@ -760,17 +848,22 @@ function InvoiceAIContent() {
 
       <div className="card">
         <div className="mb-4 text-sm font-bold text-[var(--text)]">Invoice Preview</div>
-        <div className="relative min-h-[220px] max-h-[360px] overflow-y-auto rounded-lg border border-[var(--border)] bg-[var(--bg2)] p-4">
+        <div className="relative">
           {preview ? (
-            <pre className="whitespace-pre-wrap font-mono text-[11px] leading-relaxed text-[var(--text)]">
-              {preview}
-            </pre>
+            <textarea
+              className="w-full min-h-[220px] rounded-lg border border-[var(--border)] bg-[var(--bg2)] p-4 font-mono text-[11px] leading-relaxed text-[var(--text)] resize-y focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+              rows={14}
+              value={preview}
+              onChange={(e) => setPreview(e.target.value)}
+            />
           ) : (
-            <p className="text-center text-[var(--text-dim)]">
-              Select a customer, optionally link an order, then click
-              <br />
-              &quot;Smart Draft Invoice&quot; to generate a business-ready invoice preview.
-            </p>
+            <div className="min-h-[220px] rounded-lg border border-[var(--border)] bg-[var(--bg2)] p-4 flex items-center justify-center">
+              <p className="text-center text-[var(--text-dim)]">
+                Select a customer, optionally link an order, then click
+                <br />
+                &quot;Smart Draft Invoice&quot; to generate a business-ready invoice preview.
+              </p>
+            </div>
           )}
         </div>
         {preview && (
@@ -859,19 +952,33 @@ function InvoiceAIContent() {
               </tr>
             </thead>
             <tbody>
-              {invoices.length === 0 ? (
+              {invoices.length === 0 && !pinnedInvoice ? (
                 <tr><td colSpan={6} className="py-4 text-center text-[var(--text-dim)]">No invoices yet.</td></tr>
               ) : (
-                invoices.map((inv) => (
-                  <tr key={inv.id} className="border-b border-[var(--border2)]">
+                (() => {
+                  const seen = new Set<string>();
+                  const displayInvoices = (pinnedInvoice
+                    ? [pinnedInvoice, ...invoices.filter((i) => i.id !== pinnedInvoice.id)]
+                    : invoices
+                  ).filter((i) => { if (seen.has(i.id)) return false; seen.add(i.id); return true; });
+                  return displayInvoices.map((inv) => {
+                    const isPinned = pinnedInvoice?.id === inv.id;
+                    const showNew = isPinned && !pinnedViewed;
+                    return (
+                  <tr key={inv.id} className={`border-b border-[var(--border2)] ${isPinned ? "bg-blue-50" : ""}`}>
                     <td className="py-2 pr-4">
-                      <button
-                        type="button"
-                        onClick={() => setPreviewModal(inv)}
-                        className="font-medium text-[var(--accent)] hover:underline text-left"
-                      >
-                        {inv.invoiceNumber}
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => { setPreviewModal(inv); if (isPinned) setPinnedViewed(true); }}
+                          className="font-medium text-[var(--accent)] hover:underline text-left"
+                        >
+                          {inv.invoiceNumber}
+                        </button>
+                        {showNew && (
+                          <span className="rounded-full bg-amber-400 px-2 py-0.5 text-[10px] font-bold text-white">New</span>
+                        )}
+                      </div>
                     </td>
                     <td className="py-2 pr-4">{inv.customerName}</td>
                     <td className="py-2 pr-4">{inv.orderRef || "—"}</td>
@@ -908,13 +1015,15 @@ function InvoiceAIContent() {
                             disabled={sendingEmail === inv.id}
                             className="rounded-[5px] border border-blue-200 bg-blue-50 px-2 py-0.5 text-[10px] font-semibold text-blue-600 hover:bg-blue-100 whitespace-nowrap disabled:opacity-50"
                           >
-                            {sendingEmail === inv.id ? "..." : "✉ Send Invoice"}
+                            {sendingEmail === inv.id ? "..." : "✉ Send Email"}
                           </button>
                         )}
                       </div>
                     </td>
                   </tr>
-                ))
+                    );
+                  });
+                })()
               )}
             </tbody>
           </table>

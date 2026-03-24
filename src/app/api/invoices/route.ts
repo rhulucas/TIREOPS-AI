@@ -66,22 +66,45 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    const invoice = await prisma.invoice.create({
-      data: {
-        invoiceNumber: String(invoiceNumber),
-        customerId: customerId || null,
-        customerName: String(customerName),
-        customerAddress: String(customerAddress),
-        orderRef: orderRef ? String(orderRef) : null,
-        orderId: orderId || null,
-        items: typeof items === "string" ? items : JSON.stringify(items),
-        paymentTerms: paymentTerms || "Net 30",
-        taxRate: Number(taxRate) || 0,
-        preview: preview ? String(preview) : null,
-        status: "DRAFT",
-        userId: (session.user as { id?: string }).id || null,
-      },
-    });
+    const userId = (session.user as { id?: string }).id || null;
+    const invoiceData = {
+      invoiceNumber: String(invoiceNumber),
+      customerId: customerId || null,
+      customerName: String(customerName),
+      customerAddress: String(customerAddress),
+      orderRef: orderRef ? String(orderRef) : null,
+      orderId: orderId || null,
+      items: typeof items === "string" ? items : JSON.stringify(items),
+      paymentTerms: paymentTerms || "Net 30",
+      taxRate: Number(taxRate) || 0,
+      preview: preview ? String(preview) : null,
+      status: "DRAFT",
+      userId,
+    };
+
+    const tryCreate = (data: typeof invoiceData) =>
+      prisma.invoice.create({ data }).catch(async (err) => {
+        if (err?.code === "P2003") return prisma.invoice.create({ data: { ...data, userId: null } });
+        throw err;
+      });
+
+    const invoice = orderId
+      ? await prisma.invoice.upsert({
+          where: { orderId: String(orderId) },
+          update: { ...invoiceData },
+          create: { ...invoiceData },
+        }).catch(async (err) => {
+          if (err?.code === "P2003") {
+            return prisma.invoice.upsert({
+              where: { orderId: String(orderId) },
+              update: { ...invoiceData, userId: null },
+              create: { ...invoiceData, userId: null },
+            });
+          }
+          throw err;
+        })
+      : await tryCreate(invoiceData);
+
     return NextResponse.json({ invoice });
   } catch (e) {
     console.error(e);
