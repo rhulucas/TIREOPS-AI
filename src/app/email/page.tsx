@@ -482,7 +482,7 @@ function EmailAIContent() {
                   )}
                 </>
               )}
-              {thread.subject?.startsWith("Invoice ") && thread.quoteId && (
+              {thread.subject?.startsWith("Invoice ") && (
                 <button
                   type="button"
                   disabled={markingInvoicePaid}
@@ -490,15 +490,27 @@ function EmailAIContent() {
                     if (!confirm("Mark this invoice as paid?")) return;
                     setMarkingInvoicePaid(true);
                     try {
-                      const res = await fetch(`/api/invoices/${thread.quoteId}`, {
+                      let invoiceId = thread.quoteId;
+                      if (!invoiceId) {
+                        // Parse invoice number from subject e.g. "Invoice INV-S-005028 – Coastal Fleet"
+                        const match = thread.subject.match(/Invoice\s+(INV-[^\s–—]+)/);
+                        const invNum = match?.[1];
+                        if (invNum) {
+                          const lookup = await fetch(`/api/invoices?q=${encodeURIComponent(invNum)}&pageSize=1`);
+                          const data = await lookup.json();
+                          invoiceId = data.invoices?.[0]?.id || null;
+                        }
+                      }
+                      if (!invoiceId) throw new Error("Could not find invoice record.");
+                      const res = await fetch(`/api/invoices/${invoiceId}`, {
                         method: "PATCH",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ status: "PAID" }),
                       });
                       if (!res.ok) throw new Error("Failed");
                       alert("Invoice marked as paid.");
-                    } catch {
-                      alert("Failed to mark invoice as paid.");
+                    } catch (e) {
+                      alert(`Failed: ${String(e)}`);
                     } finally {
                       setMarkingInvoicePaid(false);
                     }
@@ -507,11 +519,6 @@ function EmailAIContent() {
                 >
                   {markingInvoicePaid ? "Updating..." : "✓ Mark Invoice Paid"}
                 </button>
-              )}
-              {thread.subject?.startsWith("Invoice ") && !thread.quoteId && (
-                <span className="rounded-lg bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-600">
-                  Invoice Thread — go to Invoices to mark paid
-                </span>
               )}
             </div>
           </div>
