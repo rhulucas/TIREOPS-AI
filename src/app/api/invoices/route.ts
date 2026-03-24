@@ -10,8 +10,10 @@ export async function GET(req: NextRequest) {
   const page = Math.max(Number(req.nextUrl.searchParams.get("page") || 1), 1);
   const pageSize = Math.min(Math.max(Number(req.nextUrl.searchParams.get("pageSize") || 20), 1), 100);
   const year = req.nextUrl.searchParams.get("year") || "";
+  const status = req.nextUrl.searchParams.get("status") || "";
   const where = {
     ...(customerId ? { customerId } : {}),
+    ...(status === "PAID" ? { status: "PAID" } : status === "PENDING" ? { status: { not: "PAID" } } : {}),
     ...(q
       ? {
           OR: [

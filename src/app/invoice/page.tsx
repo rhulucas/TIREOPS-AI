@@ -154,6 +154,7 @@ function InvoiceAIContent() {
   const [invoicePage, setInvoicePage] = useState(1);
   const [invoiceTotal, setInvoiceTotal] = useState(0);
   const [invoiceYear, setInvoiceYear] = useState("all");
+  const [invoiceStatus, setInvoiceStatus] = useState("all");
   const [previewModal, setPreviewModal] = useState<InvoiceRow | null>(null);
   const [orderSuggestions, setOrderSuggestions] = useState<OrderSuggestion[]>([]);
   const [assistantWarnings, setAssistantWarnings] = useState<string[]>([]);
@@ -192,6 +193,7 @@ function InvoiceAIContent() {
     });
     if (invoiceSearch) params.set("q", invoiceSearch);
     if (invoiceYear !== "all") params.set("year", invoiceYear);
+    if (invoiceStatus !== "all") params.set("status", invoiceStatus);
     const res = await fetch(`/api/invoices?${params.toString()}`);
     const data = await safeJson<{ invoices?: InvoiceRow[]; total?: number }>(res);
     setInvoices(data.invoices || []);
@@ -210,7 +212,7 @@ function InvoiceAIContent() {
   useEffect(() => {
     loadInvoices();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [invoiceSearch, invoicePage, invoiceYear]);
+  }, [invoiceSearch, invoicePage, invoiceYear, invoiceStatus]);
 
   useEffect(() => {
     if (hasSavedOnce.current) setIsDirty(true);
@@ -219,7 +221,7 @@ function InvoiceAIContent() {
 
   useEffect(() => {
     setInvoicePage(1);
-  }, [invoiceSearch, invoiceYear]);
+  }, [invoiceSearch, invoiceYear, invoiceStatus]);
 
   useEffect(() => {
     if (selectedCustomer?.id) {
@@ -501,7 +503,9 @@ function InvoiceAIContent() {
       if (!res.ok) throw new Error("Failed");
       const paidAt = new Date().toISOString();
       setInvoices((prev) => prev.map((inv) => inv.id === invoiceId ? { ...inv, status: "PAID", paidAt } : inv));
-      setPinnedInvoice((prev) => prev?.id === invoiceId ? { ...prev, status: "PAID", paidAt } : prev);
+      const target = invoices.find((inv) => inv.id === invoiceId);
+      if (target) { setPinnedInvoice({ ...target, status: "PAID", paidAt }); setPinnedViewed(false); }
+      else setPinnedInvoice((prev) => prev?.id === invoiceId ? { ...prev, status: "PAID", paidAt } : prev);
     } catch {
       alert("Failed to update payment status");
     } finally {
@@ -926,6 +930,22 @@ function InvoiceAIContent() {
                   }`}
                 >
                   {year === "all" ? "All" : year}
+                </button>
+              ))}
+            </div>
+            <div className="flex items-center gap-1">
+              {(["all", "PENDING", "PAID"] as const).map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => setInvoiceStatus(s)}
+                  className={`rounded-[6px] px-2.5 py-1 text-[11px] font-semibold transition-all ${
+                    invoiceStatus === s
+                      ? s === "PAID" ? "bg-green-600 text-white shadow-sm" : s === "PENDING" ? "bg-yellow-500 text-white shadow-sm" : "bg-[var(--accent)] text-white shadow-sm"
+                      : "border border-[var(--border2)] bg-[var(--bg)] text-[var(--text-mid)] hover:border-[var(--accent)] hover:bg-[var(--accent-light)] hover:text-[var(--accent)]"
+                  }`}
+                >
+                  {s === "all" ? "All" : s === "PAID" ? "✓ Paid" : "Pending"}
                 </button>
               ))}
             </div>
