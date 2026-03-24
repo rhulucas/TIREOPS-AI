@@ -499,7 +499,9 @@ function InvoiceAIContent() {
         body: JSON.stringify({ status: "PAID" }),
       });
       if (!res.ok) throw new Error("Failed");
-      setInvoices((prev) => prev.map((inv) => inv.id === invoiceId ? { ...inv, status: "PAID", paidAt: new Date().toISOString() } : inv));
+      const paidAt = new Date().toISOString();
+      setInvoices((prev) => prev.map((inv) => inv.id === invoiceId ? { ...inv, status: "PAID", paidAt } : inv));
+      setPinnedInvoice((prev) => prev?.id === invoiceId ? { ...prev, status: "PAID", paidAt } : prev);
     } catch {
       alert("Failed to update payment status");
     } finally {

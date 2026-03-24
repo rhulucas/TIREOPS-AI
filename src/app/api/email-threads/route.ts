@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   try {
     const body = await req.json();
-    const { subject, customerName, customerEmail, quoteId, tireSpec, quantity, unitPrice, invoiceTotal, initialMessage } = body;
+    const { subject, customerName, customerEmail, quoteId, invoiceId, tireSpec, quantity, unitPrice, invoiceTotal, initialMessage } = body;
     if (!subject || !customerName || !initialMessage) {
       return NextResponse.json({ error: "subject, customerName, initialMessage required" }, { status: 400 });
     }
@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
       subject,
       customerName,
       customerEmail: customerEmail || null,
-      quoteId: quoteId || null,
+      quoteId: invoiceId || quoteId || null,
       tireSpec: tireSpec || null,
       quantity: quantity ? Number(quantity) : null,
       unitPrice: unitPrice ? Number(unitPrice) : invoiceTotal ? Number(invoiceTotal) : null,

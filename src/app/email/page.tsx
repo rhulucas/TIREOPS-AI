@@ -88,6 +88,7 @@ function EmailAIContent() {
   const [aiDraft, setAiDraft] = useState("");
   const [generatingDraft, setGeneratingDraft] = useState(false);
   const [expandedMsg, setExpandedMsg] = useState<string | null>(null);
+  const [markingInvoicePaid, setMarkingInvoicePaid] = useState(false);
 
   // Convert to order
   const [converting, setConverting] = useState(false);
@@ -481,7 +482,33 @@ function EmailAIContent() {
                   )}
                 </>
               )}
-              {thread.subject?.startsWith("Invoice ") && (
+              {thread.subject?.startsWith("Invoice ") && thread.quoteId && (
+                <button
+                  type="button"
+                  disabled={markingInvoicePaid}
+                  onClick={async () => {
+                    if (!confirm("Mark this invoice as paid?")) return;
+                    setMarkingInvoicePaid(true);
+                    try {
+                      const res = await fetch(`/api/invoices/${thread.quoteId}`, {
+                        method: "PATCH",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ status: "PAID" }),
+                      });
+                      if (!res.ok) throw new Error("Failed");
+                      alert("Invoice marked as paid.");
+                    } catch {
+                      alert("Failed to mark invoice as paid.");
+                    } finally {
+                      setMarkingInvoicePaid(false);
+                    }
+                  }}
+                  className="rounded-lg bg-green-50 border border-green-300 px-3 py-1.5 text-xs font-semibold text-green-700 hover:bg-green-100 disabled:opacity-50"
+                >
+                  {markingInvoicePaid ? "Updating..." : "✓ Mark Invoice Paid"}
+                </button>
+              )}
+              {thread.subject?.startsWith("Invoice ") && !thread.quoteId && (
                 <span className="rounded-lg bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-600">
                   Invoice Thread — go to Invoices to mark paid
                 </span>
