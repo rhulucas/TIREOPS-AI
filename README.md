@@ -41,6 +41,7 @@ Tire manufacturers manage a complex chain of operations: quoting prices to fleet
 - Finance generates and sends **AI-assisted invoices** in seconds
 - Customer communications are handled through a built-in **Email AI + Inbox** with simulated multi-round negotiation
 - Engineers manage **tread designs and rubber formulations** with change request workflows
+- Production teams monitor **production lines**, efficiency, QC failures, and active workload
 - Teams can inspect historical records through a role-based **Data Center** for Sales, Finance, Engineering, and Admin views
 
 Everything is connected — a quote converts to an order, an order triggers an invoice, and every step has a corresponding email thread.
@@ -183,6 +184,15 @@ Professional tread pattern design tool for engineers:
 
 ---
 
+### Production Lines
+Manufacturing execution view for factory operations:
+- Live simulated production line status: Running, Maintenance, Stopped
+- Efficiency and QC failure indicators for each line
+- Active workload summary across urgent, pending, production, and QC orders
+- Priority order list for manufacturing and quality review
+
+---
+
 ### Compound Spec
 Rubber formulation management:
 - Define polymer type, filler system, shore hardness, tensile strength, curing specifications
@@ -294,6 +304,7 @@ src/
 │   ├── customers/           # Customer Management page
 │   ├── data-center/         # Role-based operational data tables
 │   ├── tread-designer/      # Tread Designer page
+│   ├── production-lines/    # Manufacturing line health and workload view
 │   └── compound-spec/       # Compound Spec page
 ├── components/              # AppShell, Sidebar, CustomerAutocomplete
 └── lib/                     # db, auth, api-utils, openai-config, safe-json

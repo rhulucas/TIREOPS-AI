@@ -14,6 +14,7 @@ import {
   Users,
   LogOut,
   Database,
+  Factory,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -26,7 +27,7 @@ const navSections = [
     ],
   },
   {
-    label: "AI Modules",
+    label: "Sales & Ops",
     items: [
       { href: "/quoting", label: "Sales Quote Assistant", icon: FileText },
       { href: "/orders", label: "Orders", icon: ShoppingCart },
@@ -39,10 +40,11 @@ const navSections = [
     items: [
       { href: "/tread-designer", label: "Tread Designer", icon: PencilRuler },
       { href: "/compound-spec", label: "Compound Spec", icon: FlaskConical },
+      { href: "/production-lines", label: "Production Lines", icon: Factory },
     ],
   },
   {
-    label: "Operations",
+    label: "Data",
     items: [
       { href: "/data-center", label: "Data Center", icon: Database },
     ],
