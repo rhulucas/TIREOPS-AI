@@ -13,6 +13,7 @@ import {
   FlaskConical,
   Users,
   LogOut,
+  Database,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -38,6 +39,12 @@ const navSections = [
     items: [
       { href: "/tread-designer", label: "Tread Designer", icon: PencilRuler },
       { href: "/compound-spec", label: "Compound Spec", icon: FlaskConical },
+    ],
+  },
+  {
+    label: "Admin",
+    items: [
+      { href: "/admin/data", label: "Data Tables", icon: Database },
     ],
   },
 ];
