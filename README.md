@@ -5,10 +5,10 @@
 **A full-stack enterprise operations platform built for tire manufacturers —**
 **combining production management, AI-assisted sales, customer communications, and billing in one unified system.**
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Available-brightgreen?style=for-the-badge&logo=microsoft-azure)](https://tireops-app-ekeqbhhnbsh6cgbf.canadacentral-01.azurewebsites.net)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Available-brightgreen?style=for-the-badge&logo=microsoft-azure)](https://tireops-demo1-cce6djgwf3aeevd4.canadacentral-01.azurewebsites.net)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Neon-336791?style=for-the-badge&logo=postgresql)](https://neon.tech)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Azure-336791?style=for-the-badge&logo=postgresql)](https://azure.microsoft.com/products/postgresql)
 [![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o--mini-412991?style=for-the-badge&logo=openai)](https://openai.com)
 
 </div>
@@ -19,14 +19,14 @@
 
 > Try the full platform without any setup — no registration required.
 
-**URL:** [https://tireops-app-ekeqbhhnbsh6cgbf.canadacentral-01.azurewebsites.net](https://tireops-app-ekeqbhhnbsh6cgbf.canadacentral-01.azurewebsites.net)
+**URL:** [https://tireops-demo1-cce6djgwf3aeevd4.canadacentral-01.azurewebsites.net](https://tireops-demo1-cce6djgwf3aeevd4.canadacentral-01.azurewebsites.net)
 
 ```
 Email:    admin@tireops.com
 Password: admin123
 ```
 
-> All data in the demo is simulated. Feel free to create orders, send quotes, generate invoices, and explore every module.
+> All data in the demo is simulated and stored in Azure PostgreSQL. Feel free to create orders, send quotes, generate invoices, and explore every module.
 
 ---
 
@@ -41,6 +41,7 @@ Tire manufacturers manage a complex chain of operations: quoting prices to fleet
 - Finance generates and sends **AI-assisted invoices** in seconds
 - Customer communications are handled through a built-in **Email AI + Inbox** with simulated multi-round negotiation
 - Engineers manage **tread designs and rubber formulations** with change request workflows
+- Teams can inspect historical records through a role-based **Data Center** for Sales, Finance, Engineering, and Admin views
 
 Everything is connected — a quote converts to an order, an order triggers an invoice, and every step has a corresponding email thread.
 
@@ -161,6 +162,19 @@ Full CRM with AI-powered account intelligence:
 
 ---
 
+### Data Center
+A role-based operational data table for reviewing the simulated PostgreSQL records behind the demo.
+
+**Role views:**
+- **Sales**: Customers, Quotes, Orders, Email Threads
+- **Finance**: Invoices, Orders, Customers
+- **Engineering**: Tread Designs, Compounds, Change Requests, Production Lines
+- **Admin**: Full demo data access for system review and CSV export
+
+The Data Center is protected by login and is designed to show how different departments can use the same operational database without every role needing the same view.
+
+---
+
 ### Tread Designer
 Professional tread pattern design tool for engineers:
 - Define dimensions, application type, EU label ratings (wet grip, rolling resistance, noise)
@@ -198,10 +212,10 @@ Rubber formulation management:
 | Framework | Next.js 16 (App Router) + React 19 |
 | Language | TypeScript 5 |
 | Styling | Tailwind CSS v4 |
-| Database | PostgreSQL (Neon serverless) + Prisma ORM |
+| Database | Azure Database for PostgreSQL + Prisma ORM |
 | Authentication | NextAuth.js v5, bcrypt, JWT sessions |
 | AI | OpenAI GPT-4o-mini |
-| Deployment | Azure Web App (Canada Central) |
+| Deployment | Azure App Service / Web App (Canada Central) |
 
 ---
 
@@ -228,8 +242,11 @@ npx prisma generate
 
 ### 4. Seed demo data (optional)
 ```bash
-npx tsx prisma/seed-email-threads.ts
+npm run db:seed
+npm run db:seed:emails
 ```
+
+`npm run db:seed` creates users, customers, orders, quotes, invoices, tread designs, compounds, change requests, and production lines. `npm run db:seed:emails` adds 100 simulated customer email conversations across 2021-2026 for the Email AI + Inbox module.
 
 ### 5. Start the dev server
 ```bash
@@ -237,6 +254,29 @@ npm run dev
 ```
 
 Visit [http://localhost:3000](http://localhost:3000)
+
+---
+
+## Azure Deployment
+
+The live demo is deployed to Azure App Service and connected to Azure Database for PostgreSQL.
+
+Required production app settings:
+
+| Setting | Purpose |
+|---|---|
+| `DATABASE_URL` | PostgreSQL connection string with SSL enabled |
+| `AUTH_SECRET` | NextAuth session secret |
+| `OPENAI_API_KEY` | Optional key for AI generation |
+| `NODE_ENV` | `production` |
+
+Deployment is handled through GitHub Actions using an Azure publish profile stored as a GitHub repository secret. The Azure App Service startup command is:
+
+```bash
+node server.js
+```
+
+The application uses Next.js standalone output for Azure deployment.
 
 ---
 
@@ -252,14 +292,16 @@ src/
 │   ├── invoice/             # Invoice AI page
 │   ├── email/               # Email AI + Inbox page
 │   ├── customers/           # Customer Management page
+│   ├── data-center/         # Role-based operational data tables
 │   ├── tread-designer/      # Tread Designer page
 │   └── compound-spec/       # Compound Spec page
 ├── components/              # AppShell, Sidebar, CustomerAutocomplete
 └── lib/                     # db, auth, api-utils, openai-config, safe-json
 prisma/
-├── schema.prisma            # Full database schema (11 models)
+├── schema.prisma            # Full database schema
 ├── migrations/              # SQL migration history
-└── seed-email-threads.ts    # Demo data seeder
+├── seed.ts                  # Main demo data seeder
+└── seed-email-threads.ts    # Email conversation demo seeder
 ```
 
 ---
