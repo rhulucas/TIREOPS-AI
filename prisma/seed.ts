@@ -362,6 +362,38 @@ async function main() {
   });
   console.log("Admin user:", admin.email);
 
+  const sales = await prisma.user.upsert({
+    where: { email: "sales@tireops.com" },
+    create: {
+      email: "sales@tireops.com",
+      passwordHash,
+      name: "Sales Demo",
+      role: "SALES",
+    },
+    update: {
+      passwordHash,
+      name: "Sales Demo",
+      role: "SALES",
+    },
+  });
+  console.log("Sales user:", sales.email);
+
+  const finance = await prisma.user.upsert({
+    where: { email: "finance@tireops.com" },
+    create: {
+      email: "finance@tireops.com",
+      passwordHash,
+      name: "Finance Demo",
+      role: "FINANCE",
+    },
+    update: {
+      passwordHash,
+      name: "Finance Demo",
+      role: "FINANCE",
+    },
+  });
+  console.log("Finance user:", finance.email);
+
   const engineer = await prisma.user.upsert({
     where: { email: "engineer@tireops.com" },
     create: {

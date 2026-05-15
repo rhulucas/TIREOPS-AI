@@ -24,6 +24,7 @@ function money(value: number | null | undefined) {
 export default async function AdminDataPage() {
   const session = await auth();
   if (!session?.user) redirect("/login?callbackUrl=/data-center");
+  const userRole = ((session.user as { role?: string }).role || "USER").toUpperCase();
 
   const [
     customers,
@@ -263,5 +264,11 @@ export default async function AdminDataPage() {
     },
   ];
 
-  return <DataTableClient generatedAt={new Date().toISOString()} tables={tables} />;
+  return (
+    <DataTableClient
+      generatedAt={new Date().toISOString()}
+      tables={tables}
+      userRole={userRole}
+    />
+  );
 }

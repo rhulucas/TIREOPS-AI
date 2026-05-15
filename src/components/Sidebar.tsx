@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import {
   LayoutDashboard,
   FileText,
@@ -18,41 +18,46 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+type Role = "ADMIN" | "SALES" | "FINANCE" | "ENGINEER" | "USER";
+
 const navSections = [
   {
     label: "Main",
     items: [
-      { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-      { href: "/customers", label: "Customers", icon: Users },
+      { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, roles: ["ADMIN", "SALES", "FINANCE", "ENGINEER"] },
+      { href: "/customers", label: "Customers", icon: Users, roles: ["ADMIN", "SALES", "FINANCE"] },
     ],
   },
   {
     label: "Sales & Ops",
     items: [
-      { href: "/quoting", label: "Sales Quote Assistant", icon: FileText },
-      { href: "/orders", label: "Orders", icon: ShoppingCart },
-      { href: "/email", label: "Email AI + Inbox", icon: Inbox },
-      { href: "/invoice", label: "Invoice AI", icon: Receipt },
+      { href: "/quoting", label: "Sales Quote Assistant", icon: FileText, roles: ["ADMIN", "SALES"] },
+      { href: "/orders", label: "Orders", icon: ShoppingCart, roles: ["ADMIN", "SALES", "FINANCE", "ENGINEER"] },
+      { href: "/email", label: "Email AI + Inbox", icon: Inbox, roles: ["ADMIN", "SALES"] },
+      { href: "/invoice", label: "Invoice AI", icon: Receipt, roles: ["ADMIN", "FINANCE"] },
     ],
   },
   {
     label: "Manufacturing",
     items: [
-      { href: "/tread-designer", label: "Tread Designer", icon: PencilRuler },
-      { href: "/compound-spec", label: "Compound Spec", icon: FlaskConical },
-      { href: "/production-lines", label: "Production Lines", icon: Factory },
+      { href: "/tread-designer", label: "Tread Designer", icon: PencilRuler, roles: ["ADMIN", "ENGINEER"] },
+      { href: "/compound-spec", label: "Compound Spec", icon: FlaskConical, roles: ["ADMIN", "ENGINEER"] },
+      { href: "/production-lines", label: "Production Lines", icon: Factory, roles: ["ADMIN", "ENGINEER"] },
     ],
   },
   {
     label: "Data",
     items: [
-      { href: "/data-center", label: "Data Center", icon: Database },
+      { href: "/data-center", label: "Data Center", icon: Database, roles: ["ADMIN", "SALES", "FINANCE", "ENGINEER"] },
     ],
   },
 ];
 
 export function Sidebar() {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const role = ((session?.user as { role?: Role } | undefined)?.role || "USER") as Role;
+  const displayRole = role === "ENGINEER" ? "ENGINEERING" : role;
 
   return (
     <aside className="flex h-screen w-60 min-w-60 flex-col" style={{ background: "#1e2433", borderRight: "1px solid #2d3548" }}>
@@ -73,13 +78,16 @@ export function Sidebar() {
 
       {/* Nav */}
       <nav className="flex-1 space-y-4 overflow-y-auto p-4 pt-3">
-        {navSections.map((section) => (
+        {navSections.map((section) => {
+          const items = section.items.filter((item) => item.roles.includes(role));
+          if (items.length === 0) return null;
+          return (
           <div key={section.label}>
             <div className="mb-1.5 px-3 text-[10px] font-semibold uppercase tracking-widest" style={{ color: "#475569" }}>
               {section.label}
             </div>
             <div className="space-y-0.5">
-              {section.items.map((item) => {
+              {items.map((item) => {
                 const Icon = item.icon;
                 const isActive =
                   pathname === item.href ||
@@ -116,7 +124,7 @@ export function Sidebar() {
               })}
             </div>
           </div>
-        ))}
+        );})}
       </nav>
 
       {/* AI status */}
@@ -124,7 +132,7 @@ export function Sidebar() {
         <div className="flex items-center gap-2 rounded-full px-3 py-1.5" style={{ background: "#0d2d1a", border: "1px solid #14532d" }}>
           <div className="h-1.5 w-1.5 animate-pulse rounded-full" style={{ background: "#22c55e" }} />
           <span className="text-xs font-semibold" style={{ color: "#22c55e" }}>
-            AI — Connected
+            {displayRole} · AI Connected
           </span>
         </div>
       </div>

@@ -19,6 +19,7 @@ export type DataCenterTable = {
 type Props = {
   generatedAt: string;
   tables: DataCenterTable[];
+  userRole: string;
 };
 
 const roleViews: { key: RoleKey; label: string; description: string; tableKeys: string[] }[] = [
@@ -68,10 +69,18 @@ function downloadCsv(table: DataCenterTable, rows: Record<string, CellValue>[]) 
   URL.revokeObjectURL(url);
 }
 
-export function DataTableClient({ generatedAt, tables }: Props) {
-  const [activeRole, setActiveRole] = useState<RoleKey>("sales");
+export function DataTableClient({ generatedAt, tables, userRole }: Props) {
+  const normalizedRole = userRole === "ENGINEER" ? "engineering" : userRole.toLowerCase();
+  const defaultRole = ["sales", "finance", "engineering", "admin"].includes(normalizedRole)
+    ? (normalizedRole as RoleKey)
+    : "sales";
+  const [activeRole, setActiveRole] = useState<RoleKey>(defaultRole);
   const [activeKey, setActiveKey] = useState(tables[0]?.key ?? "");
   const [query, setQuery] = useState("");
+  const availableRoleViews =
+    defaultRole === "admin"
+      ? roleViews
+      : roleViews.filter((role) => role.key === defaultRole);
 
   const visibleTables = useMemo(() => {
     const view = roleViews.find((role) => role.key === activeRole);
@@ -108,7 +117,7 @@ export function DataTableClient({ generatedAt, tables }: Props) {
             Data Center
           </h1>
           <p className="mt-1 text-sm text-[var(--text-dim)]">
-            Live simulated PostgreSQL records organized for Sales, Finance, Engineering, and Admin review. Last refreshed{" "}
+            Live simulated PostgreSQL records scoped to your demo role. Admin can review every department. Last refreshed{" "}
             {new Date(generatedAt).toLocaleString()}.
           </p>
         </div>
@@ -123,7 +132,7 @@ export function DataTableClient({ generatedAt, tables }: Props) {
       </div>
 
       <div className="grid gap-3 lg:grid-cols-4">
-        {roleViews.map((role) => {
+        {availableRoleViews.map((role) => {
           const isActive = role.key === activeRole;
           const roleCount =
             role.key === "admin"

@@ -4,6 +4,13 @@ import { useState, Suspense } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 
+const demoAccounts = [
+  { label: "Admin", email: "admin@tireops.com", description: "Full platform access" },
+  { label: "Sales", email: "sales@tireops.com", description: "Quotes, customers, email, orders" },
+  { label: "Finance", email: "finance@tireops.com", description: "Invoices, customers, orders" },
+  { label: "Engineer", email: "engineer@tireops.com", description: "Tread, compound, production" },
+];
+
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -60,6 +67,33 @@ function LoginForm() {
           </span>
         </div>
         <h1 className="mb-6 text-xl font-bold text-[var(--text)]">Sign In</h1>
+        <div className="mb-5 rounded-[10px] border border-[var(--border)] bg-[var(--bg2)] p-3">
+          <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-[var(--text-dim)]">
+            Demo Role Login
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            {demoAccounts.map((account) => (
+              <button
+                type="button"
+                key={account.email}
+                onClick={() => {
+                  setEmail(account.email);
+                  setPassword("admin123");
+                  setError("");
+                }}
+                className="rounded-[7px] border border-[var(--border2)] bg-white p-2 text-left transition hover:border-[var(--accent)] hover:bg-[var(--accent-light)]"
+              >
+                <div className="text-xs font-bold text-[var(--text)]">{account.label}</div>
+                <div className="mt-0.5 text-[10px] leading-4 text-[var(--text-dim)]">
+                  {account.description}
+                </div>
+              </button>
+            ))}
+          </div>
+          <div className="mt-2 text-[11px] text-[var(--text-dim)]">
+            Password for all demo accounts: <span className="font-semibold">admin123</span>
+          </div>
+        </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="mb-1.5 block text-xs font-semibold text-[var(--text-mid)]">

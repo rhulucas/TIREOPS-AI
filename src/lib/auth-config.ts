@@ -2,6 +2,34 @@
 
 import type { NextAuthConfig } from "next-auth";
 
+function canAccessPath(role: string | undefined, path: string) {
+  if (!role || role === "ADMIN") return true;
+  if (path.startsWith("/api/")) return true;
+  if (path === "/dashboard" || path === "/data-center" || path.startsWith("/orders")) return true;
+
+  if (role === "SALES") {
+    return (
+      path.startsWith("/customers") ||
+      path.startsWith("/quoting") ||
+      path.startsWith("/email")
+    );
+  }
+
+  if (role === "FINANCE") {
+    return path.startsWith("/customers") || path.startsWith("/invoice");
+  }
+
+  if (role === "ENGINEER") {
+    return (
+      path.startsWith("/tread-designer") ||
+      path.startsWith("/compound-spec") ||
+      path.startsWith("/production-lines")
+    );
+  }
+
+  return false;
+}
+
 export const authConfig: NextAuthConfig = {
   providers: [],
   pages: { signIn: "/login" },
@@ -27,6 +55,10 @@ export const authConfig: NextAuthConfig = {
         const url = new URL("/login", request.url);
         url.searchParams.set("callbackUrl", path);
         return Response.redirect(url);
+      }
+      const role = (auth?.user as { role?: string } | undefined)?.role;
+      if (!canAccessPath(role, path)) {
+        return Response.redirect(new URL("/dashboard", request.url));
       }
       return true;
     },

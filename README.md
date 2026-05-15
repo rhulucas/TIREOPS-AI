@@ -26,6 +26,17 @@ Email:    admin@tireops.com
 Password: admin123
 ```
 
+Demo role accounts:
+
+| Role | Email | Access |
+|---|---|---|
+| Admin | `admin@tireops.com` | Full platform access |
+| Sales | `sales@tireops.com` | Customers, quotes, orders, email, sales data |
+| Finance | `finance@tireops.com` | Customers, orders, invoices, finance data |
+| Engineer | `engineer@tireops.com` | Orders, tread design, compound spec, production lines, engineering data |
+
+All demo accounts use password `admin123`.
+
 > All data in the demo is simulated and stored in Azure PostgreSQL. Feel free to create orders, send quotes, generate invoices, and explore every module.
 
 ---
@@ -173,6 +184,8 @@ A role-based operational data table for reviewing the simulated PostgreSQL recor
 - **Admin**: Full demo data access for system review and CSV export
 
 The Data Center is protected by login and is designed to show how different departments can use the same operational database without every role needing the same view.
+
+Role permissions are also reflected in the left navigation: Sales, Finance, and Engineering users only see the modules relevant to their workflow, while Admin can access every module.
 
 ---
 
