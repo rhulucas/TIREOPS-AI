@@ -80,7 +80,7 @@ export function DataTableClient({ generatedAt, tables, userRole }: Props) {
   const availableRoleViews =
     defaultRole === "admin"
       ? roleViews
-      : roleViews.filter((role) => role.key === defaultRole);
+      : roleViews.filter((role) => role.key !== "admin");
 
   const visibleTables = useMemo(() => {
     const view = roleViews.find((role) => role.key === activeRole);
@@ -111,13 +111,13 @@ export function DataTableClient({ generatedAt, tables, userRole }: Props) {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-dim)]">
-            Role-Based Demo Records
+            Shared Operational Records
           </div>
           <h1 className="mt-1 text-[30px] font-bold tracking-tight text-[var(--text)]">
             Data Center
           </h1>
           <p className="mt-1 text-sm text-[var(--text-dim)]">
-            Live simulated PostgreSQL records scoped to your demo role. Admin can review every department. Last refreshed{" "}
+            Live simulated PostgreSQL records for shared sales, finance, and technical workflows. Admin can review the full system view. Last refreshed{" "}
             {new Date(generatedAt).toLocaleString()}.
           </p>
         </div>

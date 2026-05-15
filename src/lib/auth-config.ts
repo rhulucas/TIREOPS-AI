@@ -5,26 +5,22 @@ import type { NextAuthConfig } from "next-auth";
 function canAccessPath(role: string | undefined, path: string) {
   if (!role || role === "ADMIN") return true;
   if (path.startsWith("/api/")) return true;
-  if (path === "/dashboard" || path === "/data-center" || path.startsWith("/orders")) return true;
-
-  if (role === "SALES") {
-    return (
-      path.startsWith("/customers") ||
-      path.startsWith("/quoting") ||
-      path.startsWith("/email")
-    );
-  }
-
-  if (role === "FINANCE") {
-    return path.startsWith("/customers") || path.startsWith("/invoice");
+  const sharedWorkflowPaths = [
+    "/dashboard",
+    "/customers",
+    "/quoting",
+    "/orders",
+    "/email",
+    "/invoice",
+    "/production-lines",
+    "/data-center",
+  ];
+  if (sharedWorkflowPaths.some((allowedPath) => path === allowedPath || path.startsWith(`${allowedPath}/`))) {
+    return ["SALES", "FINANCE", "ENGINEER"].includes(role);
   }
 
   if (role === "ENGINEER") {
-    return (
-      path.startsWith("/tread-designer") ||
-      path.startsWith("/compound-spec") ||
-      path.startsWith("/production-lines")
-    );
+    return path.startsWith("/tread-designer") || path.startsWith("/compound-spec");
   }
 
   return false;

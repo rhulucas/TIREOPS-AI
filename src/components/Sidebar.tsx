@@ -20,35 +20,38 @@ import { cn } from "@/lib/utils";
 
 type Role = "ADMIN" | "SALES" | "FINANCE" | "ENGINEER" | "USER";
 
+const workflowRoles: Role[] = ["ADMIN", "SALES", "FINANCE", "ENGINEER"];
+const engineeringRoles: Role[] = ["ADMIN", "ENGINEER"];
+
 const navSections = [
   {
     label: "Main",
     items: [
-      { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, roles: ["ADMIN", "SALES", "FINANCE", "ENGINEER"] },
-      { href: "/customers", label: "Customers", icon: Users, roles: ["ADMIN", "SALES", "FINANCE"] },
+      { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, roles: workflowRoles },
+      { href: "/customers", label: "Customers", icon: Users, roles: workflowRoles },
     ],
   },
   {
-    label: "Sales & Ops",
+    label: "Shared Workflow",
     items: [
-      { href: "/quoting", label: "Sales Quote Assistant", icon: FileText, roles: ["ADMIN", "SALES"] },
-      { href: "/orders", label: "Orders", icon: ShoppingCart, roles: ["ADMIN", "SALES", "FINANCE", "ENGINEER"] },
-      { href: "/email", label: "Email AI + Inbox", icon: Inbox, roles: ["ADMIN", "SALES"] },
-      { href: "/invoice", label: "Invoice AI", icon: Receipt, roles: ["ADMIN", "FINANCE"] },
+      { href: "/quoting", label: "Sales Quote Assistant", icon: FileText, roles: workflowRoles },
+      { href: "/orders", label: "Orders", icon: ShoppingCart, roles: workflowRoles },
+      { href: "/email", label: "Email AI + Inbox", icon: Inbox, roles: workflowRoles },
+      { href: "/invoice", label: "Invoice AI", icon: Receipt, roles: workflowRoles },
+      { href: "/production-lines", label: "Production Lines", icon: Factory, roles: workflowRoles },
     ],
   },
   {
-    label: "Manufacturing",
+    label: "Technical Tools",
     items: [
-      { href: "/tread-designer", label: "Tread Designer", icon: PencilRuler, roles: ["ADMIN", "ENGINEER"] },
-      { href: "/compound-spec", label: "Compound Spec", icon: FlaskConical, roles: ["ADMIN", "ENGINEER"] },
-      { href: "/production-lines", label: "Production Lines", icon: Factory, roles: ["ADMIN", "ENGINEER"] },
+      { href: "/tread-designer", label: "Tread Designer", icon: PencilRuler, roles: engineeringRoles },
+      { href: "/compound-spec", label: "Compound Spec", icon: FlaskConical, roles: engineeringRoles },
     ],
   },
   {
     label: "Data",
     items: [
-      { href: "/data-center", label: "Data Center", icon: Database, roles: ["ADMIN", "SALES", "FINANCE", "ENGINEER"] },
+      { href: "/data-center", label: "Data Center", icon: Database, roles: workflowRoles },
     ],
   },
 ];
