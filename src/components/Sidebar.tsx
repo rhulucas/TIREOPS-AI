@@ -42,9 +42,9 @@ const navSections = [
     ],
   },
   {
-    label: "Admin",
+    label: "Operations",
     items: [
-      { href: "/admin/data", label: "Data Tables", icon: Database },
+      { href: "/data-center", label: "Data Center", icon: Database },
     ],
   },
 ];
