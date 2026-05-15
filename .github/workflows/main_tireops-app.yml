@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy Node.js app to Azure Web App - tireops-app
+name: Build and deploy Node.js app to Azure Web App - tireops-demo1
 
 on:
   push:
@@ -69,7 +69,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'tireops-app'
+          app-name: 'tireops-demo1'
           slot-name: 'Production'
           package: node-app.zip
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DDBA1D672D314572A613623CE004D716 }}
