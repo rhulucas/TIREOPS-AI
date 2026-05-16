@@ -94,8 +94,29 @@ Everything is connected — a quote converts to an order, an order triggers an i
                              ▼
                     ┌─────────────────┐
                     │    Mark Paid ✓  │
-                    └─────────────────┘
+                   └─────────────────┘
 ```
+
+---
+
+## Demo Walkthrough
+
+These screenshots show the connected workflow across sales, finance, production, and shared operational data.
+
+| Operations Dashboard | Customer Intelligence |
+|---|---|
+| <img src="docs/images/tireops-dashboard.png" alt="TireOps dashboard with KPIs, recent activity, and production line status" width="100%"> | <img src="docs/images/tireops-customers.png" alt="Customer intelligence page with reorder planning and demand signals" width="100%"> |
+| Real-time operating metrics, activity feed, and production line health. | Customer history, reorder planning, demand signals, and recommended actions. |
+
+| AI Quote Assistant | Order Management |
+|---|---|
+| <img src="docs/images/tireops-quote-assistant.png" alt="AI sales quote assistant with price recommendation, risk flags, and historical references" width="100%"> | <img src="docs/images/tireops-orders.png" alt="Order management queue with production, QC, shipped, and invoice actions" width="100%"> |
+| AI pricing guidance, win context, risk flags, and historical quote references. | Shared order queue from quote conversion through production, QC, shipping, and invoicing. |
+
+| Production Lines | Data Center |
+|---|---|
+| <img src="docs/images/tireops-production-lines.png" alt="Production lines page with line health, active workload, and priority orders" width="100%"> | <img src="docs/images/tireops-data-center.png" alt="Data Center with PostgreSQL-backed tables and CSV export" width="100%"> |
+| Manufacturing execution view with line health, QC failures, and priority orders. | PostgreSQL-backed operational records with role views and CSV export. |
 
 ---
 
