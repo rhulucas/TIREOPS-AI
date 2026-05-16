@@ -13,14 +13,12 @@ function canAccessPath(role: string | undefined, path: string) {
     "/email",
     "/invoice",
     "/production-lines",
+    "/tread-designer",
+    "/compound-spec",
     "/data-center",
   ];
   if (sharedWorkflowPaths.some((allowedPath) => path === allowedPath || path.startsWith(`${allowedPath}/`))) {
     return ["SALES", "FINANCE", "ENGINEER"].includes(role);
-  }
-
-  if (role === "ENGINEER") {
-    return path.startsWith("/tread-designer") || path.startsWith("/compound-spec");
   }
 
   return false;

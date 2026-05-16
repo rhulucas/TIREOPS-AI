@@ -21,7 +21,6 @@ import { cn } from "@/lib/utils";
 type Role = "ADMIN" | "SALES" | "FINANCE" | "ENGINEER" | "USER";
 
 const workflowRoles: Role[] = ["ADMIN", "SALES", "FINANCE", "ENGINEER"];
-const engineeringRoles: Role[] = ["ADMIN", "ENGINEER"];
 
 const navSections = [
   {
@@ -39,13 +38,8 @@ const navSections = [
       { href: "/email", label: "Email AI + Inbox", icon: Inbox, roles: workflowRoles },
       { href: "/invoice", label: "Invoice AI", icon: Receipt, roles: workflowRoles },
       { href: "/production-lines", label: "Production Lines", icon: Factory, roles: workflowRoles },
-    ],
-  },
-  {
-    label: "Technical Tools",
-    items: [
-      { href: "/tread-designer", label: "Tread Designer", icon: PencilRuler, roles: engineeringRoles },
-      { href: "/compound-spec", label: "Compound Spec", icon: FlaskConical, roles: engineeringRoles },
+      { href: "/tread-designer", label: "Tread Designer", icon: PencilRuler, roles: workflowRoles },
+      { href: "/compound-spec", label: "Compound Spec", icon: FlaskConical, roles: workflowRoles },
     ],
   },
   {

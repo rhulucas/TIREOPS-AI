@@ -33,7 +33,7 @@ Demo role accounts:
 | Admin | `admin@tireops.com` | Full platform access |
 | Sales | `sales@tireops.com` | Shared customer, quote, order, email, invoice, production, and data views |
 | Finance | `finance@tireops.com` | Shared customer, quote, order, email, invoice, production, and data views |
-| Engineer | `engineer@tireops.com` | Shared workflow views plus tread design and compound specification tools |
+| Engineer | `engineer@tireops.com` | Shared workflow views with production, tread, and compound context |
 
 All demo accounts use password `admin123`.
 
@@ -185,7 +185,7 @@ A role-based operational data table for reviewing the simulated PostgreSQL recor
 
 The Data Center is protected by login and is designed to show how departments collaborate on the same operational database. Sales, Finance, and Engineering can switch between the shared business views so they can follow an order from quote to billing to production. Admin also has the full system view for review and export.
 
-Role permissions are reflected in the left navigation: shared workflow modules are visible to Sales, Finance, and Engineering, while technical design tools remain limited to Engineering and Admin.
+Role permissions are reflected in the left navigation: Sales, Finance, and Engineering share the same operational workflow modules so each team can follow customer, order, invoice, production, tread, and compound context from one place. Admin keeps the full system review view.
 
 ---
 
