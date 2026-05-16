@@ -28,14 +28,16 @@ Password: admin123
 
 Demo role accounts:
 
-| Role | Email | Access |
+| Role | Email | Demo Focus |
 |---|---|---|
-| Admin | `admin@tireops.com` | Full platform and system review access |
-| Sales | `sales@tireops.com` | Shared access to customer, quote, order, email, invoice, production, tread, compound, and data views |
-| Finance | `finance@tireops.com` | Shared access to customer, quote, order, email, invoice, production, tread, compound, and data views |
-| Engineer | `engineer@tireops.com` | Shared access to customer, quote, order, email, invoice, production, tread, compound, and data views |
+| Admin | `admin@tireops.com` | Full platform review, data export, and system validation |
+| Sales | `sales@tireops.com` | Customer history, quoting, order creation, and email follow-up |
+| Finance | `finance@tireops.com` | Invoice generation, payment review, order value, and billing context |
+| Engineer | `engineer@tireops.com` | Production readiness, tread context, compound requirements, and technical notes |
 
 All demo accounts use password `admin123`.
+
+Sales, Finance, and Engineering share the same order workflow, but each role represents a different business responsibility and default perspective.
 
 > All data in the demo is simulated and stored in Azure PostgreSQL. Feel free to create orders, send quotes, generate invoices, and explore every module.
 
