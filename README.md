@@ -30,10 +30,10 @@ Demo role accounts:
 
 | Role | Email | Access |
 |---|---|---|
-| Admin | `admin@tireops.com` | Full platform access |
-| Sales | `sales@tireops.com` | Shared customer, quote, order, email, invoice, production, and data views |
-| Finance | `finance@tireops.com` | Shared customer, quote, order, email, invoice, production, and data views |
-| Engineer | `engineer@tireops.com` | Shared workflow views with production, tread, and compound context |
+| Admin | `admin@tireops.com` | Full platform and system review access |
+| Sales | `sales@tireops.com` | Shared access to customer, quote, order, email, invoice, production, tread, compound, and data views |
+| Finance | `finance@tireops.com` | Shared access to customer, quote, order, email, invoice, production, tread, compound, and data views |
+| Engineer | `engineer@tireops.com` | Shared access to customer, quote, order, email, invoice, production, tread, compound, and data views |
 
 All demo accounts use password `admin123`.
 
